@@ -9,8 +9,21 @@ bl_info = {
 }
 
 import bpy
+#from .jujuLib import *
+
+import os
+import sys
+import importlib
+# ✅ Option 1 — Utilise des slashes normaux /
+folder = os.path.dirname(os.path.abspath(__file__))
+
+# Même dossier que main.py
+sys.path.append(folder)
+import jujuLib
+importlib.reload(jujuLib)
 
 
+"""
 ## CLEAN ##
 def clean_scene():
     bpy.ops.object.select_all(action='SELECT')
@@ -99,7 +112,7 @@ def volume_to_mesh():
 
     bpy.context.object.modifiers["Volume to Mesh"].object = vol_to_convert
     bpy.ops.object.modifier_apply(modifier="Volume to Mesh")
-
+"""
 
 
 ### CLASS ###
@@ -135,7 +148,7 @@ class Create_Cube(bpy.types.Operator):
     
     def execute(self, context):
         
-        create_cube_vox()
+        jujuLib.create_cube_vox()
         return {'FINISHED'}
 
 class Create_Sphere(bpy.types.Operator):
@@ -145,7 +158,7 @@ class Create_Sphere(bpy.types.Operator):
     
     def execute(self, context):
         
-        create_sphere_vox()
+        jujuLib.create_sphere_vox()
         return {'FINISHED'}
     
     
@@ -156,7 +169,7 @@ class mesh_to_Volume(bpy.types.Operator):
     
     def execute(self, context):
         
-        mesh_to_volume()
+        jujuLib.mesh_to_volume()
         return {'FINISHED'}
 
 
@@ -167,7 +180,7 @@ class hide_mesh(bpy.types.Operator):
     
     def execute(self, context):
         #props = context.scene.voxel_terrain_props
-        toggle_mesh_visibility()
+        jujuLib.toggle_mesh_visibility()
         return {'FINISHED'}
 
 
@@ -177,7 +190,7 @@ class volume_to_Mesh(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
     
     def execute(self, context):
-        volume_to_mesh()
+        jujuLib.volume_to_mesh()
         return {'FINISHED'}
 
 class clean_scene(bpy.types.Operator):
@@ -186,7 +199,7 @@ class clean_scene(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
     
     def execute(self, context):
-        clean_scene()
+        jujuLib.clean_scene()
         return {'FINISHED'}
 
 
