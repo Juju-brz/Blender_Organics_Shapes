@@ -16,7 +16,7 @@ import os
 
 blend_path = bpy.data.filepath
 if not blend_path:
-    print("ERREUR : Le fichier .blend n'est pas enregistré ! Enregistrez-le dans le même dossier que jujuLib.py.")
+    print("ERREUR : Le fichier .blend n'est pas enregistré ! Enregistrez-le dans le même dossier que juju.py.")
     sys.exit()
 
 
@@ -30,14 +30,14 @@ if script_dir not in sys.path:
 
 
 
-if "jujuLib.py" in os.listdir(script_dir):
+if "juju.py" in os.listdir(script_dir):
 
 else:
     print("ERROR")
 
 
 try:
-    import jujuLib
+    import juju
 
 except ModuleNotFoundError:
     print("ERROR")
@@ -84,7 +84,7 @@ class Create_Cube(bpy.types.Operator):
     
     def execute(self, context):
         
-        jujuLib.create_cube_vox()
+        juju.create_cube_vox()
         return {'FINISHED'}
 
 class Create_Sphere(bpy.types.Operator):
@@ -94,7 +94,7 @@ class Create_Sphere(bpy.types.Operator):
     
     def execute(self, context):
         
-        jujuLib.create_sphere_vox()
+        juju.create_sphere_vox()
         return {'FINISHED'}
     
     
@@ -105,7 +105,7 @@ class mesh_to_Volume(bpy.types.Operator):
     
     def execute(self, context):
         
-        jujuLib.mesh_to_volume()
+        juju.mesh_to_volume()
         return {'FINISHED'}
 
 
@@ -116,7 +116,7 @@ class hide_mesh(bpy.types.Operator):
     
     def execute(self, context):
         #props = context.scene.voxel_terrain_props
-        jujuLib.toggle_mesh_visibility()
+        juju.toggle_mesh_visibility()
         return {'FINISHED'}
 
 
@@ -126,7 +126,7 @@ class volume_to_Mesh(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
     
     def execute(self, context):
-        jujuLib.volume_to_mesh()
+        juju.volume_to_mesh()
         return {'FINISHED'}
 
 class clean_scene(bpy.types.Operator):
@@ -135,7 +135,7 @@ class clean_scene(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
     
     def execute(self, context):
-        jujuLib.clean_scene()
+        juju.clean_scene()
         return {'FINISHED'}
 
 class create_simulation_node(bpy.types.Operator):
@@ -144,7 +144,7 @@ class create_simulation_node(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        jujuLib.simulation_node()
+        juju.simulation_node()
         return {'FINISHED'}
 
 ### GEOMETRY CLASS  END ###
