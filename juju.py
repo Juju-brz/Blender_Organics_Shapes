@@ -103,6 +103,7 @@ def volume_to_mesh():
 
     bpy.context.object.modifiers["Volume to Mesh"].object = vol_to_convert
     bpy.ops.object.modifier_apply(modifier="Volume to Mesh")
+    subdivision_mesh()
 
 def simulation_node():
     bpy.context.area.ui_type = 'GeometryNodeTree'
@@ -113,5 +114,7 @@ def simulation_node():
 
 
 
-
+def subdivision_mesh():
+    obj = bpy.ops.object.modifier_add(type='SUBSURF')
+    obj = bpy.context.object.modifiers["Subdivision"].levels = 3
 

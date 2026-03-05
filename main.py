@@ -149,6 +149,15 @@ class create_simulation_node(bpy.types.Operator):
         juju.simulation_node()
         return {'FINISHED'}
 
+class subdivision_mesh(bpy.types.Operator):
+    bl_idname = "object.subdivision_mesh"
+    bl_label = "subdivision_mesh"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        juju.subdivision_mesh()
+        return {'FINISHED'}
+
 ### GEOMETRY CLASS  END ###
 
 ## Voxel ##
@@ -192,7 +201,9 @@ class VIEW3D_PT_VoxelTerrainGeneration(bpy.types.Panel):
         layout.operator("object.hide_mesh", text="hide / unhide mesh")
         layout.label(text='Select volume')
         layout.operator("object.volume_to_mesh", text="volume to Mesh")
+        layout.operator("object.subdivision_mesh", text="Subdivision_mesh")
         layout.operator("object.create_simulation_node", text="create_simulation_node")
+
 
         #layout.label(text='truc')
         #object.volume_to_mesh
@@ -216,6 +227,8 @@ def register():
     bpy.utils.register_class(clean_scene)
     bpy.utils.register_class(create_simulation_node)
     bpy.types.Scene.voxel_terrain_props = bpy.props.PointerProperty(type=VoxelTerrainProperties)
+    bpy.utils.register_class(subdivision_mesh)
+
 
 def unregister():
     del bpy.types.Scene.voxel_terrain_props
@@ -230,6 +243,7 @@ def unregister():
     bpy.utils.unregister_class(hide_mesh)
     bpy.utils.unregister_class(clean_scene)
     bpy.utils.unregister_class(create_simulation_node)
+    bpy.utils.unregister_class(subdivision_mesh)
 
 if __name__ == "__main__":
     register()

@@ -1,7 +1,7 @@
 #juju
 
 import bpy
-from . import main 
+from . import main
 
 def register():
     main.register()
