@@ -13,18 +13,20 @@ import sys
 import os
 
 ### IMPORTATION TO LIB THANKS TO MISTRAL AI ###
-
-blend_path = bpy.data.filepath
-if not blend_path:
-    print("ERREUR : Le fichier .blend n'est pas enregistré ! Enregistrez-le dans le même dossier que juju.py.")
-    sys.exit()
+def truc():
+    blend_path = bpy.data.filepath
 
 
-script_dir = os.path.dirname(blend_path)
-print("Dossier du fichier .blend :", script_dir)
+    if not blend_path:
+        print("ERREUR : Le fichier .blend n'est pas enregistré ! Enregistrez-le dans le même dossier que juju.py.")
+        sys.exit()
 
-if script_dir not in sys.path:
-    sys.path.append(script_dir)
+
+    script_dir = os.path.dirname(blend_path)
+    print("Dossier du fichier .blend :", script_dir)
+
+    if script_dir not in sys.path:
+        sys.path.append(script_dir)
 
 
 
@@ -228,7 +230,7 @@ def register():
     bpy.utils.register_class(create_simulation_node)
     bpy.types.Scene.voxel_terrain_props = bpy.props.PointerProperty(type=VoxelTerrainProperties)
     bpy.utils.register_class(subdivision_mesh)
-
+    script_dir = truc()
 
 def unregister():
     del bpy.types.Scene.voxel_terrain_props

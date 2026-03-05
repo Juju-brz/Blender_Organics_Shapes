@@ -1,7 +1,9 @@
 import bpy
 
 obj = bpy.context.active_object
+blend_path = bpy.data.filepath
 
+locator_position = [0, 0, 0]
 ## CLEAN ##
 def clean_scene():
     bpy.ops.object.select_all(action='SELECT')
