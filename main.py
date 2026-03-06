@@ -13,20 +13,20 @@ import sys
 import os
 
 ### IMPORTATION TO LIB THANKS TO MISTRAL AI ###
-def truc():
-    blend_path = bpy.data.filepath
+#def truc():
+blend_path = bpy.data.filepath
 
 
-    if not blend_path:
-        print("ERREUR : Le fichier .blend n'est pas enregistré ! Enregistrez-le dans le même dossier que juju.py.")
-        sys.exit()
+if not blend_path:
+    print("ERREUR : Le fichier .blend n'est pas enregistré ! Enregistrez-le dans le même dossier que juju.py.")
+    sys.exit()
 
 
-    script_dir = os.path.dirname(blend_path)
-    print("Dossier du fichier .blend :", script_dir)
+script_dir = os.path.dirname(blend_path)
+print("Dossier du fichier .blend :", script_dir)
 
-    if script_dir not in sys.path:
-        sys.path.append(script_dir)
+if script_dir not in sys.path:
+    sys.path.append(script_dir)
 
 
 
@@ -55,6 +55,8 @@ except ModuleNotFoundError:
 
 obj = bpy.context.active_object
 
+
+
 ### CLASS ###
 class OBJECT_OT_create_ground(bpy.types.Operator):
     bl_idname = "object.create_ground"
@@ -65,7 +67,7 @@ class OBJECT_OT_create_ground(bpy.types.Operator):
     def execute(self, context):
         props = context.scene.voxel_terrain_props
         ground_num = int(props.ground_num_slider)
-        ground_generation(ground_num)
+        juju.ground_generation(ground_num)
         return {'FINISHED'}
 
 
@@ -175,6 +177,26 @@ class Convert_Voxel(bpy.types.Operator):
         return {'FINISHED'}
 
 
+### CURVES ###
+class draw_curve(bpy.types.Operator):
+    bl_idname = "object.draw_curve"
+    bl_label = "draw_curve"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        juju.draw_curve()
+        return {'FINISHED'}
+
+class create_leaf(bpy.types.Operator):
+    bl_idname = "object.create_leaf"
+    bl_label = "create_leaf"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        juju.create_leaf()
+        return {'FINISHED'}
+
+
 ### UI BEGIN ###
 
 class VIEW3D_PT_VoxelTerrainGeneration(bpy.types.Panel):
@@ -206,6 +228,11 @@ class VIEW3D_PT_VoxelTerrainGeneration(bpy.types.Panel):
         layout.operator("object.subdivision_mesh", text="Subdivision_mesh")
         layout.operator("object.create_simulation_node", text="create_simulation_node")
 
+        layout.label(text='Curve')
+        layout.operator("object.draw_curve", text="Draw Curve")
+        layout.operator("object.create_leaf", text="Draw leaf")
+
+
 
         #layout.label(text='truc')
         #object.volume_to_mesh
@@ -230,7 +257,11 @@ def register():
     bpy.utils.register_class(create_simulation_node)
     bpy.types.Scene.voxel_terrain_props = bpy.props.PointerProperty(type=VoxelTerrainProperties)
     bpy.utils.register_class(subdivision_mesh)
-    script_dir = truc()
+    bpy.utils.register_class(draw_curve)
+    bpy.utils.register_class(create_leaf)
+    create_leaf
+    draw_curve
+    #script_dir = truc()
 
 def unregister():
     del bpy.types.Scene.voxel_terrain_props
@@ -246,6 +277,8 @@ def unregister():
     bpy.utils.unregister_class(clean_scene)
     bpy.utils.unregister_class(create_simulation_node)
     bpy.utils.unregister_class(subdivision_mesh)
+    bpy.utils.unregister_class(draw_curve)
+    bpy.utils.unregister_class(create_leaf)
 
 if __name__ == "__main__":
     register()

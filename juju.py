@@ -109,10 +109,20 @@ def volume_to_mesh():
 
 def simulation_node():
     bpy.context.area.ui_type = 'GeometryNodeTree'
+    screen = bpy.context.window.screen
+
+    #viewport = next(area for area in screen.areas if area.type == 'VIEW_3D')
+
+
+    #with bpy.context.temp_override(area=viewport):
+        #bpy.ops.screen.area_split(direction='VERTICAL', factor=0.5)
+
+
+    #screen.areas[0].type = 'NODE_EDITOR'
     bpy.ops.node.new_geometry_nodes_modifier()
     #bpy.ops.node.add_zone(use_transform=True, input_node_type="GeometryNodeSimulationInput", output_node_type="GeometryNodeSimulationOutput", add_default_geometry_link=True)
     bpy.data.node_groups["Geometry Nodes"].name = "Simulation Nodes"
-    bpy.ops.node.add_node(settings=[{"name":"node_tree", "value":"bpy.data.node_groups['Simulation Nodes']"}, {"name":"width", "value":"140"}, {"name":"name", "value":"'Simulation Nodes'"}], use_transform=True, type="GeometryNodeGroup")
+    #bpy.ops.node.add_node(settings=[{"name":"node_tree", "value":"bpy.data.node_groups['Simulation Nodes']"}, {"name":"width", "value":"140"}, {"name":"name", "value":"'Simulation Nodes'"}], use_transform=True, type="GeometryNodeGroup")
 
 
 
@@ -120,3 +130,34 @@ def subdivision_mesh():
     obj = bpy.ops.object.modifier_add(type='SUBSURF')
     obj = bpy.context.object.modifiers["Subdivision"].levels = 3
 
+curve = 0
+def draw_curve():
+    bpy.ops.curve.primitive_bezier_curve_add(enter_editmode=False, align='WORLD', location=(0, 0, 0), scale=(1, 1, 1))
+    obj = bpy.ops.object.editmode_toggle()
+    obj = bpy.ops.curve.delete(type='VERT')
+    #obj.name = "plant"
+    curve = obj
+    bpy.ops.wm.tool_set_by_id(name="builtin.craw")
+
+def create_leaf():
+    create_leaf_shape()
+    bpy.ops.object.modifier_add_node_group(asset_library_type='ESSENTIALS', asset_library_identifier="", relative_asset_identifier="nodes/geometry_nodes_essentials.blend/NodeTree/Array")
+    #bpy.context.object.modifiers["Array"]["Socket_2"] = 'Curve'
+    bpy.context.object.modifiers["Array"]["Socket_2"] = 2
+    #bpy.context.object.modifiers["Array"]["Socket_33"] = 'Distance'
+    bpy.context.object.modifiers["Array"]["Socket_33"] = 1
+    bpy.context.object.modifiers["Array"]["Socket_27"] = bpy.data.objects[curve]
+    bpy.context.object.modifiers["Array"]["Socket_17"] = True
+    bpy.context.object.modifiers["Array"]["Socket_15"][0] = 50.
+    bpy.context.object.modifiers["Array"]["Socket_15"][1] = 50.
+    bpy.context.object.modifiers["Array"]["Socket_15"][2] = 50.
+
+
+
+def create_leaf_shape():
+    bpy.ops.mesh.primitive_plane_add(enter_editmode=False, align='WORLD', location=(0, 0, 0), scale=(0.3, 0.3, 0.3))
+    obj = bpy.context.object.scale[1] = 0.3
+    obj = bpy.context.object.scale[2] = 0.3
+    obj = bpy.context.object.scale[0] = 0.3
+
+    obj =  bpy.ops.object.transforms_to_deltas(mode='ALL')
