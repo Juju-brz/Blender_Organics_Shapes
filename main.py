@@ -5,7 +5,7 @@ bl_info = {
     "name": "Voxel & Volume",
     "blender": (5, 0, 1),
     "category": "Object",
-    "version": (0, 0, 2, 0)
+    "version": (0, 1, 2, 0)
 }
 
 import bpy
@@ -84,7 +84,7 @@ class VoxelTerrainProperties(bpy.types.PropertyGroup):
 
 ### GEOMETRY CLASS BEGIN ###
 
-class Create_Cube(bpy.types.Operator):
+class MESH_OT_Create_Cube(bpy.types.Operator):
     bl_idname = "object.create_cube_voxel"
     bl_label = "create_cube_voxel"
     bl_options = {'REGISTER', 'UNDO'}
@@ -94,7 +94,7 @@ class Create_Cube(bpy.types.Operator):
         juju.create_cube_vox()
         return {'FINISHED'}
 
-class Create_Sphere(bpy.types.Operator):
+class MESH_OT_Create_Sphere(bpy.types.Operator):
     bl_idname = "object.create_sphere_voxel"
     bl_label = "create_sphere_voxel"
     bl_options = {'REGISTER', 'UNDO'}
@@ -116,7 +116,7 @@ class MESH_OT_mesh_to_Volume(bpy.types.Operator):
         return {'FINISHED'}
 
 
-class hide_mesh(bpy.types.Operator):
+class MESH_OT_hide_mesh(bpy.types.Operator):
     bl_idname = "object.hide_mesh"
     bl_label = "hide_mesh"
     bl_options = {'REGISTER', 'UNDO'}
@@ -243,12 +243,6 @@ class VIEW3D_PT_VoxelTerrainGeneration(bpy.types.Panel):
         layout.operator("object.create_leaf", text="Draw leaf")
         layout.operator("object.create_trunk", text="create_trunk")
 
-
-        #layout.label(text='truc')
-        #object.volume_to_mesh
-        #layout.operator
-        
-
 ### UI END ###
 
 
@@ -257,12 +251,12 @@ def register():
     bpy.utils.register_class(OBJECT_OT_create_ground)
     bpy.utils.register_class(VoxelTerrainProperties)
     bpy.utils.register_class(VIEW3D_PT_VoxelTerrainGeneration)
-    bpy.utils.register_class(Create_Cube)
-    bpy.utils.register_class(Create_Sphere)
+    bpy.utils.register_class(MESH_OT_Create_Cube)
+    bpy.utils.register_class(MESH_OT_Create_Sphere)
     bpy.utils.register_class(Convert_Voxel)
     bpy.utils.register_class(MESH_OT_mesh_to_Volume)
     bpy.utils.register_class(volume_to_Mesh)
-    bpy.utils.register_class(hide_mesh)
+    bpy.utils.register_class(MESH_OT_hide_mesh)
     bpy.utils.register_class(clean_scene)
     bpy.utils.register_class(create_simulation_node)
     bpy.types.Scene.voxel_terrain_props = bpy.props.PointerProperty(type=VoxelTerrainProperties)
@@ -276,13 +270,13 @@ def unregister():
     del bpy.types.Scene.voxel_terrain_props
     bpy.utils.unregister_class(VIEW3D_PT_VoxelTerrainGeneration)
     bpy.utils.unregister_class(VoxelTerrainProperties)
-    bpy.utils.unregister_class(Create_Cube)
-    bpy.utils.unregister_class(Create_Sphere)
+    bpy.utils.unregister_class(MESH_OT_Create_Cube)
+    bpy.utils.unregister_class(MESH_OT_Create_Sphere)
     bpy.utils.unregister_class(Convert_Voxel)
     bpy.utils.unregister_class(MESH_OT_mesh_to_Volume)
     bpy.utils.unregister_class(volume_to_Mesh)
     bpy.utils.unregister_class(OBJECT_OT_create_ground)
-    bpy.utils.unregister_class(hide_mesh)
+    bpy.utils.unregister_class(MESH_OT_hide_mesh)
     bpy.utils.unregister_class(clean_scene)
     bpy.utils.unregister_class(create_simulation_node)
     bpy.utils.unregister_class(subdivision_mesh)
