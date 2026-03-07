@@ -18,7 +18,7 @@ with bpy.data.libraries.load(lib_path, link=True)  as (data_src, data_dst):
 
 def create_trunk(node_tree_names: dict[typing.Callable, str]):
     #create node
-    geometry_nodes_002_1  = bpy.ops.node.new_geometry_nodes_modifier()
+    #geometry_nodes_002_1  = bpy.ops.node.new_geometry_nodes_modifier()
 
     """Initialize Geometry Nodes.002 node group"""
     geometry_nodes_002_1 = bpy.data.node_groups.new(type='GeometryNodeTree', name="create_trunk")

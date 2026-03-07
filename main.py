@@ -220,7 +220,7 @@ class create_bezier_curve(bpy.types.Operator):
 ### UI BEGIN ###
 
 class VIEW3D_PT_VoxelTerrainGeneration(bpy.types.Panel):
-    bl_label = "Organics Generation"
+    bl_label = "ORGANICS GENERATION"
     bl_idname = "VIEW3D_PT_Organics_Generation"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
@@ -230,7 +230,7 @@ class VIEW3D_PT_VoxelTerrainGeneration(bpy.types.Panel):
         layout = self.layout
         props = context.scene.voxel_terrain_props
         
-        
+        layout.operator("object.create_simulation_node", text="create_Geometry_node")
         layout.operator("object.clean_scene", text="Clean Scene (beta)")
         layout.label(text="Terrain Settings")
         layout.prop(props, "ground_num_slider", text="Grid Size")
@@ -239,19 +239,41 @@ class VIEW3D_PT_VoxelTerrainGeneration(bpy.types.Panel):
         layout.operator("object.create_cube_voxel", text="Generate cube")
         layout.operator("object.create_sphere_voxel", text="Generate sphere")
         layout.operator("object.convert_voxel", text="Convert to Voxel")
-        layout.label(text="VOLUME")
+        # layout.label(text='Create Plant')
+        # layout.operator("object.draw_curve", text="Draw Curve")
+        # layout.operator("object.create_leaf", text="Draw leaf")
+        # layout.operator("object.create_bezier_curve", text="create_bezier_curve")
+
+class VIEW3D_PT_VolumeGeneration(bpy.types.Panel):
+    bl_label = "VOLUME"
+    #bl_idname = "VIEW3D_PT_Organics_Generation"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'UI'
+    bl_category = "Organics Generation"
+
+    def draw(self, context):
+        layout = self.layout
+
         layout.label(text="Select Mesh")
         layout.operator("object.mesh_to_volume", text="mesh to Volume")
         layout.operator("object.hide_mesh", text="hide / unhide mesh")
         layout.label(text='Select volume')
         layout.operator("object.volume_to_mesh", text="volume to Mesh")
         layout.operator("object.subdivision_mesh", text="Subdivision_mesh")
-        layout.operator("object.create_simulation_node", text="create_simulation_node")
+
+class VIEW3D_PT_PlantGeneration(bpy.types.Panel):
+    bl_label = "PLANT GENERATOR"
+    #bl_idname = "VIEW3D_PT_Organics_Generation"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'UI'
+    bl_category = "Organics Generation"
+
+    def draw(self, context):
+        layout = self.layout
 
         layout.label(text='Create Plant')
         layout.operator("object.draw_curve", text="Draw Curve")
         layout.operator("object.create_leaf", text="Draw leaf")
-        layout.operator("object.create_trunk", text="create_trunk")
         layout.operator("object.create_bezier_curve", text="create_bezier_curve")
 
 class NODE_OT_juju_operator(bpy.types.Operator):
@@ -292,6 +314,8 @@ class NODE_PT_juju_panel(bpy.types.Panel):
 
         # Bouton qui lance l'operator
         layout.operator("node.juju_operator", text="Create Nodes", icon='ADD')
+        layout.label(text = "CURVES")
+        layout.operator("object.create_trunk", text="create_trunk")
 
 
 ### UI END ###
@@ -304,9 +328,12 @@ classes = [
 ]
 
 def register():
+    bpy.utils.register_class(VIEW3D_PT_VoxelTerrainGeneration)
+    bpy.utils.register_class(VIEW3D_PT_VolumeGeneration)
+    bpy.utils.register_class(VIEW3D_PT_PlantGeneration)
     bpy.utils.register_class(OBJECT_OT_create_ground)
     bpy.utils.register_class(VoxelTerrainProperties)
-    bpy.utils.register_class(VIEW3D_PT_VoxelTerrainGeneration)
+
     bpy.utils.register_class(MESH_OT_Create_Cube)
     bpy.utils.register_class(MESH_OT_Create_Sphere)
     bpy.utils.register_class(Convert_Voxel)
