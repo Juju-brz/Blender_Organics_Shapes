@@ -170,7 +170,7 @@ def curve_test():
     val1 = 1.0
     old_value = 1.0
     #bpy.ops.curve.extrude_move(CURVE_OT_extrude={"mode":'TRANSLATION'}, TRANSFORM_OT_translate={"value":(-0.554322, -0.620455, 0.0231373)})
-    for i in range(8):
+    for i in range(4):
         bpy.ops.curve.extrude_move(CURVE_OT_extrude={"mode":'TRANSLATION'}, TRANSFORM_OT_translate={"value":(val0, val0, val0)})
         old_value = val0
         val0 += val1
@@ -178,8 +178,8 @@ def curve_test():
         val1 = old_value
         print(val0)
 
-def newfunc():
+def create_bezier_curve():
     bpy.ops.curve.primitive_bezier_curve_add(enter_editmode=False, align='WORLD', location=(0, 0, 0), scale=(1, 1, 1))
     bpy.ops.object.editmode_toggle()
-    bpy.ops.curve.delete(type='VERT')
-    bpy.ops.transform.translate(value=(-1, -0, -0))
+    #bpy.ops.curve.delete(type='VERT')
+    bpy.ops.transform.translate(value=(-1, 0, 0))

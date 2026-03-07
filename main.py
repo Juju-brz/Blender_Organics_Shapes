@@ -207,14 +207,24 @@ class NODE_OT_create_trunk(bpy.types.Operator):
         GeoNode.create_trunk(node_tree_names)
         return {'FINISHED'}
 
+class create_bezier_curve(bpy.types.Operator):
+    bl_idname = "object.create_bezier_curve"
+    bl_label = "create_bezier_curve"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        juju.create_bezier_curve()
+        return {'FINISHED'}
+
+
 ### UI BEGIN ###
 
 class VIEW3D_PT_VoxelTerrainGeneration(bpy.types.Panel):
-    bl_label = "Voxel & Volume Generation"
-    bl_idname = "VIEW3D_PT_Voxel_Terrain_Generation"
+    bl_label = "Organics Generation"
+    bl_idname = "VIEW3D_PT_Organics_Generation"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
-    bl_category = "Voxel Terrain"
+    bl_category = "Organics Generation"
     
     def draw(self, context):
         layout = self.layout
@@ -242,11 +252,57 @@ class VIEW3D_PT_VoxelTerrainGeneration(bpy.types.Panel):
         layout.operator("object.draw_curve", text="Draw Curve")
         layout.operator("object.create_leaf", text="Draw leaf")
         layout.operator("object.create_trunk", text="create_trunk")
+        layout.operator("object.create_bezier_curve", text="create_bezier_curve")
+
+class NODE_OT_juju_operator(bpy.types.Operator):
+    bl_idname = "node.juju_operator"
+    bl_label = "Créer Nodes"
+    bl_description = "Crée mon node group"
+
+    @classmethod
+    def poll(cls, context):
+        space = context.space_data
+        return space.type == 'NODE_EDITOR'
+
+    def execute(self, context):
+        # Ton code ici
+        print("✅ Operator exécuté !")
+        return {'FINISHED'}
+
+
+# --- PANEL ---
+class NODE_PT_juju_panel(bpy.types.Panel):
+    bl_label = "JujuLib"
+    bl_idname = "NODE_PT_juju_panel"
+    bl_space_type = 'NODE_EDITOR'
+    bl_region_type = 'UI'
+    bl_category = "JujuLib"
+
+    @classmethod
+    def poll(cls, context):
+
+        space = context.space_data
+        return space.type == 'NODE_EDITOR'
+
+    def draw(self, context):
+        layout = self.layout
+
+        layout.label(text="Mes Nodes :", icon='NODETREE')
+        layout.separator()
+
+        # Bouton qui lance l'operator
+        layout.operator("node.juju_operator", text="Créer Nodes", icon='ADD')
+
 
 ### UI END ###
 
 
 # REGISTER
+classes = [
+    NODE_OT_juju_operator,
+    NODE_PT_juju_panel,
+]
+
 def register():
     bpy.utils.register_class(OBJECT_OT_create_ground)
     bpy.utils.register_class(VoxelTerrainProperties)
@@ -263,8 +319,10 @@ def register():
     bpy.utils.register_class(subdivision_mesh)
     bpy.utils.register_class(draw_curve)
     bpy.utils.register_class(create_leaf)
-    bpy.utils.register_class(NODE_OT_create_trunk
-    #script_dir = truc()
+    bpy.utils.register_class(NODE_OT_create_trunk)
+    bpy.utils.register_class(create_bezier_curve)
+    for cls in classes:
+        bpy.utils.register_class(cls)
 
 def unregister():
     del bpy.types.Scene.voxel_terrain_props
@@ -282,7 +340,8 @@ def unregister():
     bpy.utils.unregister_class(subdivision_mesh)
     bpy.utils.unregister_class(draw_curve)
     bpy.utils.unregister_class(create_leaf)
-    bpy.utils.unregister_class(NODE_OT_create_trunk
+    bpy.utils.unregister_class(NODE_OT_create_trunk)
+    bpy.utils.unregister_class(create_bezier_curve)
 
 if __name__ == "__main__":
     register()
