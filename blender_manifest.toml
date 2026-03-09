@@ -1,13 +1,13 @@
-schema_version = "1.0.0"
+schema_version = "0.2.0"
 
-id = "voxel_generation" 
+id = "Blender_Organics_Shape" 
 version = "0.2.0"
-name = "Mon Addon"
+name = "Blender Organics Shape"
 tagline = "Add_on_blender" 
 maintainer = "juju"
 type = "add-on"
 
-blender_version_min = "4.2.0"
+blender_version_min = "5.0.0"
 
-license = ["SPDX:GPL-2.0-or-later"]
+license = ["SPDX:GPL-3.0-or-later"]
 
