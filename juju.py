@@ -1,4 +1,5 @@
 import bpy
+import math
 
 obj = bpy.context.active_object
 blend_path = bpy.data.filepath
@@ -183,3 +184,31 @@ def create_bezier_curve():
     bpy.ops.object.editmode_toggle()
     #bpy.ops.curve.delete(type='VERT')
     bpy.ops.transform.translate(value=(-1, 0, 0))
+
+def fib curve():
+    val0 = 1.0
+    val1 = 1.0
+    old_value = 1.0
+    angle = 0.0
+    angle_step = math.pi / 4
+
+    for i in range(8):
+
+        x = val0 * math.cos(angle)
+        y = val0 * math.sin(angle)
+        z = 0.1
+
+
+        bpy.ops.curve.extrude_move(
+            CURVE_OT_extrude={"mode": 'TRANSLATION'},
+            TRANSFORM_OT_translate={"value": (x, y, z)}
+        )
+
+
+        angle += angle_step
+
+
+        old_value = val0
+        val0 += val1
+        val1 = old_value
+        print(val0)

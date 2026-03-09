@@ -219,6 +219,7 @@ class create_bezier_curve(bpy.types.Operator):
 
 ### UI BEGIN ###
 
+### 3D PANEL ###
 class VIEW3D_PT_VoxelTerrainGeneration(bpy.types.Panel):
     bl_label = "ORGANICS GENERATION"
     bl_idname = "VIEW3D_PT_Organics_Generation"
@@ -276,10 +277,11 @@ class VIEW3D_PT_PlantGeneration(bpy.types.Panel):
         layout.operator("object.create_leaf", text="Draw leaf")
         layout.operator("object.create_bezier_curve", text="create_bezier_curve")
 
+### NODE PANEL ###
+
 class NODE_OT_juju_operator(bpy.types.Operator):
     bl_idname = "node.juju_operator"
-    bl_label = "Créer Nodes"
-    bl_description = "Crée mon node group"
+    bl_label = "juju_operator"
 
     @classmethod
     def poll(cls, context):
@@ -287,18 +289,16 @@ class NODE_OT_juju_operator(bpy.types.Operator):
         return space.type == 'NODE_EDITOR'
 
     def execute(self, context):
-        # Ton code ici
-        print("✅ Operator exécuté !")
         return {'FINISHED'}
 
 
-# --- PANEL ---
 class NODE_PT_juju_panel(bpy.types.Panel):
     bl_label = "JujuLib"
     bl_idname = "NODE_PT_juju_panel"
     bl_space_type = 'NODE_EDITOR'
     bl_region_type = 'UI'
-    bl_category = "JujuLib"
+    bl_category = "NODE_JujuLib"
+
 
     @classmethod
     def poll(cls, context):
@@ -331,6 +331,7 @@ def register():
     bpy.utils.register_class(VIEW3D_PT_VoxelTerrainGeneration)
     bpy.utils.register_class(VIEW3D_PT_VolumeGeneration)
     bpy.utils.register_class(VIEW3D_PT_PlantGeneration)
+
     bpy.utils.register_class(OBJECT_OT_create_ground)
     bpy.utils.register_class(VoxelTerrainProperties)
 
@@ -354,6 +355,9 @@ def register():
 def unregister():
     del bpy.types.Scene.voxel_terrain_props
     bpy.utils.unregister_class(VIEW3D_PT_VoxelTerrainGeneration)
+    bpy.utils.unregister_class(VIEW3D_PT_VolumeGeneration)
+    bpy.utils.unregister_class(VIEW3D_PT_PlantGeneration)
+
     bpy.utils.unregister_class(VoxelTerrainProperties)
     bpy.utils.unregister_class(MESH_OT_Create_Cube)
     bpy.utils.unregister_class(MESH_OT_Create_Sphere)
