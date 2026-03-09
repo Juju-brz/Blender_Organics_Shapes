@@ -1,10 +1,10 @@
 import bpy
 import math
 
-obj = bpy.context.active_object
-blend_path = bpy.data.filepath
+#obj = bpy.context.active_object
+#blend_path = bpy.data.filepath
 
-locator_position = [0, 0, 0]
+#locator_position = [0, 0, 0]
 ## CLEAN ##
 def clean_scene():
     bpy.ops.object.select_all(action='SELECT')
@@ -92,11 +92,13 @@ def new_collection(a, collection):
 
 
 def toggle_mesh_visibility():
+    obj = bpy.context.active_object
     obj = bpy.data.objects["mesh_volume"]
     obj.hide_viewport = not obj.hide_viewport
 
 
 def volume_to_mesh():
+    obj = bpy.context.active_object
     vol_to_convert = bpy.context.active_object
     bpy.ops.mesh.primitive_cube_add()
     obj = bpy.context.active_object
@@ -127,10 +129,11 @@ def simulation_node():
 
 
 def subdivision_mesh():
+    obj = bpy.context.active_object
     obj = bpy.ops.object.modifier_add(type='SUBSURF')
     obj = bpy.context.object.modifiers["Subdivision"].levels = 3
 
-curve = 0
+#curve = 0
 def draw_curve():
     bpy.ops.curve.primitive_bezier_curve_add(enter_editmode=False, align='WORLD', location=(0, 0, 0), scale=(1, 1, 1))
     obj = bpy.ops.object.editmode_toggle()
@@ -143,6 +146,8 @@ def draw_curve():
     #curve = obj
 
 def create_leaf(shapefunc):
+    obj = bpy.context.active_object
+    curve = obj
     #tree = obj
     shapefunc()
     bpy.ops.object.modifier_add_node_group(asset_library_type='ESSENTIALS', asset_library_identifier="", relative_asset_identifier="nodes/geometry_nodes_essentials.blend/NodeTree/Array")
@@ -157,6 +162,7 @@ def create_leaf(shapefunc):
     bpy.context.object.modifiers["Array"]["Socket_15"][2] = 140.
 
 def create_leaf_shape():
+    obj = bpy.context.active_object
     bpy.ops.mesh.primitive_plane_add(enter_editmode=False, align='WORLD', location=(0, 0, 0), scale=(0.3, 0.3, 0.3))
     obj = bpy.context.object.scale[1] = 0.3
     obj = bpy.context.object.scale[2] = 0.3
@@ -165,6 +171,7 @@ def create_leaf_shape():
     obj =  bpy.ops.object.transforms_to_deltas(mode='ALL')
 
 def create_spike_shape():
+    obj = bpy.context.active_object
     bpy.ops.mesh.primitive_cone_add()
     obj = bpy.context.object.scale[1] = 0.3
     obj = bpy.context.object.scale[2] = 0.3

@@ -5,7 +5,7 @@ import typing
 
 # Ok we will making group node for making like a libraries
 
-
+"""
 # Import node groups from Blender essentials library
 datafiles_path = bpy.utils.system_resource('DATAFILES')
 lib_relpath = "assets/nodes/geometry_nodes_essentials.blend"
@@ -15,7 +15,7 @@ with bpy.data.libraries.load(lib_path, link=True)  as (data_src, data_dst):
     if "Curve to Tube" in data_src.node_groups:
         data_dst.node_groups.append("Curve to Tube")
 
-
+"""
 def create_trunk(node_tree_names: dict[typing.Callable, str]):
     #create node
     #create_trunk  = bpy.ops.node.new_geometry_nodes_modifier()

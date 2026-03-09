@@ -6,45 +6,9 @@ juju Julien BROUZES
 import bpy
 import sys
 import os
+from . import juju
+from . import GeoNode
 
-### IMPORTATION TO LIB THANKS TO MISTRAL AI BEGIN ###
-#def truc():
-"""
-blend_path = bpy.data.filepath
-
-
-if not blend_path:
-    sys.exit()
-
-
-script_dir = os.path.dirname(blend_path)
-
-
-if script_dir not in sys.path:
-    sys.path.append(script_dir)
-
-
-
-
-addon_dir = os.path.dirname(os.path.abspath(__file__))
-
-if addon_dir not in sys.path:
-    sys.path.append(addon_dir)
-
-
-
-try:
-    import juju
-    import GeoNode
-
-except ModuleNotFoundError:
-    print("ERROR")
-
-"""
-### IMPORTATION TO LIB THANKS TO MISTRAL AI  END ###
-
-
-#obj = bpy.context.active_object
 
 
 
