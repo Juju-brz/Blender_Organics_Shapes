@@ -1,0 +1,13 @@
+schema_version = "0.2.0"
+
+id = "Blender_Organics_Shape" 
+version = "0.2.0"
+name = "Blender Organics Shape"
+tagline = "Add_on_blender" 
+maintainer = "juju"
+type = "add-on"
+
+blender_version_min = "5.0.0"
+
+license = ["SPDX:GPL-3.0-or-later"]
+
