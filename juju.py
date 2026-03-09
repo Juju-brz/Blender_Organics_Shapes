@@ -59,7 +59,6 @@ def volume_displacement():
     #mod.texture = tex
     #text = bpy.data.textures.new("VolumeTex", type='CLOUDS')
 
-
 def mesh_to_volume():
     volume_collection = bpy.data.collections.new("volume")
     bpy.context.scene.collection.children.link(volume_collection)
@@ -140,6 +139,9 @@ def draw_curve():
     curve = obj
     bpy.ops.wm.tool_set_by_id(name="builtin.draw")
 
+#def select_curve():
+    #curve = obj
+
 def create_leaf(shapefunc):
     #tree = obj
     shapefunc()
@@ -153,8 +155,6 @@ def create_leaf(shapefunc):
     bpy.context.object.modifiers["Array"]["Socket_15"][0] = 140.
     bpy.context.object.modifiers["Array"]["Socket_15"][1] = 140.
     bpy.context.object.modifiers["Array"]["Socket_15"][2] = 140.
-
-
 
 def create_leaf_shape():
     bpy.ops.mesh.primitive_plane_add(enter_editmode=False, align='WORLD', location=(0, 0, 0), scale=(0.3, 0.3, 0.3))

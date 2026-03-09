@@ -197,15 +197,16 @@ class create_leaf(bpy.types.Operator):
         juju.create_leaf(juju.create_leaf_shape)
         return {'FINISHED'}
 
-class NODE_OT_create_trunk(bpy.types.Operator):
-    bl_idname = "object.create_trunk"
-    bl_label = "create_trunk"
+class create_spike(bpy.types.Operator):
+    bl_idname = "object.create_spike_shape"
+    bl_label = "create_spike_shape"
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        node_tree_names : dict[typing.Callable, str] = {}
-        GeoNode.create_trunk(node_tree_names)
+        juju.create_leaf(juju.create_spike_shape)
         return {'FINISHED'}
+
+
 
 class create_bezier_curve(bpy.types.Operator):
     bl_idname = "object.create_bezier_curve"
@@ -216,6 +217,27 @@ class create_bezier_curve(bpy.types.Operator):
         juju.create_bezier_curve()
         return {'FINISHED'}
 
+### NODES ###
+class NODE_OT_create_trunk(bpy.types.Operator):
+    bl_idname = "object.create_trunk"
+    bl_label = "create_trunk"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        node_tree_names : dict[typing.Callable, str] = {}
+        GeoNode.create_trunk(node_tree_names)
+        return {'FINISHED'}
+
+
+class NODE_OT_volume_simulation(bpy.types.Operator):
+    bl_idname = "object.volume_simulation"
+    bl_label = "volume_simulation"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        node_tree_names : dict[typing.Callable, str] = {}
+        GeoNode.volume_simulation(node_tree_names)
+        return {'FINISHED'}
 
 ### UI BEGIN ###
 
@@ -240,10 +262,6 @@ class VIEW3D_PT_VoxelTerrainGeneration(bpy.types.Panel):
         layout.operator("object.create_cube_voxel", text="Generate cube")
         layout.operator("object.create_sphere_voxel", text="Generate sphere")
         layout.operator("object.convert_voxel", text="Convert to Voxel")
-        # layout.label(text='Create Plant')
-        # layout.operator("object.draw_curve", text="Draw Curve")
-        # layout.operator("object.create_leaf", text="Draw leaf")
-        # layout.operator("object.create_bezier_curve", text="create_bezier_curve")
 
 class VIEW3D_PT_VolumeGeneration(bpy.types.Panel):
     bl_label = "VOLUME"
@@ -276,6 +294,7 @@ class VIEW3D_PT_PlantGeneration(bpy.types.Panel):
         layout.operator("object.draw_curve", text="Draw Curve")
         layout.operator("object.create_leaf", text="Draw leaf")
         layout.operator("object.create_bezier_curve", text="create_bezier_curve")
+        layout.operator("object.create_spike_shape", text="create_spike")
 
 ### NODE PANEL ###
 
@@ -292,12 +311,13 @@ class NODE_OT_juju_operator(bpy.types.Operator):
         return {'FINISHED'}
 
 
+
 class NODE_PT_juju_panel(bpy.types.Panel):
-    bl_label = "JujuLib"
+    bl_label = "Organics Generation"
     bl_idname = "NODE_PT_juju_panel"
     bl_space_type = 'NODE_EDITOR'
     bl_region_type = 'UI'
-    bl_category = "NODE_JujuLib"
+    bl_category = "Organics Generation"
 
 
     @classmethod
@@ -316,6 +336,7 @@ class NODE_PT_juju_panel(bpy.types.Panel):
         layout.operator("node.juju_operator", text="Create Nodes", icon='ADD')
         layout.label(text = "CURVES")
         layout.operator("object.create_trunk", text="create_trunk")
+        layout.operator("object.volume_simulation", text="volume_simulation")
 
 
 ### UI END ###
@@ -349,6 +370,8 @@ def register():
     bpy.utils.register_class(create_leaf)
     bpy.utils.register_class(NODE_OT_create_trunk)
     bpy.utils.register_class(create_bezier_curve)
+    bpy.utils.register_class(create_spike)
+    bpy.utils.register_class(NODE_OT_volume_simulation)
     for cls in classes:
         bpy.utils.register_class(cls)
 
@@ -373,6 +396,8 @@ def unregister():
     bpy.utils.unregister_class(create_leaf)
     bpy.utils.unregister_class(NODE_OT_create_trunk)
     bpy.utils.unregister_class(create_bezier_curve)
+    bpy.utils.unregister_class(create_spike)
+    bpy.utils.unregister_class(NODE_OT_volume_simulation)
 
 if __name__ == "__main__":
     register()
