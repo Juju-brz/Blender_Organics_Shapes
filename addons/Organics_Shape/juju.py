@@ -110,11 +110,19 @@ def create_leaf(shapefunc):
     bpy.context.object.modifiers["Array"]["Socket_2"] = 2 #SHAPE
     #bpy.context.object.modifiers["Array"]["Socket_33"] = 'Distance'
     bpy.context.object.modifiers["Array"]["Socket_33"] = 0 #COUNT METHOD
-    bpy.context.object.modifiers["Array"]["Socket_27"] = bpy.data.objects["curve"] #tree
+    bpy.context.object.modifiers["Array"]["Socket_5"] = 79
+    bpy.context.object.modifiers["Array"]["Socket_27"] = curve
     bpy.context.object.modifiers["Array"]["Socket_17"] = True
     bpy.context.object.modifiers["Array"]["Socket_15"][0] = 140.
     bpy.context.object.modifiers["Array"]["Socket_15"][1] = 140.
     bpy.context.object.modifiers["Array"]["Socket_15"][2] = 140.
+    #create_leaf_shape()
+    # bpy.ops.mesh.primitive_plane_add(enter_editmode=False, align='WORLD', location=(0, 0, 0), scale=(0.3, 0.3, 0.3))
+    # obj = bpy.context.object.scale[1] = 0.3
+    # obj = bpy.context.object.scale[2] = 0.3
+    # obj = bpy.context.object.scale[0] = 0.3
+    #
+    # obj =  bpy.ops.object.transforms_to_deltas(mode='ALL')
 
 def create_leaf_shape():
     obj = bpy.context.active_object
