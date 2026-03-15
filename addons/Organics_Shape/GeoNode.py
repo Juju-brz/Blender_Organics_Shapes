@@ -296,15 +296,6 @@ def volume_simulation(node_tree_names: dict[typing.Callable, str]):
 
     return volume_simulation
 
-"""
-if __name__ == "__main__":
-    # Maps node tree creation functions to the node tree
-    # name, such that we don't recreate node trees unnecessarily
-    node_tree_names : dict[typing.Callable, str] = {}
-
-    volume_simulation = volume_simulation_node_group(node_tree_names)
-    node_tree_names[volume_simulation_node_group] = volume_simulation.name
-"""
 
 
 if __name__ == "__main__":
@@ -323,5 +314,5 @@ if __name__ == "__main__":
         print("not object found")
     else:
         mod = obj.modifiers.new("Curve to Tube", type='NODES')
-        mod.node_group = geometry_nodes_002
+        mod.node_group = create_trunk
 
