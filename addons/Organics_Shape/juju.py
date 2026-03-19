@@ -1,3 +1,9 @@
+"""
+juju Julien BROUZES
+https://github.com/Juju-brz
+"""
+
+
 import bpy
 import math
 
@@ -188,4 +194,16 @@ def fib_curve():
         val1 = old_value
         print(val0)
 
+def subdivid_curve():
+    bpy.ops.object.editmode_toggle()
+    bpy.ops.curve.select_all(action='SELECT')
+    bpy.ops.curve.subdivide()
+    bpy.ops.object.editmode_toggle()
+
+
 ### PLANT END ###
+
+"""
+juju Julien BROUZES
+https://github.com/Juju-brz
+"""

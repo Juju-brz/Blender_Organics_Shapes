@@ -1,7 +1,7 @@
 """
 juju Julien BROUZES
+https://github.com/Juju-brz
 """
-
 
 import bpy
 import sys
@@ -146,6 +146,24 @@ class curve_test(bpy.types.Operator):
         juju.curve_test()
         return {'FINISHED'}
 
+class subdivid_curve(bpy.types.Operator):
+    bl_idname = "object.subdivid_curve"
+    bl_label = "subdivid_curve"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        juju.subdivid_curve()
+        return {'FINISHED'}
+
+class fib_curve(bpy.types.Operator):
+    bl_idname = "object.fib_curve"
+    bl_label = "fib_curve"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        juju.fib_curve()
+        return {'FINISHED'}
+
 ### PLANT GENERATOR  END ###
 
 ### NODES  CLASS BEGIN ###
@@ -244,8 +262,10 @@ class VIEW3D_PT_PlantGeneration(bpy.types.Panel):
         layout.operator("object.create_leaf", text="Draw leaf")
         layout.operator("object.create_bezier_curve", text="create_bezier_curve")
         layout.operator("object.create_spike_shape", text="create_spike")
-        layout.label(text="Selection Vertice of Curve on Edit Mode")
+        layout.operator("object.subdivid_curve", text="subdivid_curve")
+        layout.label(text="Select Vertice of Curve on Edit Mode")
         layout.operator("object.curve_test", text="curve test")
+        layout.operator("object.fib_curve", text="fib curve")
 
 
 ### 3D PANEL END ###
@@ -268,7 +288,7 @@ class NODE_OT_juju_operator(bpy.types.Operator):
 
 
 class NODE_PT_Organics_Generation(bpy.types.Panel):
-    bl_label = "Organics Generation"
+    bl_label = "ORGANICS GENERATION"
     bl_idname = "NODE_PT_Organics_Generation"
     bl_space_type = 'NODE_EDITOR'
     bl_region_type = 'UI'
@@ -284,19 +304,11 @@ class NODE_PT_Organics_Generation(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
 
-        #layout.label(text="My Nodes :", icon='NODETREE')
-        #layout.separator()
-
-        #layout.operator("node.juju_operator", text="Create Nodes", icon='ADD')
-        #layout.label(text = "CURVES")
-        #layout.operator("object.create_trunk", text="create_trunk")
-
         layout.operator("object.create_geometry_node", text="create geometry node")
-        # layout.operator("object.volume_simulation", text="volume_simulation")
-        # layout.operator("object.grid_volume" , text="create volume grid")
+
 
 class NODE_PT_Plant_Generator(bpy.types.Panel):
-    bl_label = "Plant Generator"
+    bl_label = "PLANT GENERATOR"
     bl_idname = "NODE_PT_Plant_Generator"
     bl_space_type = 'NODE_EDITOR'
     bl_region_type = 'UI'
@@ -312,14 +324,11 @@ class NODE_PT_Plant_Generator(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
 
-        #layout.label(text="My Nodes :", icon='NODETREE')
-        #layout.separator()
-
         layout.operator("object.create_trunk", text="create_trunk")
         layout.operator("object.sprinkle", text="Spinkle")
 
 class NODE_PT_Volume(bpy.types.Panel):
-    bl_label = "Volume"
+    bl_label = "VOLUME"
     bl_idname = "NODE_PT_Volume"
     bl_space_type = 'NODE_EDITOR'
     bl_region_type = 'UI'
@@ -336,7 +345,7 @@ class NODE_PT_Volume(bpy.types.Panel):
         layout = self.layout
 
         layout.operator("object.volume_simulation", text="volume_simulation")
-        layout.operator("object.grid_volume" , text="create volume grid")
+        layout.operator("object.grid_volume" , text="grid volume")
 
 
 ### NODE PANEL END ###
@@ -356,18 +365,15 @@ def register():
     bpy.utils.register_class(VIEW3D_PT_Volume_Generation)
     bpy.utils.register_class(VIEW3D_PT_PlantGeneration)
     bpy.utils.register_class(NODE_PT_Organics_Generation)
-    bpy.utils.register_class(NODE_PT_Plant_Generator)
     bpy.utils.register_class(NODE_PT_Volume)
+    bpy.utils.register_class(NODE_PT_Plant_Generator)
 
-    #bpy.utils.register_class(VoxelTerrainProperties)
-    #bpy.types.Scene.voxel_terrain_props = bpy.props.PointerProperty(type=VoxelTerrainProperties)
 
     bpy.utils.register_class(create_geometry_node)
     ## VOLUME ##
     bpy.utils.register_class(MESH_OT_mesh_to_Volume)
     bpy.utils.register_class(volume_to_Mesh)
     bpy.utils.register_class(MESH_OT_hide_mesh)
-    #bpy.utils.register_class(clean_scene)
     bpy.utils.register_class(MESH_OT_subdivision_mesh)
     bpy.utils.register_class(NODE_OT_Grid_Volume)
 
@@ -380,6 +386,8 @@ def register():
     bpy.utils.register_class(NODE_OT_volume_simulation)
     bpy.utils.register_class(NODE_OT_sprinkle)
     bpy.utils.register_class(curve_test)
+    bpy.utils.register_class(subdivid_curve)
+    bpy.utils.register_class(fib_curve)
 
     for cls in classes:
         bpy.utils.register_class(cls)
@@ -394,17 +402,15 @@ def unregister():
     bpy.utils.unregister_class(VIEW3D_PT_Volume_Generation)
     bpy.utils.unregister_class(VIEW3D_PT_PlantGeneration)
     bpy.utils.unregister_class(NODE_PT_Organics_Generation)
-    bpy.utils.unregister_class(NODE_PT_Plant_Generator)
     bpy.utils.unregister_class(NODE_PT_Volume)
+    bpy.utils.unregister_class(NODE_PT_Plant_Generator)
 
     bpy.utils.unregister_class(create_geometry_node)
 
     ## VOLUME ##
     bpy.utils.unregister_class(MESH_OT_mesh_to_Volume)
     bpy.utils.unregister_class(volume_to_Mesh)
-    bpy.utils.unregister_class(OBJECT_OT_create_ground)
     bpy.utils.unregister_class(MESH_OT_hide_mesh)
-    bpy.utils.unregister_class(clean_scene)
     bpy.utils.unregister_class(MESH_OT_subdivision_mesh)
     bpy.utils.register_class(NODE_OT_Grid_Volume)
 
@@ -417,7 +423,8 @@ def unregister():
     bpy.utils.unregister_class(NODE_OT_volume_simulation)
     bpy.utils.unregister_class(NODE_OT_sprinkle)
     bpy.utils.unregister_class(curve_test)
-
+    bpy.utils.unregister_class(subdivid_curve)
+    bpy.utils.unregister_class(fib_curve)
 
 if __name__ == "__main__":
     register()
@@ -426,4 +433,5 @@ if __name__ == "__main__":
 
 """
 juju Julien BROUZES
+https://github.com/Juju-brz
 """

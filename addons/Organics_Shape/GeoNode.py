@@ -1,3 +1,8 @@
+"""
+juju Julien BROUZES
+https://github.com/Juju-brz
+"""
+
 import bpy
 import mathutils
 import os
@@ -5,17 +10,7 @@ import typing
 
 # Ok we will making group node for making like a libraries
 
-"""
-# Import node groups from Blender essentials library
-datafiles_path = bpy.utils.system_resource('DATAFILES')
-lib_relpath = "assets/nodes/geometry_nodes_essentials.blend"
-lib_path = os.path.join(datafiles_path, lib_relpath)
-with bpy.data.libraries.load(lib_path, link=True)  as (data_src, data_dst):
-    data_dst.node_groups = []
-    if "Curve to Tube" in data_src.node_groups:
-        data_dst.node_groups.append("Curve to Tube")
 
-"""
 def load_essential_node_groups():
 
     required_node_groups = ["Curve to Tube"]
@@ -639,3 +634,8 @@ if __name__ == "__main__":
     #     mod = obj.modifiers.new("Curve to Tube", type='NODES')
     #     mod.node_group = create_trunk
 
+
+"""
+juju Julien BROUZES
+https://github.com/Juju-brz
+"""
