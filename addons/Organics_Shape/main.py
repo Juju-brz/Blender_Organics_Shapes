@@ -225,6 +225,7 @@ class NODE_OT_Grid_Volume(bpy.types.Operator):
 
 
 ### 3D PANEL BEGIN ###
+
 class VIEW3D_PT_Organics_Generation(bpy.types.Panel):
     bl_label = "ORGANICS GENERATION"
     bl_idname = "VIEW3D_PT_Organics_Generation"
@@ -237,7 +238,6 @@ class VIEW3D_PT_Organics_Generation(bpy.types.Panel):
 
         layout.label(text="by juju")
         layout.operator("object.create_geometry_node", text="create_Geometry_node")
-
 
 class VIEW3D_PT_Volume_Generation(bpy.types.Panel):
     bl_label = "VOLUME"
@@ -296,7 +296,6 @@ class NODE_OT_juju_operator(bpy.types.Operator):
 
     def execute(self, context):
         return {'FINISHED'}
-
 
 
 class NODE_PT_Organics_Generation(bpy.types.Panel):

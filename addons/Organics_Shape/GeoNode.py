@@ -615,6 +615,7 @@ def arc_curve_1_node_group(node_tree_names: dict[typing.Callable, str]):
     """Initialize Arc Curve node group"""
     arc_curve_1 = bpy.data.node_groups.new(type='GeometryNodeTree', name="Arc Curve")
 
+
     arc_curve_1.color_tag = 'NONE'
     arc_curve_1.description = ""
     arc_curve_1.default_group_node_width = 140

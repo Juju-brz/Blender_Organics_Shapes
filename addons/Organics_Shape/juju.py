@@ -206,7 +206,9 @@ def procedural_arc_curve():
     bpy.ops.curve.primitive_bezier_curve_add()
     obj = bpy.context.active_object
     obj.name = "ArcCurve"
+
     create_geometry_node()
+
 
     node_tree_names : dict[typing.Callable, str] = {}
     GeoNode.arc_curve_1_node_group(node_tree_names)
