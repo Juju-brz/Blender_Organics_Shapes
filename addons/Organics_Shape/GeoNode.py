@@ -611,6 +611,84 @@ def grid_volume_1_node_group(node_tree_names: dict[typing.Callable, str]):
 
     return grid_volume_1
 
+def arc_curve_1_node_group(node_tree_names: dict[typing.Callable, str]):
+    """Initialize Arc Curve node group"""
+    arc_curve_1 = bpy.data.node_groups.new(type='GeometryNodeTree', name="Arc Curve")
+
+    arc_curve_1.color_tag = 'NONE'
+    arc_curve_1.description = ""
+    arc_curve_1.default_group_node_width = 140
+    arc_curve_1.is_modifier = True
+    arc_curve_1.show_modifier_manage_panel = True
+
+    # arc_curve_1 interface
+
+    # Socket Geometry
+    geometry_socket = arc_curve_1.interface.new_socket(name="Geometry", in_out='OUTPUT', socket_type='NodeSocketGeometry')
+    geometry_socket.attribute_domain = 'POINT'
+    geometry_socket.default_input = 'VALUE'
+    geometry_socket.structure_type = 'AUTO'
+
+    # Socket Geometry
+    geometry_socket_1 = arc_curve_1.interface.new_socket(name="Geometry", in_out='INPUT', socket_type='NodeSocketGeometry')
+    geometry_socket_1.attribute_domain = 'POINT'
+    geometry_socket_1.default_input = 'VALUE'
+    geometry_socket_1.structure_type = 'AUTO'
+
+    # Initialize arc_curve_1 nodes
+
+    # Node Group Input
+    group_input = arc_curve_1.nodes.new("NodeGroupInput")
+    group_input.name = "Group Input"
+
+    # Node Group Output
+    group_output = arc_curve_1.nodes.new("NodeGroupOutput")
+    group_output.name = "Group Output"
+    group_output.is_active_output = True
+
+    # Node Arc
+    arc = arc_curve_1.nodes.new("GeometryNodeCurveArc")
+    arc.name = "Arc"
+    arc.mode = 'RADIUS'
+    # Resolution
+    arc.inputs[0].default_value = 16
+    # Radius
+    arc.inputs[4].default_value = 1.0
+    # Start Angle
+    arc.inputs[5].default_value = 0.0
+    # Sweep Angle
+    arc.inputs[6].default_value = 5.497786998748779
+    # Connect Center
+    arc.inputs[8].default_value = False
+    # Invert Arc
+    arc.inputs[9].default_value = False
+
+    # Set locations
+    arc_curve_1.nodes["Group Input"].location = (-406.947998046875, 77.57366943359375)
+    arc_curve_1.nodes["Group Output"].location = (200.0, 0.0)
+    arc_curve_1.nodes["Arc"].location = (-110.00819396972656, -69.62760162353516)
+
+    # Set dimensions
+    arc_curve_1.nodes["Group Input"].width  = 140.0
+    arc_curve_1.nodes["Group Input"].height = 100.0
+
+    arc_curve_1.nodes["Group Output"].width  = 140.0
+    arc_curve_1.nodes["Group Output"].height = 100.0
+
+    arc_curve_1.nodes["Arc"].width  = 140.0
+    arc_curve_1.nodes["Arc"].height = 100.0
+
+
+    # Initialize arc_curve_1 links
+
+    # arc.Curve -> group_output.Geometry
+    arc_curve_1.links.new(
+        arc_curve_1.nodes["Arc"].outputs[0],
+        arc_curve_1.nodes["Group Output"].inputs[0]
+    )
+
+    return arc_curve_1
+
 if __name__ == "__main__":
     node_tree_names : dict[typing.Callable, str] = {}
 
@@ -625,6 +703,9 @@ if __name__ == "__main__":
 
     grid_volume = grid_volume_1_node_group(node_tree_names)
     node_tree_names[grid_volume_1_node_group] = grid_volume.name
+
+    arc_curve = arc_curve_1_node_group(node_tree_names)
+    node_tree_names[arc_curve_1_node_group] = arc_curve.name
 
     obj = bpy.context.active_object
 

@@ -6,6 +6,7 @@ https://github.com/Juju-brz
 
 import bpy
 import math
+from . import GeoNode
 
 #obj = bpy.context.active_object
 #blend_path = bpy.data.filepath
@@ -21,6 +22,7 @@ def clean_scene():
 
 
 ### VOLUME BEGIN ###
+
 def volume_displacement():
     #bpy.context.space_data.context = 'MODIFIER'
     bpy.ops.object.modifier_add(type='VOLUME_DISPLACE')
@@ -94,7 +96,7 @@ def subdivision_mesh():
 ### VOLUME END ###
 
 ### PLANT BEGIN ###
-#curve = 0
+
 def draw_curve():
     bpy.ops.curve.primitive_bezier_curve_add(enter_editmode=False, align='WORLD', location=(0, 0, 0), scale=(1, 1, 1))
     obj = bpy.ops.object.editmode_toggle()
@@ -199,6 +201,15 @@ def subdivid_curve():
     bpy.ops.curve.select_all(action='SELECT')
     bpy.ops.curve.subdivide()
     bpy.ops.object.editmode_toggle()
+
+def procedural_arc_curve():
+    bpy.ops.curve.primitive_bezier_curve_add()
+    obj = bpy.context.active_object
+    obj.name = "ArcCurve"
+    create_geometry_node()
+
+    node_tree_names : dict[typing.Callable, str] = {}
+    GeoNode.arc_curve_1_node_group(node_tree_names)
 
 
 ### PLANT END ###

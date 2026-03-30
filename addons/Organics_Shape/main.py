@@ -155,6 +155,15 @@ class subdivid_curve(bpy.types.Operator):
         juju.subdivid_curve()
         return {'FINISHED'}
 
+class procedural_curve(bpy.types.Operator):
+    bl_idname = "object.procedural_curve"
+    bl_label = "procedural_curve"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        juju.procedural_arc_curve()
+        return {'FINISHED'}
+
 class fib_curve(bpy.types.Operator):
     bl_idname = "object.fib_curve"
     bl_label = "fib_curve"
@@ -257,12 +266,15 @@ class VIEW3D_PT_PlantGeneration(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
 
-        layout.label(text='Create Plant')
+        layout.label(text='Create Curve')
         layout.operator("object.draw_curve", text="Draw Curve")
         layout.operator("object.create_leaf", text="Draw leaf")
-        layout.operator("object.create_bezier_curve", text="create_bezier_curve")
-        layout.operator("object.create_spike_shape", text="create_spike")
-        layout.operator("object.subdivid_curve", text="subdivid_curve")
+        layout.operator("object.create_bezier_curve", text="create bezier curve")
+
+
+        layout.label(text='modify curve')
+        layout.operator("object.create_spike_shape", text="create spike")
+        layout.operator("object.subdivid_curve", text="subdivid curve")
         layout.label(text="Select Vertice of Curve on Edit Mode")
         layout.operator("object.curve_test", text="curve test")
         layout.operator("object.fib_curve", text="fib curve")
@@ -324,6 +336,10 @@ class NODE_PT_Plant_Generator(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
 
+        layout.label(text='create procedural curve')
+        layout.operator("object.procedural_curve", text="Arc Curve")
+
+        layout.label(text='modify curve')
         layout.operator("object.create_trunk", text="create_trunk")
         layout.operator("object.sprinkle", text="Spinkle")
 
@@ -388,6 +404,7 @@ def register():
     bpy.utils.register_class(curve_test)
     bpy.utils.register_class(subdivid_curve)
     bpy.utils.register_class(fib_curve)
+    bpy.utils.register_class(procedural_curve)
 
     for cls in classes:
         bpy.utils.register_class(cls)
@@ -425,6 +442,7 @@ def unregister():
     bpy.utils.unregister_class(curve_test)
     bpy.utils.unregister_class(subdivid_curve)
     bpy.utils.unregister_class(fib_curve)
+    bpy.utils.unregister_class(procedural_curve)
 
 if __name__ == "__main__":
     register()
