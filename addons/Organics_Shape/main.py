@@ -238,6 +238,16 @@ class NODE_OT_delete_points_of_curve(bpy.types.Operator):
         GeoNode.delete_points_of_curve_1_node_group(node_tree_names)
         return {'FINISHED'}
 
+class NODE_OT_create_leafs(bpy.types.Operator):
+    bl_idname = "object.create_leafs"
+    bl_label = "create leafs"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        node_tree_names : dict[typing.Callable, str] = {}
+        GeoNode.leafs_1_node_group(node_tree_names)
+        return {'FINISHED'}
+
 ### NODES  CLASS END ###
 
 ### CLASS END  ###
@@ -361,9 +371,14 @@ class NODE_PT_Plant_Generator(bpy.types.Panel):
 
         layout.label(text='modify curve')
         layout.operator("object.create_trunk", text="create_trunk")
-        layout.operator("object.sprinkle", text="Spinkle")
+
         layout.operator("object.get_normalize", text="get normalize")
         layout.operator("object.delete_points_of_curve", text="delete points of curve")
+
+        layout.label(text='modify mesh')
+        layout.operator("object.sprinkle", text="Spinkle")
+        layout.label(text = 'Tree')
+        layout.operator("object.create_leafs", text="create leafs")
 
 class NODE_PT_Volume(bpy.types.Panel):
     bl_label = "VOLUME"
@@ -429,6 +444,7 @@ def register():
     bpy.utils.register_class(procedural_curve)
     bpy.utils.register_class(NODE_OT_Get_Normalize)
     bpy.utils.register_class(NODE_OT_delete_points_of_curve)
+    bpy.utils.register_class(NODE_OT_create_leafs)
 
     for cls in classes:
         bpy.utils.register_class(cls)
@@ -469,6 +485,7 @@ def unregister():
     bpy.utils.unregister_class(procedural_curve)
     bpy.utils.unregister_class(NODE_OT_Get_Normalize)
     bpy.utils.unregister_class(NODE_OT_delete_points_of_curve)
+    bpy.utils.unregister_class(NODE_OT_create_leafs)
 
 
 if __name__ == "__main__":

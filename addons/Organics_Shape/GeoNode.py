@@ -1066,7 +1066,6 @@ def getnormalize_1_node_group(node_tree_names: dict[typing.Callable, str]):
 
     return getnormalize_1
 
-
 def delete_points_of_curve_1_node_group(node_tree_names: dict[typing.Callable, str]):
     """Initialize delete points of curve node group"""
     delete_points_of_curve_1 = bpy.data.node_groups.new(type='GeometryNodeTree', name="delete points of curve")
@@ -1212,7 +1211,7 @@ def delete_points_of_curve_1_node_group(node_tree_names: dict[typing.Callable, s
 
 def leafs_1_node_group(node_tree_names: dict[typing.Callable, str]):
     """Initialize leafs node group"""
-    leafs_1 = bpy.data.node_groups.new(type='GeometryNodeTree', name="leafs")
+    leafs_1 = bpy.data.node_groups.new(type='GeometryNodeTree', name="create leafs")
 
     leafs_1.color_tag = 'NONE'
     leafs_1.description = ""
