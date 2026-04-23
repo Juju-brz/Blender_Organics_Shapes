@@ -690,6 +690,240 @@ def arc_curve_1_node_group(node_tree_names: dict[typing.Callable, str]):
 
     return arc_curve_1
 
+def getnormalize_1_node_group(node_tree_names: dict[typing.Callable, str]):
+    """Initialize GetNormalize node group"""
+    getnormalize_1 = bpy.data.node_groups.new(type='GeometryNodeTree', name="Get Normalize")
+
+    getnormalize_1.color_tag = 'NONE'
+    getnormalize_1.description = ""
+    getnormalize_1.default_group_node_width = 140
+    getnormalize_1.show_modifier_manage_panel = True
+
+    # getnormalize_1 interface
+
+    # Socket Value
+    value_socket = getnormalize_1.interface.new_socket(name="Value", in_out='OUTPUT', socket_type='NodeSocketFloat')
+    value_socket.default_value = 0.0
+    value_socket.min_value = -3.4028234663852886e+38
+    value_socket.max_value = 3.4028234663852886e+38
+    value_socket.subtype = 'NONE'
+    value_socket.attribute_domain = 'POINT'
+    value_socket.default_input = 'VALUE'
+    value_socket.structure_type = 'AUTO'
+
+    # Initialize getnormalize_1 nodes
+
+    # Node Spline Length
+    spline_length = getnormalize_1.nodes.new("GeometryNodeSplineLength")
+    spline_length.name = "Spline Length"
+
+    # Node Spline Parameter
+    spline_parameter = getnormalize_1.nodes.new("GeometryNodeSplineParameter")
+    spline_parameter.name = "Spline Parameter"
+
+    # Node Math
+    math = getnormalize_1.nodes.new("ShaderNodeMath")
+    math.name = "Math"
+    math.operation = 'DIVIDE'
+    math.use_clamp = False
+
+    # Node Group Output
+    group_output = getnormalize_1.nodes.new("NodeGroupOutput")
+    group_output.name = "Group Output"
+    group_output.is_active_output = True
+
+    # Node Group Input
+    group_input = getnormalize_1.nodes.new("NodeGroupInput")
+    group_input.name = "Group Input"
+
+    # Set locations
+    getnormalize_1.nodes["Spline Length"].location = (-301.7341613769531, -60.227783203125)
+    getnormalize_1.nodes["Spline Parameter"].location = (-275.8704528808594, 86.1356201171875)
+    getnormalize_1.nodes["Math"].location = (59.46675109863281, 14.048828125)
+    getnormalize_1.nodes["Group Output"].location = (465.87042236328125, 0.0)
+    getnormalize_1.nodes["Group Input"].location = (-276.4412841796875, -228.9534454345703)
+
+    # Set dimensions
+    getnormalize_1.nodes["Spline Length"].width  = 140.0
+    getnormalize_1.nodes["Spline Length"].height = 100.0
+
+    getnormalize_1.nodes["Spline Parameter"].width  = 140.0
+    getnormalize_1.nodes["Spline Parameter"].height = 100.0
+
+    getnormalize_1.nodes["Math"].width  = 140.0
+    getnormalize_1.nodes["Math"].height = 100.0
+
+    getnormalize_1.nodes["Group Output"].width  = 140.0
+    getnormalize_1.nodes["Group Output"].height = 100.0
+
+    getnormalize_1.nodes["Group Input"].width  = 140.0
+    getnormalize_1.nodes["Group Input"].height = 100.0
+
+
+    # Initialize getnormalize_1 links
+
+    # spline_parameter.Length -> math.Value
+    getnormalize_1.links.new(
+        getnormalize_1.nodes["Spline Parameter"].outputs[1],
+        getnormalize_1.nodes["Math"].inputs[0]
+    )
+    # spline_length.Length -> math.Value
+    getnormalize_1.links.new(
+        getnormalize_1.nodes["Spline Length"].outputs[0],
+        getnormalize_1.nodes["Math"].inputs[1]
+    )
+    # math.Value -> group_output.Value
+    getnormalize_1.links.new(
+        getnormalize_1.nodes["Math"].outputs[0],
+        getnormalize_1.nodes["Group Output"].inputs[0]
+    )
+
+    return getnormalize_1
+
+def delete_points_of_curve_1_node_group(node_tree_names: dict[typing.Callable, str]):
+    """Initialize delete points of curve node group"""
+    delete_points_of_curve_1 = bpy.data.node_groups.new(type='GeometryNodeTree', name="delete points of curve")
+
+    delete_points_of_curve_1.color_tag = 'NONE'
+    delete_points_of_curve_1.description = ""
+    delete_points_of_curve_1.default_group_node_width = 140
+    delete_points_of_curve_1.show_modifier_manage_panel = True
+
+    # delete_points_of_curve_1 interface
+
+    # Socket Geometry
+    geometry_socket = delete_points_of_curve_1.interface.new_socket(name="Geometry", in_out='OUTPUT', socket_type='NodeSocketGeometry')
+    geometry_socket.attribute_domain = 'POINT'
+    geometry_socket.default_input = 'VALUE'
+    geometry_socket.structure_type = 'AUTO'
+
+    # Socket Geometry
+    geometry_socket_1 = delete_points_of_curve_1.interface.new_socket(name="Geometry", in_out='INPUT', socket_type='NodeSocketGeometry')
+    geometry_socket_1.attribute_domain = 'POINT'
+    geometry_socket_1.description = "Geometry to delete elements from"
+    geometry_socket_1.default_input = 'VALUE'
+    geometry_socket_1.structure_type = 'AUTO'
+
+    # Socket Threshold
+    threshold_socket = delete_points_of_curve_1.interface.new_socket(name="Threshold", in_out='INPUT', socket_type='NodeSocketFloat')
+    threshold_socket.default_value = 0.2999999523162842
+    threshold_socket.min_value = -10000.0
+    threshold_socket.max_value = 10000.0
+    threshold_socket.subtype = 'NONE'
+    threshold_socket.attribute_domain = 'POINT'
+    threshold_socket.default_input = 'VALUE'
+    threshold_socket.structure_type = 'AUTO'
+
+    # Initialize delete_points_of_curve_1 nodes
+
+    # Node Spline Length
+    spline_length = delete_points_of_curve_1.nodes.new("GeometryNodeSplineLength")
+    spline_length.name = "Spline Length"
+
+    # Node Spline Parameter
+    spline_parameter = delete_points_of_curve_1.nodes.new("GeometryNodeSplineParameter")
+    spline_parameter.name = "Spline Parameter"
+
+    # Node Math
+    math = delete_points_of_curve_1.nodes.new("ShaderNodeMath")
+    math.name = "Math"
+    math.operation = 'DIVIDE'
+    math.use_clamp = False
+
+    # Node Group Output
+    group_output = delete_points_of_curve_1.nodes.new("NodeGroupOutput")
+    group_output.name = "Group Output"
+    group_output.is_active_output = True
+
+    # Node Group Input
+    group_input = delete_points_of_curve_1.nodes.new("NodeGroupInput")
+    group_input.name = "Group Input"
+
+    # Node Math.001
+    math_001 = delete_points_of_curve_1.nodes.new("ShaderNodeMath")
+    math_001.name = "Math.001"
+    math_001.operation = 'LESS_THAN'
+    math_001.use_clamp = True
+
+    # Node Delete Geometry
+    delete_geometry = delete_points_of_curve_1.nodes.new("GeometryNodeDeleteGeometry")
+    delete_geometry.name = "Delete Geometry"
+    delete_geometry.domain = 'POINT'
+    delete_geometry.mode = 'ALL'
+
+    # Set locations
+    delete_points_of_curve_1.nodes["Spline Length"].location = (-301.7341613769531, -60.227783203125)
+    delete_points_of_curve_1.nodes["Spline Parameter"].location = (-275.8704528808594, 86.1356201171875)
+    delete_points_of_curve_1.nodes["Math"].location = (-2.6723670959472656, 148.23487854003906)
+    delete_points_of_curve_1.nodes["Group Output"].location = (775.4073486328125, 29.20565414428711)
+    delete_points_of_curve_1.nodes["Group Input"].location = (-276.4412841796875, -228.9534454345703)
+    delete_points_of_curve_1.nodes["Math.001"].location = (271.9712829589844, 84.98362731933594)
+    delete_points_of_curve_1.nodes["Delete Geometry"].location = (490.6053466796875, 35.42893981933594)
+
+    # Set dimensions
+    delete_points_of_curve_1.nodes["Spline Length"].width  = 140.0
+    delete_points_of_curve_1.nodes["Spline Length"].height = 100.0
+
+    delete_points_of_curve_1.nodes["Spline Parameter"].width  = 140.0
+    delete_points_of_curve_1.nodes["Spline Parameter"].height = 100.0
+
+    delete_points_of_curve_1.nodes["Math"].width  = 140.0
+    delete_points_of_curve_1.nodes["Math"].height = 100.0
+
+    delete_points_of_curve_1.nodes["Group Output"].width  = 140.0
+    delete_points_of_curve_1.nodes["Group Output"].height = 100.0
+
+    delete_points_of_curve_1.nodes["Group Input"].width  = 140.0
+    delete_points_of_curve_1.nodes["Group Input"].height = 100.0
+
+    delete_points_of_curve_1.nodes["Math.001"].width  = 140.0
+    delete_points_of_curve_1.nodes["Math.001"].height = 100.0
+
+    delete_points_of_curve_1.nodes["Delete Geometry"].width  = 140.0
+    delete_points_of_curve_1.nodes["Delete Geometry"].height = 100.0
+
+
+    # Initialize delete_points_of_curve_1 links
+
+    # spline_parameter.Length -> math.Value
+    delete_points_of_curve_1.links.new(
+        delete_points_of_curve_1.nodes["Spline Parameter"].outputs[1],
+        delete_points_of_curve_1.nodes["Math"].inputs[0]
+    )
+    # spline_length.Length -> math.Value
+    delete_points_of_curve_1.links.new(
+        delete_points_of_curve_1.nodes["Spline Length"].outputs[0],
+        delete_points_of_curve_1.nodes["Math"].inputs[1]
+    )
+    # math.Value -> math_001.Value
+    delete_points_of_curve_1.links.new(
+        delete_points_of_curve_1.nodes["Math"].outputs[0],
+        delete_points_of_curve_1.nodes["Math.001"].inputs[0]
+    )
+    # group_input.Geometry -> delete_geometry.Geometry
+    delete_points_of_curve_1.links.new(
+        delete_points_of_curve_1.nodes["Group Input"].outputs[0],
+        delete_points_of_curve_1.nodes["Delete Geometry"].inputs[0]
+    )
+    # group_input.Threshold -> math_001.Value
+    delete_points_of_curve_1.links.new(
+        delete_points_of_curve_1.nodes["Group Input"].outputs[1],
+        delete_points_of_curve_1.nodes["Math.001"].inputs[1]
+    )
+    # delete_geometry.Geometry -> group_output.Geometry
+    delete_points_of_curve_1.links.new(
+        delete_points_of_curve_1.nodes["Delete Geometry"].outputs[0],
+        delete_points_of_curve_1.nodes["Group Output"].inputs[0]
+    )
+    # math_001.Value -> delete_geometry.Selection
+    delete_points_of_curve_1.links.new(
+        delete_points_of_curve_1.nodes["Math.001"].outputs[0],
+        delete_points_of_curve_1.nodes["Delete Geometry"].inputs[1]
+    )
+
+    return delete_points_of_curve_1
+
+
 def create_branches_1_node_group(node_tree_names: dict[typing.Callable, str]):
     """Initialize Create Branches node group"""
     create_branches_1 = bpy.data.node_groups.new(type='GeometryNodeTree', name="Create Branches")
