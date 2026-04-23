@@ -1176,29 +1176,24 @@ def create_leafs_1_node_group(node_tree_names: dict[typing.Callable, str]):
     create_leafs_2 = create_leafs_1.nodes.new("NodeGroupInput")
     create_leafs_2.name = "create leafs"
 
-    # Node Reroute
-    reroute = create_leafs_1.nodes.new("NodeReroute")
-    reroute.name = "Reroute"
-    reroute.socket_idname = "NodeSocketGeometry"
     # Set locations
-    create_leafs_1.nodes["Instance on Points.001"].location = (-1158.392822265625, 165.62789916992188)
-    create_leafs_1.nodes["Ico Sphere"].location = (-1399.544677734375, -38.785919189453125)
-    create_leafs_1.nodes["Endpoint Selection"].location = (-1650.6795654296875, -89.60820007324219)
-    create_leafs_1.nodes["Random Value.001"].location = (-1355.1103515625, -263.7852783203125)
-    create_leafs_1.nodes["Realize Instances.001"].location = (-985.4093017578125, 315.685302734375)
-    create_leafs_1.nodes["Instance on Points.002"].location = (-509.5552062988281, 324.90777587890625)
-    create_leafs_1.nodes["Curve Line.001"].location = (-1006.1842651367188, 153.703369140625)
-    create_leafs_1.nodes["Normal"].location = (-1114.903076171875, -352.6933898925781)
-    create_leafs_1.nodes["Align Euler to Vector"].location = (-873.9468383789062, -214.74588012695312)
-    create_leafs_1.nodes["Instance on Points.003"].location = (132.50430297851562, 299.0303649902344)
-    create_leafs_1.nodes["Random Value.002"].location = (-89.71683502197266, -35.733795166015625)
-    create_leafs_1.nodes["Realize Instances.002"].location = (-183.67971801757812, 394.0683898925781)
-    create_leafs_1.nodes["Vector Math.002"].location = (-416.6391906738281, -149.83511352539062)
-    create_leafs_1.nodes["Curve Tangent"].location = (-588.8364868164062, -250.88455200195312)
-    create_leafs_1.nodes["Random Value.003"].location = (-740.1050415039062, -389.9510803222656)
-    create_leafs_1.nodes["Group Output"].location = (352.2190856933594, 750.7615356445312)
-    create_leafs_1.nodes["create leafs"].location = (-2005.5418701171875, 129.36328125)
-    create_leafs_1.nodes["Reroute"].location = (-343.8786926269531, 440.53350830078125)
+    create_leafs_1.nodes["Instance on Points.001"].location = (-1272.5946044921875, 248.10260009765625)
+    create_leafs_1.nodes["Ico Sphere"].location = (-1508.6707763671875, 47.49530029296875)
+    create_leafs_1.nodes["Endpoint Selection"].location = (-1759.8056640625, -3.3269805908203125)
+    create_leafs_1.nodes["Random Value.001"].location = (-1464.2364501953125, -177.50405883789062)
+    create_leafs_1.nodes["Realize Instances.001"].location = (-1094.535400390625, 401.9665222167969)
+    create_leafs_1.nodes["Instance on Points.002"].location = (-618.6813354492188, 411.1889953613281)
+    create_leafs_1.nodes["Curve Line.001"].location = (-1034.1002197265625, 49.658355712890625)
+    create_leafs_1.nodes["Normal"].location = (-1224.0291748046875, -266.41217041015625)
+    create_leafs_1.nodes["Align Euler to Vector"].location = (-983.072998046875, -128.46466064453125)
+    create_leafs_1.nodes["Instance on Points.003"].location = (23.378158569335938, 385.31158447265625)
+    create_leafs_1.nodes["Random Value.002"].location = (-198.84298706054688, 50.54742431640625)
+    create_leafs_1.nodes["Realize Instances.002"].location = (-292.80584716796875, 480.349609375)
+    create_leafs_1.nodes["Vector Math.002"].location = (-525.7653198242188, -63.55389404296875)
+    create_leafs_1.nodes["Curve Tangent"].location = (-697.962646484375, -164.60333251953125)
+    create_leafs_1.nodes["Random Value.003"].location = (-849.231201171875, -303.66986083984375)
+    create_leafs_1.nodes["Group Output"].location = (337.794921875, 450.5766906738281)
+    create_leafs_1.nodes["create leafs"].location = (-2177.1953125, 375.96258544921875)
 
     # Set dimensions
     create_leafs_1.nodes["Instance on Points.001"].width  = 140.0
@@ -1251,9 +1246,6 @@ def create_leafs_1_node_group(node_tree_names: dict[typing.Callable, str]):
 
     create_leafs_1.nodes["create leafs"].width  = 140.0
     create_leafs_1.nodes["create leafs"].height = 100.0
-
-    create_leafs_1.nodes["Reroute"].width  = 10.0
-    create_leafs_1.nodes["Reroute"].height = 100.0
 
 
     # Initialize create_leafs_1 links
@@ -1333,16 +1325,6 @@ def create_leafs_1_node_group(node_tree_names: dict[typing.Callable, str]):
         create_leafs_1.nodes["create leafs"].outputs[0],
         create_leafs_1.nodes["Instance on Points.001"].inputs[0]
     )
-    # reroute.Output -> group_output.Geometry
-    create_leafs_1.links.new(
-        create_leafs_1.nodes["Reroute"].outputs[0],
-        create_leafs_1.nodes["Group Output"].inputs[0]
-    )
-    # realize_instances_001.Geometry -> reroute.Input
-    create_leafs_1.links.new(
-        create_leafs_1.nodes["Realize Instances.001"].outputs[0],
-        create_leafs_1.nodes["Reroute"].inputs[0]
-    )
     # create_leafs_2.Branches -> instance_on_points_003.Instance
     create_leafs_1.links.new(
         create_leafs_1.nodes["create leafs"].outputs[1],
@@ -1362,6 +1344,11 @@ def create_leafs_1_node_group(node_tree_names: dict[typing.Callable, str]):
     create_leafs_1.links.new(
         create_leafs_1.nodes["create leafs"].outputs[2],
         create_leafs_1.nodes["Ico Sphere"].inputs[0]
+    )
+    # instance_on_points_003.Instances -> group_output.Geometry
+    create_leafs_1.links.new(
+        create_leafs_1.nodes["Instance on Points.003"].outputs[0],
+        create_leafs_1.nodes["Group Output"].inputs[0]
     )
 
     return create_leafs_1
@@ -1464,74 +1451,13 @@ def thickness_1_node_group(node_tree_names: dict[typing.Callable, str]):
     # From Max
     map_range.inputs[2].default_value = 1.0
 
-    # Node Curve to Tube
-    curve_to_tube = thickness_1.nodes.new("GeometryNodeGroup")
-    curve_to_tube.name = "Curve to Tube"
-    # Finding linked library node group
-    for node_group in bpy.data.node_groups:
-        if (
-            node_group.name == "Curve to Tube"
-            and node_group.bl_idname == 'GeometryNodeTree'
-        ):
-            curve_to_tube.node_tree = node_group
-    if curve_to_tube.node_tree is None:
-        print("Couldn't find node group Curve to Tube, failing")
-        return
-    # Socket_5
-    curve_to_tube.inputs[1].default_value = 0.10000000149011612
-    # Socket_4
-    curve_to_tube.inputs[2].default_value = 'Round'
-    # Socket_26
-    curve_to_tube.inputs[3].default_value = 'Object'
-    # Socket_2
-    curve_to_tube.inputs[6].default_value = 8
-    # Socket_11
-    curve_to_tube.inputs[7].default_value = True
-    # Socket_36
-    curve_to_tube.inputs[8].default_value = True
-    # Socket_32
-    curve_to_tube.inputs[9].default_value = 'Evaluated'
-    # Socket_33
-    curve_to_tube.inputs[10].default_value = 10
-    # Socket_37
-    curve_to_tube.inputs[11].default_value = 0.10000000149011612
-    # Socket_38
-    curve_to_tube.inputs[12].default_value = 1.0
-    # Socket_39
-    curve_to_tube.inputs[13].default_value = True
-    # Socket_10
-    curve_to_tube.inputs[14].default_value = 'Flat'
-    # Socket_25
-    curve_to_tube.inputs[15].default_value = 'Object'
-    # Socket_28
-    curve_to_tube.inputs[20].default_value = 12
-    # Socket_15
-    curve_to_tube.inputs[21].default_value = False
-    # Socket_13
-    curve_to_tube.inputs[22].default_value = True
-    # Socket_14
-    curve_to_tube.inputs[23].default_value = False
-    # Socket_30
-    curve_to_tube.inputs[24].default_value = True
-    # Socket_31
-    curve_to_tube.inputs[25].default_value = True
-    # Socket_17
-    curve_to_tube.inputs[26].default_value = "UVMap"
-    # Socket_19
-    curve_to_tube.inputs[27].default_value = 'Length'
-    # Socket_20
-    curve_to_tube.inputs[28].default_value = 'Factor'
-    # Socket_29
-    curve_to_tube.inputs[29].default_value = True
-
     # Set locations
-    thickness_1.nodes["Group Input"].location = (-459.7458190917969, -29.634382247924805)
-    thickness_1.nodes["Group Output"].location = (460.1916198730469, 2.5629732608795166)
-    thickness_1.nodes["Set Curve Radius"].location = (86.60769653320312, -14.69403076171875)
-    thickness_1.nodes["Spline Parameter.001"].location = (-479.5445861816406, -328.39678955078125)
-    thickness_1.nodes["Color Ramp"].location = (-297.80108642578125, -274.2325439453125)
-    thickness_1.nodes["Map Range"].location = (-85.684814453125, -126.2535400390625)
-    thickness_1.nodes["Curve to Tube"].location = (254.10528564453125, 33.93254089355469)
+    thickness_1.nodes["Group Input"].location = (-705.4496459960938, -36.80598449707031)
+    thickness_1.nodes["Group Output"].location = (450.5889892578125, 42.34330749511719)
+    thickness_1.nodes["Set Curve Radius"].location = (-2.5598297119140625, -31.15485954284668)
+    thickness_1.nodes["Spline Parameter.001"].location = (-568.7120971679688, -344.85760498046875)
+    thickness_1.nodes["Color Ramp"].location = (-386.9686279296875, -290.693359375)
+    thickness_1.nodes["Map Range"].location = (-174.8523406982422, -142.71437072753906)
 
     # Set dimensions
     thickness_1.nodes["Group Input"].width  = 140.0
@@ -1551,9 +1477,6 @@ def thickness_1_node_group(node_tree_names: dict[typing.Callable, str]):
 
     thickness_1.nodes["Map Range"].width  = 140.0
     thickness_1.nodes["Map Range"].height = 100.0
-
-    thickness_1.nodes["Curve to Tube"].width  = 200.0
-    thickness_1.nodes["Curve to Tube"].height = 100.0
 
 
     # Initialize thickness_1 links
@@ -1578,11 +1501,6 @@ def thickness_1_node_group(node_tree_names: dict[typing.Callable, str]):
         thickness_1.nodes["Group Input"].outputs[0],
         thickness_1.nodes["Set Curve Radius"].inputs[0]
     )
-    # curve_to_tube.Mesh -> group_output.Geometry
-    thickness_1.links.new(
-        thickness_1.nodes["Curve to Tube"].outputs[0],
-        thickness_1.nodes["Group Output"].inputs[0]
-    )
     # group_input.Up Thickness -> map_range.To Min
     thickness_1.links.new(
         thickness_1.nodes["Group Input"].outputs[1],
@@ -1593,10 +1511,10 @@ def thickness_1_node_group(node_tree_names: dict[typing.Callable, str]):
         thickness_1.nodes["Group Input"].outputs[2],
         thickness_1.nodes["Map Range"].inputs[4]
     )
-    # set_curve_radius.Curve -> curve_to_tube.Curve
+    # set_curve_radius.Curve -> group_output.Geometry
     thickness_1.links.new(
         thickness_1.nodes["Set Curve Radius"].outputs[0],
-        thickness_1.nodes["Curve to Tube"].inputs[0]
+        thickness_1.nodes["Group Output"].inputs[0]
     )
 
     return thickness_1
