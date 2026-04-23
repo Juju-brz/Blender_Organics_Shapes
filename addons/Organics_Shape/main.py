@@ -246,6 +246,16 @@ class NODE_OT_thickness(bpy.types.Operator):
         GeoNode.thickness_1_node_group(node_tree_names)
         return {'FINISHED'}
 
+class NODE_OT_seeds_of_plants(bpy.types.Operator):
+    bl_idname = "object.seeds_of_plants"
+    bl_label = "seeds of plants"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        node_tree_names : dict[typing.Callable, str] = {}
+        GeoNode.seeds_of_plants_1_node_group(node_tree_names)
+        return {'FINISHED'}
+
 ### NODES  CLASS END ###
 
 ### CLASS END  ###
@@ -377,8 +387,10 @@ class NODE_PT_Plant_Generator(bpy.types.Panel):
         layout.label(text='modify mesh')
         layout.operator("object.sprinkle", text="Spinkle")
         layout.label(text = 'Tree')
+        layout.operator("object.seeds_of_plants", text="seeds of plants")
         layout.operator("object.branches", text="create branches")
         layout.operator("object.create_leafs", text="create leafs")
+
 
 
 
@@ -451,12 +463,13 @@ def register():
     bpy.utils.register_class(NODE_OT_create_leafs)
     bpy.utils.register_class(NODE_OT_branches)
     bpy.utils.register_class(NODE_OT_thickness)
+    bpy.utils.register_class(NODE_OT_seeds_of_plants)
 
     for cls in classes:
         bpy.utils.register_class(cls)
 
 def unregister():
-    del bpy.types.Scene.voxel_terrain_props
+    #del bpy.types.Scene.voxel_terrain_props
     #bpy.utils.unregister_class(VIEW3D_PT_VoxelTerrainGeneration)
     #bpy.utils.unregister_class(VoxelTerrainProperties)
 
@@ -494,6 +507,7 @@ def unregister():
     bpy.utils.unregister_class(NODE_OT_create_leafs)
     bpy.utils.unregister_class(NODE_OT_branches)
     bpy.utils.unregister_class(NODE_OT_thickness)
+    bpy.utils.unregister_class(NODE_OT_seeds_of_plants)
 
 
 if __name__ == "__main__":

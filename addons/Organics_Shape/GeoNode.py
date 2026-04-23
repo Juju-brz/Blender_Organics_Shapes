@@ -714,10 +714,21 @@ def create_branches_1_node_group(node_tree_names: dict[typing.Callable, str]):
     geometry_socket_1.default_input = 'VALUE'
     geometry_socket_1.structure_type = 'AUTO'
 
-    # Panel Value of Branche
-    value_of_branche_panel = create_branches_1.interface.new_panel("Value of Branche")
+    # Socket Length of Branches
+    length_of_branches_socket = create_branches_1.interface.new_socket(name="Length of Branches", in_out='INPUT', socket_type='NodeSocketVector')
+    length_of_branches_socket.default_value = (0.0, 0.0, 1.0)
+    length_of_branches_socket.min_value = -3.4028234663852886e+38
+    length_of_branches_socket.max_value = 3.4028234663852886e+38
+    length_of_branches_socket.subtype = 'TRANSLATION'
+    length_of_branches_socket.attribute_domain = 'POINT'
+    length_of_branches_socket.description = "Position of the second control point"
+    length_of_branches_socket.default_input = 'VALUE'
+    length_of_branches_socket.structure_type = 'AUTO'
+
+    # Panel Value of Branches
+    value_of_branches_panel = create_branches_1.interface.new_panel("Value of Branches")
     # Socket Min
-    min_socket = create_branches_1.interface.new_socket(name="Min", in_out='INPUT', socket_type='NodeSocketFloat', parent = value_of_branche_panel)
+    min_socket = create_branches_1.interface.new_socket(name="Min", in_out='INPUT', socket_type='NodeSocketFloat', parent = value_of_branches_panel)
     min_socket.default_value = 0.0
     min_socket.min_value = -3.4028234663852886e+38
     min_socket.max_value = 3.4028234663852886e+38
@@ -727,8 +738,8 @@ def create_branches_1_node_group(node_tree_names: dict[typing.Callable, str]):
     min_socket.structure_type = 'AUTO'
 
     # Socket Max
-    max_socket = create_branches_1.interface.new_socket(name="Max", in_out='INPUT', socket_type='NodeSocketFloat', parent = value_of_branche_panel)
-    max_socket.default_value = 12.399999618530273
+    max_socket = create_branches_1.interface.new_socket(name="Max", in_out='INPUT', socket_type='NodeSocketFloat', parent = value_of_branches_panel)
+    max_socket.default_value = 1.0
     max_socket.min_value = -3.4028234663852886e+38
     max_socket.max_value = 3.4028234663852886e+38
     max_socket.subtype = 'NONE'
@@ -737,7 +748,7 @@ def create_branches_1_node_group(node_tree_names: dict[typing.Callable, str]):
     max_socket.structure_type = 'AUTO'
 
     # Socket Seed
-    seed_socket = create_branches_1.interface.new_socket(name="Seed", in_out='INPUT', socket_type='NodeSocketInt', parent = value_of_branche_panel)
+    seed_socket = create_branches_1.interface.new_socket(name="Seed", in_out='INPUT', socket_type='NodeSocketInt', parent = value_of_branches_panel)
     seed_socket.default_value = 0
     seed_socket.min_value = -10000
     seed_socket.max_value = 10000
@@ -769,12 +780,9 @@ def create_branches_1_node_group(node_tree_names: dict[typing.Callable, str]):
     # Node Curve Line.001
     curve_line_001 = create_branches_1.nodes.new("GeometryNodeCurvePrimitiveLine")
     curve_line_001.name = "Curve Line.001"
-    curve_line_001.hide = True
     curve_line_001.mode = 'POINTS'
     # Start
     curve_line_001.inputs[0].default_value = (0.0, 0.0, 0.0)
-    # End
-    curve_line_001.inputs[1].default_value = (0.0, 0.0, 1.0)
 
     # Node Curve Tangent
     curve_tangent = create_branches_1.nodes.new("GeometryNodeInputTangent")
@@ -821,49 +829,6 @@ def create_branches_1_node_group(node_tree_names: dict[typing.Callable, str]):
     # Length
     resample_curve_001.inputs[4].default_value = 0.10000000149011612
 
-    # Node Set Position.001
-    set_position_001 = create_branches_1.nodes.new("GeometryNodeSetPosition")
-    set_position_001.name = "Set Position.001"
-    # Position
-    set_position_001.inputs[2].default_value = (0.0, 0.0, 0.0)
-
-    # Node Noise Texture.001
-    noise_texture_001 = create_branches_1.nodes.new("ShaderNodeTexNoise")
-    noise_texture_001.name = "Noise Texture.001"
-    noise_texture_001.noise_dimensions = '3D'
-    noise_texture_001.noise_type = 'FBM'
-    noise_texture_001.normalize = True
-    # Vector
-    noise_texture_001.inputs[0].default_value = (0.0, 0.0, 0.0)
-    # Scale
-    noise_texture_001.inputs[2].default_value = 0.5
-    # Detail
-    noise_texture_001.inputs[3].default_value = 2.0
-    # Roughness
-    noise_texture_001.inputs[4].default_value = 0.5
-    # Lacunarity
-    noise_texture_001.inputs[5].default_value = 2.0
-    # Distortion
-    noise_texture_001.inputs[8].default_value = 0.0
-
-    # Node Vector Math.002
-    vector_math_002 = create_branches_1.nodes.new("ShaderNodeVectorMath")
-    vector_math_002.name = "Vector Math.002"
-    vector_math_002.operation = 'SUBTRACT'
-    # Vector_001
-    vector_math_002.inputs[1].default_value = (0.5, 0.5, 0.5)
-
-    # Node Vector Math.003
-    vector_math_003 = create_branches_1.nodes.new("ShaderNodeVectorMath")
-    vector_math_003.name = "Vector Math.003"
-    vector_math_003.operation = 'MULTIPLY'
-    # Vector_001
-    vector_math_003.inputs[1].default_value = (1.9999998807907104, 1.9999998807907104, 1.9999998807907104)
-
-    # Node Spline Parameter
-    spline_parameter = create_branches_1.nodes.new("GeometryNodeSplineParameter")
-    spline_parameter.name = "Spline Parameter"
-
     # Node Vector Math
     vector_math = create_branches_1.nodes.new("ShaderNodeVectorMath")
     vector_math.name = "Vector Math"
@@ -872,22 +837,17 @@ def create_branches_1_node_group(node_tree_names: dict[typing.Callable, str]):
     vector_math.inputs[1].default_value = (1.9999998807907104, 1.9999998807907104, 1.9999998807907104)
 
     # Set locations
-    create_branches_1.nodes["Group Input"].location = (-1447.57763671875, 570.185302734375)
-    create_branches_1.nodes["Group Output"].location = (1144.09375, 530.8128051757812)
-    create_branches_1.nodes["Instance on Points.001"].location = (-583.0662841796875, 584.485107421875)
-    create_branches_1.nodes["Curve Line.001"].location = (-822.6689453125, 311.3088073730469)
-    create_branches_1.nodes["Curve Tangent"].location = (-943.1922607421875, 149.26324462890625)
-    create_branches_1.nodes["Curve Tangent.001"].location = (-747.364013671875, -68.97579956054688)
-    create_branches_1.nodes["Endpoint Selection"].location = (-821.5252685546875, 464.91986083984375)
-    create_branches_1.nodes["Random Value.001"].location = (-1032.1761474609375, 373.18951416015625)
-    create_branches_1.nodes["Realize Instances.001"].location = (-367.1282653808594, 432.48260498046875)
-    create_branches_1.nodes["Resample Curve.001"].location = (-187.12774658203125, 491.5682678222656)
-    create_branches_1.nodes["Set Position.001"].location = (842.80029296875, 546.4512939453125)
-    create_branches_1.nodes["Noise Texture.001"].location = (-9.942092895507812, 180.77145385742188)
-    create_branches_1.nodes["Vector Math.002"].location = (456.5332336425781, 168.937744140625)
-    create_branches_1.nodes["Vector Math.003"].location = (705.350830078125, 246.40878295898438)
-    create_branches_1.nodes["Spline Parameter"].location = (616.0289306640625, 365.9591369628906)
-    create_branches_1.nodes["Vector Math"].location = (-763.2645263671875, 229.0145263671875)
+    create_branches_1.nodes["Group Input"].location = (-1573.1690673828125, 732.4583740234375)
+    create_branches_1.nodes["Group Output"].location = (65.77777099609375, 801.5029907226562)
+    create_branches_1.nodes["Instance on Points.001"].location = (-829.55224609375, 878.2093505859375)
+    create_branches_1.nodes["Curve Line.001"].location = (-1069.1549072265625, 605.0330810546875)
+    create_branches_1.nodes["Curve Tangent"].location = (-1334.047607421875, 295.4117126464844)
+    create_branches_1.nodes["Curve Tangent.001"].location = (-993.8499755859375, 224.74844360351562)
+    create_branches_1.nodes["Endpoint Selection"].location = (-1068.01123046875, 758.6441040039062)
+    create_branches_1.nodes["Random Value.001"].location = (-1272.159423828125, 711.5013427734375)
+    create_branches_1.nodes["Realize Instances.001"].location = (-613.6142578125, 726.2068481445312)
+    create_branches_1.nodes["Resample Curve.001"].location = (-433.61370849609375, 785.29248046875)
+    create_branches_1.nodes["Vector Math"].location = (-760.9185791015625, 469.9234619140625)
 
     # Set dimensions
     create_branches_1.nodes["Group Input"].width  = 140.0
@@ -919,21 +879,6 @@ def create_branches_1_node_group(node_tree_names: dict[typing.Callable, str]):
 
     create_branches_1.nodes["Resample Curve.001"].width  = 140.0
     create_branches_1.nodes["Resample Curve.001"].height = 100.0
-
-    create_branches_1.nodes["Set Position.001"].width  = 140.0
-    create_branches_1.nodes["Set Position.001"].height = 100.0
-
-    create_branches_1.nodes["Noise Texture.001"].width  = 145.0
-    create_branches_1.nodes["Noise Texture.001"].height = 100.0
-
-    create_branches_1.nodes["Vector Math.002"].width  = 140.0
-    create_branches_1.nodes["Vector Math.002"].height = 100.0
-
-    create_branches_1.nodes["Vector Math.003"].width  = 140.0
-    create_branches_1.nodes["Vector Math.003"].height = 100.0
-
-    create_branches_1.nodes["Spline Parameter"].width  = 140.0
-    create_branches_1.nodes["Spline Parameter"].height = 100.0
 
     create_branches_1.nodes["Vector Math"].width  = 140.0
     create_branches_1.nodes["Vector Math"].height = 100.0
@@ -976,39 +921,14 @@ def create_branches_1_node_group(node_tree_names: dict[typing.Callable, str]):
         create_branches_1.nodes["Realize Instances.001"].outputs[0],
         create_branches_1.nodes["Resample Curve.001"].inputs[0]
     )
-    # vector_math_003.Vector -> set_position_001.Offset
-    create_branches_1.links.new(
-        create_branches_1.nodes["Vector Math.003"].outputs[0],
-        create_branches_1.nodes["Set Position.001"].inputs[3]
-    )
-    # noise_texture_001.Color -> vector_math_002.Vector
-    create_branches_1.links.new(
-        create_branches_1.nodes["Noise Texture.001"].outputs[1],
-        create_branches_1.nodes["Vector Math.002"].inputs[0]
-    )
-    # vector_math_002.Vector -> vector_math_003.Vector
-    create_branches_1.links.new(
-        create_branches_1.nodes["Vector Math.002"].outputs[0],
-        create_branches_1.nodes["Vector Math.003"].inputs[0]
-    )
-    # spline_parameter.Factor -> set_position_001.Selection
-    create_branches_1.links.new(
-        create_branches_1.nodes["Spline Parameter"].outputs[0],
-        create_branches_1.nodes["Set Position.001"].inputs[1]
-    )
     # curve_tangent.Tangent -> vector_math.Vector
     create_branches_1.links.new(
         create_branches_1.nodes["Curve Tangent"].outputs[0],
         create_branches_1.nodes["Vector Math"].inputs[0]
     )
-    # resample_curve_001.Curve -> set_position_001.Geometry
+    # resample_curve_001.Curve -> group_output.Geometry
     create_branches_1.links.new(
         create_branches_1.nodes["Resample Curve.001"].outputs[0],
-        create_branches_1.nodes["Set Position.001"].inputs[0]
-    )
-    # set_position_001.Geometry -> group_output.Geometry
-    create_branches_1.links.new(
-        create_branches_1.nodes["Set Position.001"].outputs[0],
         create_branches_1.nodes["Group Output"].inputs[0]
     )
     # group_input.Geometry -> instance_on_points_001.Points
@@ -1016,19 +936,24 @@ def create_branches_1_node_group(node_tree_names: dict[typing.Callable, str]):
         create_branches_1.nodes["Group Input"].outputs[0],
         create_branches_1.nodes["Instance on Points.001"].inputs[0]
     )
-    # group_input.Min -> random_value_001.Min
+    # group_input.Length of Branches -> curve_line_001.End
     create_branches_1.links.new(
         create_branches_1.nodes["Group Input"].outputs[1],
+        create_branches_1.nodes["Curve Line.001"].inputs[1]
+    )
+    # group_input.Min -> random_value_001.Min
+    create_branches_1.links.new(
+        create_branches_1.nodes["Group Input"].outputs[2],
         create_branches_1.nodes["Random Value.001"].inputs[2]
     )
     # group_input.Max -> random_value_001.Max
     create_branches_1.links.new(
-        create_branches_1.nodes["Group Input"].outputs[2],
+        create_branches_1.nodes["Group Input"].outputs[3],
         create_branches_1.nodes["Random Value.001"].inputs[3]
     )
     # group_input.Seed -> random_value_001.Seed
     create_branches_1.links.new(
-        create_branches_1.nodes["Group Input"].outputs[3],
+        create_branches_1.nodes["Group Input"].outputs[4],
         create_branches_1.nodes["Random Value.001"].inputs[8]
     )
 
@@ -1853,6 +1778,235 @@ def choos_name_1_node_group(node_tree_names: dict[typing.Callable, str]):
 
     return choos_name_1
 
+def seeds_of_plants_1_node_group(node_tree_names: dict[typing.Callable, str]):
+    """Initialize Seeds of Plants node group"""
+    seeds_of_plants_1 = bpy.data.node_groups.new(type='GeometryNodeTree', name="Seeds of Plants")
+
+    seeds_of_plants_1.color_tag = 'NONE'
+    seeds_of_plants_1.description = ""
+    seeds_of_plants_1.default_group_node_width = 140
+    seeds_of_plants_1.is_modifier = True
+    seeds_of_plants_1.show_modifier_manage_panel = True
+
+    # seeds_of_plants_1 interface
+
+    # Socket Geometry
+    geometry_socket = seeds_of_plants_1.interface.new_socket(name="Geometry", in_out='OUTPUT', socket_type='NodeSocketGeometry')
+    geometry_socket.attribute_domain = 'POINT'
+    geometry_socket.default_input = 'VALUE'
+    geometry_socket.structure_type = 'AUTO'
+
+    # Socket Radius
+    radius_socket = seeds_of_plants_1.interface.new_socket(name="Radius", in_out='INPUT', socket_type='NodeSocketFloat')
+    radius_socket.default_value = 1.0
+    radius_socket.min_value = 0.0
+    radius_socket.max_value = 3.4028234663852886e+38
+    radius_socket.subtype = 'DISTANCE'
+    radius_socket.attribute_domain = 'POINT'
+    radius_socket.description = "Distance of the points from the origin"
+    radius_socket.default_input = 'VALUE'
+    radius_socket.structure_type = 'AUTO'
+
+    # Socket Density of plants
+    density_of_plants_socket = seeds_of_plants_1.interface.new_socket(name="Density of plants", in_out='INPUT', socket_type='NodeSocketFloat')
+    density_of_plants_socket.default_value = 3.0
+    density_of_plants_socket.min_value = 0.0
+    density_of_plants_socket.max_value = 3.4028234663852886e+38
+    density_of_plants_socket.subtype = 'NONE'
+    density_of_plants_socket.attribute_domain = 'POINT'
+    density_of_plants_socket.default_input = 'VALUE'
+    density_of_plants_socket.structure_type = 'AUTO'
+
+    # Socket Curve Line Length
+    curve_line_length_socket = seeds_of_plants_1.interface.new_socket(name="Curve Line Length", in_out='INPUT', socket_type='NodeSocketVector')
+    curve_line_length_socket.default_value = (0.0, 0.0, 1.0)
+    curve_line_length_socket.min_value = -3.4028234663852886e+38
+    curve_line_length_socket.max_value = 3.4028234663852886e+38
+    curve_line_length_socket.subtype = 'TRANSLATION'
+    curve_line_length_socket.attribute_domain = 'POINT'
+    curve_line_length_socket.description = "Position of the second control point"
+    curve_line_length_socket.default_input = 'VALUE'
+    curve_line_length_socket.structure_type = 'AUTO'
+
+    # Initialize seeds_of_plants_1 nodes
+
+    # Node Group Input
+    group_input = seeds_of_plants_1.nodes.new("NodeGroupInput")
+    group_input.name = "Group Input"
+
+    # Node Group Output
+    group_output = seeds_of_plants_1.nodes.new("NodeGroupOutput")
+    group_output.name = "Group Output"
+    group_output.is_active_output = True
+
+    # Node Curve Circle
+    curve_circle = seeds_of_plants_1.nodes.new("GeometryNodeCurvePrimitiveCircle")
+    curve_circle.name = "Curve Circle"
+    curve_circle.mode = 'RADIUS'
+    # Resolution
+    curve_circle.inputs[0].default_value = 32
+
+    # Node Fill Curve
+    fill_curve = seeds_of_plants_1.nodes.new("GeometryNodeFillCurve")
+    fill_curve.name = "Fill Curve"
+    # Group ID
+    fill_curve.inputs[1].default_value = 0
+    # Mode
+    fill_curve.inputs[2].default_value = 'Triangles'
+    # Fill Rule
+    fill_curve.inputs[3].default_value = 'Even-Odd'
+
+    # Node Distribute Points on Faces
+    distribute_points_on_faces = seeds_of_plants_1.nodes.new("GeometryNodeDistributePointsOnFaces")
+    distribute_points_on_faces.name = "Distribute Points on Faces"
+    distribute_points_on_faces.distribute_method = 'RANDOM'
+    distribute_points_on_faces.use_legacy_normal = False
+    # Selection
+    distribute_points_on_faces.inputs[1].default_value = True
+    # Seed
+    distribute_points_on_faces.inputs[6].default_value = 0
+
+    # Node Instance on Points
+    instance_on_points = seeds_of_plants_1.nodes.new("GeometryNodeInstanceOnPoints")
+    instance_on_points.name = "Instance on Points"
+    # Selection
+    instance_on_points.inputs[1].default_value = True
+    # Pick Instance
+    instance_on_points.inputs[3].default_value = False
+    # Instance Index
+    instance_on_points.inputs[4].default_value = 0
+    # Rotation
+    instance_on_points.inputs[5].default_value = (0.0, 0.0, 0.0)
+
+    # Node Curve Line
+    curve_line = seeds_of_plants_1.nodes.new("GeometryNodeCurvePrimitiveLine")
+    curve_line.name = "Curve Line"
+    curve_line.mode = 'POINTS'
+    # Start
+    curve_line.inputs[0].default_value = (0.0, 0.0, 0.0)
+
+    # Node Map Range
+    map_range = seeds_of_plants_1.nodes.new("ShaderNodeMapRange")
+    map_range.name = "Map Range"
+    map_range.clamp = True
+    map_range.data_type = 'FLOAT'
+    map_range.interpolation_type = 'LINEAR'
+    # Value
+    map_range.inputs[0].default_value = 1.0
+    # From Min
+    map_range.inputs[1].default_value = 0.6000000238418579
+    # From Max
+    map_range.inputs[2].default_value = 1.0
+    # To Min
+    map_range.inputs[3].default_value = 0.6000000238418579
+    # To Max
+    map_range.inputs[4].default_value = 1.0
+
+    # Node Realize Instances
+    realize_instances = seeds_of_plants_1.nodes.new("GeometryNodeRealizeInstances")
+    realize_instances.name = "Realize Instances"
+    realize_instances.realize_to_point_domain = False
+    # Selection
+    realize_instances.inputs[1].default_value = True
+    # Realize All
+    realize_instances.inputs[2].default_value = True
+    # Depth
+    realize_instances.inputs[3].default_value = 0
+
+    # Set locations
+    seeds_of_plants_1.nodes["Group Input"].location = (-605.7672729492188, -209.76931762695312)
+    seeds_of_plants_1.nodes["Group Output"].location = (749.278076171875, 57.56877136230469)
+    seeds_of_plants_1.nodes["Curve Circle"].location = (-347.0433654785156, -102.14080810546875)
+    seeds_of_plants_1.nodes["Fill Curve"].location = (-126.25535583496094, -14.290046691894531)
+    seeds_of_plants_1.nodes["Distribute Points on Faces"].location = (64.1329345703125, 35.04779815673828)
+    seeds_of_plants_1.nodes["Instance on Points"].location = (388.99993896484375, 37.398040771484375)
+    seeds_of_plants_1.nodes["Curve Line"].location = (-32.5421257019043, -305.632568359375)
+    seeds_of_plants_1.nodes["Map Range"].location = (189.34376525878906, -333.59674072265625)
+    seeds_of_plants_1.nodes["Realize Instances"].location = (569.0000610351562, 47.354400634765625)
+
+    # Set dimensions
+    seeds_of_plants_1.nodes["Group Input"].width  = 140.0
+    seeds_of_plants_1.nodes["Group Input"].height = 100.0
+
+    seeds_of_plants_1.nodes["Group Output"].width  = 140.0
+    seeds_of_plants_1.nodes["Group Output"].height = 100.0
+
+    seeds_of_plants_1.nodes["Curve Circle"].width  = 140.0
+    seeds_of_plants_1.nodes["Curve Circle"].height = 100.0
+
+    seeds_of_plants_1.nodes["Fill Curve"].width  = 140.0
+    seeds_of_plants_1.nodes["Fill Curve"].height = 100.0
+
+    seeds_of_plants_1.nodes["Distribute Points on Faces"].width  = 170.0
+    seeds_of_plants_1.nodes["Distribute Points on Faces"].height = 100.0
+
+    seeds_of_plants_1.nodes["Instance on Points"].width  = 140.0
+    seeds_of_plants_1.nodes["Instance on Points"].height = 100.0
+
+    seeds_of_plants_1.nodes["Curve Line"].width  = 140.0
+    seeds_of_plants_1.nodes["Curve Line"].height = 100.0
+
+    seeds_of_plants_1.nodes["Map Range"].width  = 140.0
+    seeds_of_plants_1.nodes["Map Range"].height = 100.0
+
+    seeds_of_plants_1.nodes["Realize Instances"].width  = 140.0
+    seeds_of_plants_1.nodes["Realize Instances"].height = 100.0
+
+
+    # Initialize seeds_of_plants_1 links
+
+    # curve_circle.Curve -> fill_curve.Curve
+    seeds_of_plants_1.links.new(
+        seeds_of_plants_1.nodes["Curve Circle"].outputs[0],
+        seeds_of_plants_1.nodes["Fill Curve"].inputs[0]
+    )
+    # realize_instances.Geometry -> group_output.Geometry
+    seeds_of_plants_1.links.new(
+        seeds_of_plants_1.nodes["Realize Instances"].outputs[0],
+        seeds_of_plants_1.nodes["Group Output"].inputs[0]
+    )
+    # fill_curve.Mesh -> distribute_points_on_faces.Mesh
+    seeds_of_plants_1.links.new(
+        seeds_of_plants_1.nodes["Fill Curve"].outputs[0],
+        seeds_of_plants_1.nodes["Distribute Points on Faces"].inputs[0]
+    )
+    # distribute_points_on_faces.Points -> instance_on_points.Points
+    seeds_of_plants_1.links.new(
+        seeds_of_plants_1.nodes["Distribute Points on Faces"].outputs[0],
+        seeds_of_plants_1.nodes["Instance on Points"].inputs[0]
+    )
+    # curve_line.Curve -> instance_on_points.Instance
+    seeds_of_plants_1.links.new(
+        seeds_of_plants_1.nodes["Curve Line"].outputs[0],
+        seeds_of_plants_1.nodes["Instance on Points"].inputs[2]
+    )
+    # map_range.Result -> instance_on_points.Scale
+    seeds_of_plants_1.links.new(
+        seeds_of_plants_1.nodes["Map Range"].outputs[0],
+        seeds_of_plants_1.nodes["Instance on Points"].inputs[6]
+    )
+    # instance_on_points.Instances -> realize_instances.Geometry
+    seeds_of_plants_1.links.new(
+        seeds_of_plants_1.nodes["Instance on Points"].outputs[0],
+        seeds_of_plants_1.nodes["Realize Instances"].inputs[0]
+    )
+    # group_input.Radius -> curve_circle.Radius
+    seeds_of_plants_1.links.new(
+        seeds_of_plants_1.nodes["Group Input"].outputs[0],
+        seeds_of_plants_1.nodes["Curve Circle"].inputs[4]
+    )
+    # group_input.Density of plants -> distribute_points_on_faces.Density
+    seeds_of_plants_1.links.new(
+        seeds_of_plants_1.nodes["Group Input"].outputs[1],
+        seeds_of_plants_1.nodes["Distribute Points on Faces"].inputs[4]
+    )
+    # group_input.Curve Line Length -> curve_line.End
+    seeds_of_plants_1.links.new(
+        seeds_of_plants_1.nodes["Group Input"].outputs[2],
+        seeds_of_plants_1.nodes["Curve Line"].inputs[1]
+    )
+
+    return seeds_of_plants_1
 
 if __name__ == "__main__":
     node_tree_names : dict[typing.Callable, str] = {}
@@ -1889,6 +2043,9 @@ if __name__ == "__main__":
 
     choos_name = choos_name_1_node_group(node_tree_names)
     node_tree_names[choos_name_1_node_group] = choos_name.name
+
+    seeds_of_plants = seeds_of_plants_1_node_group(node_tree_names)
+    node_tree_names[seeds_of_plants_1_node_group] = seeds_of_plants.name
 
     obj = bpy.context.active_object
 
