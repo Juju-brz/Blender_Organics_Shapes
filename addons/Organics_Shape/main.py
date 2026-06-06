@@ -277,6 +277,16 @@ class NODE_OT_noise(bpy.types.Operator):
         GeoNode.noise_1_node_group(node_tree_names)
         return {'FINISHED'}
 
+class NODE_OT_head(bpy.types.Operator):
+    bl_idname = "object.head"
+    bl_label = "head"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        node_tree_names : dict[typing.Callable, str] = {}
+        GeoNode.head_1_node_group(node_tree_names)
+        return {'FINISHED'}
+
 ### NODES  CLASS END ###
 
 ### CLASS END  ###
@@ -413,9 +423,8 @@ class NODE_PT_Plant_Generator(bpy.types.Panel):
         layout.operator("object.seeds_of_plants", text="seeds of plants")
         layout.operator("object.branches", text="create branches")
         layout.operator("object.create_leafs", text="create leafs")
-
-
-
+        layout.label(text = 'Plant')
+        layout.operator("object.head", text="head")
 
 
 class NODE_PT_Volume(bpy.types.Panel):
@@ -490,6 +499,7 @@ def register():
     bpy.utils.register_class(NODE_OT_thickness)
     bpy.utils.register_class(NODE_OT_seeds_of_plants)
     bpy.utils.register_class(NODE_OT_noise)
+    bpy.utils.register_class(NODE_OT_head)
 
     for cls in classes:
         bpy.utils.register_class(cls)
@@ -536,6 +546,7 @@ def unregister():
     bpy.utils.unregister_class(NODE_OT_thickness)
     bpy.utils.unregister_class(NODE_OT_seeds_of_plants)
     bpy.utils.unregister_class(NODE_OT_noise)
+    bpy.utils.unregister_class(NODE_OT_head)
 
 
 if __name__ == "__main__":

@@ -2311,14 +2311,24 @@ def noise_1_node_group(node_tree_names: dict[typing.Callable, str]):
     position_socket.structure_type = 'AUTO'
 
     # Socket Noise Amplitude
-    noise_amplitude_socket = noise_1.interface.new_socket(name="Noise Amplitude", in_out='INPUT', socket_type='NodeSocketVector')
-    noise_amplitude_socket.default_value = (0.7000000476837158, 0.7000000476837158, 0.7000000476837158)
-    noise_amplitude_socket.min_value = -10000.0
-    noise_amplitude_socket.max_value = 10000.0
+    noise_amplitude_socket = noise_1.interface.new_socket(name="Noise Amplitude", in_out='INPUT', socket_type='NodeSocketFloat')
+    noise_amplitude_socket.default_value = 1.0
+    noise_amplitude_socket.min_value = -3.4028234663852886e+38
+    noise_amplitude_socket.max_value = 3.4028234663852886e+38
     noise_amplitude_socket.subtype = 'NONE'
     noise_amplitude_socket.attribute_domain = 'POINT'
     noise_amplitude_socket.default_input = 'VALUE'
     noise_amplitude_socket.structure_type = 'AUTO'
+
+    # Socket Seed
+    seed_socket = noise_1.interface.new_socket(name="Seed", in_out='INPUT', socket_type='NodeSocketInt')
+    seed_socket.default_value = 0
+    seed_socket.min_value = -10000
+    seed_socket.max_value = 10000
+    seed_socket.subtype = 'NONE'
+    seed_socket.attribute_domain = 'POINT'
+    seed_socket.default_input = 'VALUE'
+    seed_socket.structure_type = 'AUTO'
 
     # Initialize noise_1 nodes
 
@@ -2368,6 +2378,15 @@ def noise_1_node_group(node_tree_names: dict[typing.Callable, str]):
     group_input = noise_1.nodes.new("NodeGroupInput")
     group_input.name = "Group Input"
 
+    # Node Random Value
+    random_value = noise_1.nodes.new("FunctionNodeRandomValue")
+    random_value.name = "Random Value"
+    random_value.data_type = 'FLOAT'
+    # Min_001
+    random_value.inputs[2].default_value = 0.0
+    # ID
+    random_value.inputs[7].default_value = 0
+
     # Set locations
     noise_1.nodes["Set Position"].location = (290.3138427734375, 76.607421875)
     noise_1.nodes["Noise Texture"].location = (-324.68121337890625, -187.92225646972656)
@@ -2375,6 +2394,7 @@ def noise_1_node_group(node_tree_names: dict[typing.Callable, str]):
     noise_1.nodes["Vector Math.001"].location = (124.138671875, -12.60015869140625)
     noise_1.nodes["Group Output"].location = (480.3138427734375, -3.0517578125e-05)
     noise_1.nodes["Group Input"].location = (-490.3138732910156, -3.0517578125e-05)
+    noise_1.nodes["Random Value"].location = (-110.77513122558594, -32.26477813720703)
 
     # Set dimensions
     noise_1.nodes["Set Position"].width  = 140.0
@@ -2394,6 +2414,9 @@ def noise_1_node_group(node_tree_names: dict[typing.Callable, str]):
 
     noise_1.nodes["Group Input"].width  = 140.0
     noise_1.nodes["Group Input"].height = 100.0
+
+    noise_1.nodes["Random Value"].width  = 140.0
+    noise_1.nodes["Random Value"].height = 100.0
 
 
     # Initialize noise_1 links
@@ -2428,10 +2451,20 @@ def noise_1_node_group(node_tree_names: dict[typing.Callable, str]):
         noise_1.nodes["Group Input"].outputs[1],
         noise_1.nodes["Vector Math"].inputs[1]
     )
-    # group_input.Noise Amplitude -> vector_math_001.Vector
+    # random_value.Value -> vector_math_001.Vector
+    noise_1.links.new(
+        noise_1.nodes["Random Value"].outputs[1],
+        noise_1.nodes["Vector Math.001"].inputs[1]
+    )
+    # group_input.Noise Amplitude -> random_value.Max
     noise_1.links.new(
         noise_1.nodes["Group Input"].outputs[2],
-        noise_1.nodes["Vector Math.001"].inputs[1]
+        noise_1.nodes["Random Value"].inputs[3]
+    )
+    # group_input.Seed -> random_value.Seed
+    noise_1.links.new(
+        noise_1.nodes["Group Input"].outputs[3],
+        noise_1.nodes["Random Value"].inputs[8]
     )
 
     return noise_1
@@ -2768,6 +2801,323 @@ def symmetry_1_node_group(node_tree_names: dict[typing.Callable, str]):
 
     return symmetry_1
 
+def head_1_node_group(node_tree_names: dict[typing.Callable, str]):
+    """Initialize head node group"""
+    head_1 = bpy.data.node_groups.new(type='GeometryNodeTree', name="head")
+
+    head_1.color_tag = 'NONE'
+    head_1.description = ""
+    head_1.default_group_node_width = 140
+    head_1.show_modifier_manage_panel = True
+
+    # head_1 interface
+
+    # Socket Geometry
+    geometry_socket = head_1.interface.new_socket(name="Geometry", in_out='OUTPUT', socket_type='NodeSocketGeometry')
+    geometry_socket.attribute_domain = 'POINT'
+    geometry_socket.default_input = 'VALUE'
+    geometry_socket.structure_type = 'AUTO'
+
+    # Socket Geometry
+    geometry_socket_1 = head_1.interface.new_socket(name="Geometry", in_out='INPUT', socket_type='NodeSocketGeometry')
+    geometry_socket_1.attribute_domain = 'POINT'
+    geometry_socket_1.description = "Geometry to delete elements from"
+    geometry_socket_1.default_input = 'VALUE'
+    geometry_socket_1.structure_type = 'AUTO'
+
+    # Socket Join Geometry
+    join_geometry_socket = head_1.interface.new_socket(name="Join Geometry", in_out='INPUT', socket_type='NodeSocketGeometry')
+    join_geometry_socket.attribute_domain = 'POINT'
+    join_geometry_socket.description = "Geometries to merge together by concatenating their elements"
+    join_geometry_socket.default_input = 'VALUE'
+    join_geometry_socket.structure_type = 'AUTO'
+
+    # Socket head Geometry
+    head_geometry_socket = head_1.interface.new_socket(name="head Geometry", in_out='INPUT', socket_type='NodeSocketGeometry')
+    head_geometry_socket.attribute_domain = 'POINT'
+    head_geometry_socket.description = "Geometry that is instanced on the points"
+    head_geometry_socket.default_input = 'VALUE'
+    head_geometry_socket.structure_type = 'AUTO'
+
+    # Socket To Max
+    to_max_socket = head_1.interface.new_socket(name="To Max", in_out='INPUT', socket_type='NodeSocketFloat')
+    to_max_socket.default_value = 1.0
+    to_max_socket.min_value = -10000.0
+    to_max_socket.max_value = 10000.0
+    to_max_socket.subtype = 'NONE'
+    to_max_socket.attribute_domain = 'POINT'
+    to_max_socket.default_input = 'VALUE'
+    to_max_socket.structure_type = 'AUTO'
+
+    # Initialize head_1 nodes
+
+    # Node Instance on Points
+    instance_on_points = head_1.nodes.new("GeometryNodeInstanceOnPoints")
+    instance_on_points.name = "Instance on Points"
+    # Selection
+    instance_on_points.inputs[1].default_value = True
+    # Pick Instance
+    instance_on_points.inputs[3].default_value = False
+    # Instance Index
+    instance_on_points.inputs[4].default_value = 0
+    # Rotation
+    instance_on_points.inputs[5].default_value = (0.0, 0.0, 0.0)
+
+    # Node Distribute Points on Faces
+    distribute_points_on_faces = head_1.nodes.new("GeometryNodeDistributePointsOnFaces")
+    distribute_points_on_faces.name = "Distribute Points on Faces"
+    distribute_points_on_faces.distribute_method = 'RANDOM'
+    distribute_points_on_faces.use_legacy_normal = False
+    # Selection
+    distribute_points_on_faces.inputs[1].default_value = True
+    # Density
+    distribute_points_on_faces.inputs[4].default_value = 2.0
+    # Seed
+    distribute_points_on_faces.inputs[6].default_value = 0
+
+    # Node Curve to Tube
+    curve_to_tube = head_1.nodes.new("GeometryNodeGroup")
+    curve_to_tube.name = "Curve to Tube"
+    # Finding linked library node group
+    for node_group in bpy.data.node_groups:
+        if (
+            node_group.name == "Curve to Tube"
+            and node_group.bl_idname == 'GeometryNodeTree'
+        ):
+            curve_to_tube.node_tree = node_group
+    if curve_to_tube.node_tree is None:
+        print("Couldn't find node group Curve to Tube, failing")
+        return
+    # Socket_5
+    curve_to_tube.inputs[1].default_value = 0.10000038146972656
+    # Socket_4
+    curve_to_tube.inputs[2].default_value = 'Round'
+    # Socket_26
+    curve_to_tube.inputs[3].default_value = 'Object'
+    # Socket_2
+    curve_to_tube.inputs[6].default_value = 8
+    # Socket_11
+    curve_to_tube.inputs[7].default_value = True
+    # Socket_36
+    curve_to_tube.inputs[8].default_value = True
+    # Socket_32
+    curve_to_tube.inputs[9].default_value = 'Evaluated'
+    # Socket_33
+    curve_to_tube.inputs[10].default_value = 10
+    # Socket_37
+    curve_to_tube.inputs[11].default_value = 0.10000000149011612
+    # Socket_38
+    curve_to_tube.inputs[12].default_value = 1.0
+    # Socket_39
+    curve_to_tube.inputs[13].default_value = True
+    # Socket_10
+    curve_to_tube.inputs[14].default_value = 'Flat'
+    # Socket_25
+    curve_to_tube.inputs[15].default_value = 'Object'
+    # Socket_28
+    curve_to_tube.inputs[20].default_value = 12
+    # Socket_15
+    curve_to_tube.inputs[21].default_value = False
+    # Socket_13
+    curve_to_tube.inputs[22].default_value = True
+    # Socket_14
+    curve_to_tube.inputs[23].default_value = False
+    # Socket_30
+    curve_to_tube.inputs[24].default_value = True
+    # Socket_31
+    curve_to_tube.inputs[25].default_value = True
+    # Socket_17
+    curve_to_tube.inputs[26].default_value = "UVMap"
+    # Socket_19
+    curve_to_tube.inputs[27].default_value = 'Length'
+    # Socket_20
+    curve_to_tube.inputs[28].default_value = 'Factor'
+    # Socket_29
+    curve_to_tube.inputs[29].default_value = True
+
+    # Node Join Geometry.001
+    join_geometry_001 = head_1.nodes.new("GeometryNodeJoinGeometry")
+    join_geometry_001.name = "Join Geometry.001"
+
+    # Node Group Output
+    group_output = head_1.nodes.new("NodeGroupOutput")
+    group_output.name = "Group Output"
+    group_output.is_active_output = True
+
+    # Node Group Input
+    group_input = head_1.nodes.new("NodeGroupInput")
+    group_input.name = "Group Input"
+
+    # Node Spline Length
+    spline_length = head_1.nodes.new("GeometryNodeSplineLength")
+    spline_length.name = "Spline Length"
+
+    # Node Spline Parameter
+    spline_parameter = head_1.nodes.new("GeometryNodeSplineParameter")
+    spline_parameter.name = "Spline Parameter"
+
+    # Node Math
+    math = head_1.nodes.new("ShaderNodeMath")
+    math.name = "Math"
+    math.operation = 'DIVIDE'
+    math.use_clamp = False
+
+    # Node Math.001
+    math_001 = head_1.nodes.new("ShaderNodeMath")
+    math_001.name = "Math.001"
+    math_001.operation = 'LESS_THAN'
+    math_001.use_clamp = True
+    # Value_001
+    math_001.inputs[1].default_value = 1.0
+
+    # Node Delete Geometry
+    delete_geometry = head_1.nodes.new("GeometryNodeDeleteGeometry")
+    delete_geometry.name = "Delete Geometry"
+    delete_geometry.domain = 'POINT'
+    delete_geometry.mode = 'ALL'
+
+    # Node Map Range.001
+    map_range_001 = head_1.nodes.new("ShaderNodeMapRange")
+    map_range_001.name = "Map Range.001"
+    map_range_001.clamp = True
+    map_range_001.data_type = 'FLOAT'
+    map_range_001.interpolation_type = 'LINEAR'
+    # Value
+    map_range_001.inputs[0].default_value = 2.5999999046325684
+    # From Min
+    map_range_001.inputs[1].default_value = 0.0
+    # From Max
+    map_range_001.inputs[2].default_value = 1.0
+    # To Min
+    map_range_001.inputs[3].default_value = 0.7999999523162842
+
+    # Set locations
+    head_1.nodes["Instance on Points"].location = (499.4204406738281, 198.5785369873047)
+    head_1.nodes["Distribute Points on Faces"].location = (162.34622192382812, 34.15733337402344)
+    head_1.nodes["Curve to Tube"].location = (-122.14846801757812, -218.09219360351562)
+    head_1.nodes["Join Geometry.001"].location = (1039.9395751953125, 347.49359130859375)
+    head_1.nodes["Group Output"].location = (1380.8387451171875, 258.5392761230469)
+    head_1.nodes["Group Input"].location = (-1586.705322265625, 92.3110580444336)
+    head_1.nodes["Spline Length"].location = (-1136.888427734375, -601.8440551757812)
+    head_1.nodes["Spline Parameter"].location = (-1111.0247802734375, -455.48065185546875)
+    head_1.nodes["Math"].location = (-837.82666015625, -393.38140869140625)
+    head_1.nodes["Math.001"].location = (-608.452392578125, -544.4248046875)
+    head_1.nodes["Delete Geometry"].location = (-370.6131591796875, -379.986083984375)
+    head_1.nodes["Map Range.001"].location = (303.78594970703125, -148.07041931152344)
+
+    # Set dimensions
+    head_1.nodes["Instance on Points"].width  = 140.0
+    head_1.nodes["Instance on Points"].height = 100.0
+
+    head_1.nodes["Distribute Points on Faces"].width  = 170.0
+    head_1.nodes["Distribute Points on Faces"].height = 100.0
+
+    head_1.nodes["Curve to Tube"].width  = 200.0
+    head_1.nodes["Curve to Tube"].height = 100.0
+
+    head_1.nodes["Join Geometry.001"].width  = 140.0
+    head_1.nodes["Join Geometry.001"].height = 100.0
+
+    head_1.nodes["Group Output"].width  = 140.0
+    head_1.nodes["Group Output"].height = 100.0
+
+    head_1.nodes["Group Input"].width  = 140.0
+    head_1.nodes["Group Input"].height = 100.0
+
+    head_1.nodes["Spline Length"].width  = 140.0
+    head_1.nodes["Spline Length"].height = 100.0
+
+    head_1.nodes["Spline Parameter"].width  = 140.0
+    head_1.nodes["Spline Parameter"].height = 100.0
+
+    head_1.nodes["Math"].width  = 140.0
+    head_1.nodes["Math"].height = 100.0
+
+    head_1.nodes["Math.001"].width  = 140.0
+    head_1.nodes["Math.001"].height = 100.0
+
+    head_1.nodes["Delete Geometry"].width  = 140.0
+    head_1.nodes["Delete Geometry"].height = 100.0
+
+    head_1.nodes["Map Range.001"].width  = 140.0
+    head_1.nodes["Map Range.001"].height = 100.0
+
+
+    # Initialize head_1 links
+
+    # curve_to_tube.Mesh -> distribute_points_on_faces.Mesh
+    head_1.links.new(
+        head_1.nodes["Curve to Tube"].outputs[0],
+        head_1.nodes["Distribute Points on Faces"].inputs[0]
+    )
+    # distribute_points_on_faces.Points -> instance_on_points.Points
+    head_1.links.new(
+        head_1.nodes["Distribute Points on Faces"].outputs[0],
+        head_1.nodes["Instance on Points"].inputs[0]
+    )
+    # join_geometry_001.Geometry -> group_output.Geometry
+    head_1.links.new(
+        head_1.nodes["Join Geometry.001"].outputs[0],
+        head_1.nodes["Group Output"].inputs[0]
+    )
+    # group_input.head Geometry -> instance_on_points.Instance
+    head_1.links.new(
+        head_1.nodes["Group Input"].outputs[2],
+        head_1.nodes["Instance on Points"].inputs[2]
+    )
+    # spline_parameter.Length -> math.Value
+    head_1.links.new(
+        head_1.nodes["Spline Parameter"].outputs[1],
+        head_1.nodes["Math"].inputs[0]
+    )
+    # spline_length.Length -> math.Value
+    head_1.links.new(
+        head_1.nodes["Spline Length"].outputs[0],
+        head_1.nodes["Math"].inputs[1]
+    )
+    # math.Value -> math_001.Value
+    head_1.links.new(
+        head_1.nodes["Math"].outputs[0],
+        head_1.nodes["Math.001"].inputs[0]
+    )
+    # math_001.Value -> delete_geometry.Selection
+    head_1.links.new(
+        head_1.nodes["Math.001"].outputs[0],
+        head_1.nodes["Delete Geometry"].inputs[1]
+    )
+    # delete_geometry.Geometry -> curve_to_tube.Curve
+    head_1.links.new(
+        head_1.nodes["Delete Geometry"].outputs[0],
+        head_1.nodes["Curve to Tube"].inputs[0]
+    )
+    # group_input.Geometry -> delete_geometry.Geometry
+    head_1.links.new(
+        head_1.nodes["Group Input"].outputs[0],
+        head_1.nodes["Delete Geometry"].inputs[0]
+    )
+    # map_range_001.Result -> instance_on_points.Scale
+    head_1.links.new(
+        head_1.nodes["Map Range.001"].outputs[0],
+        head_1.nodes["Instance on Points"].inputs[6]
+    )
+    # group_input.To Max -> map_range_001.To Max
+    head_1.links.new(
+        head_1.nodes["Group Input"].outputs[3],
+        head_1.nodes["Map Range.001"].inputs[4]
+    )
+    # instance_on_points.Instances -> join_geometry_001.Geometry
+    head_1.links.new(
+        head_1.nodes["Instance on Points"].outputs[0],
+        head_1.nodes["Join Geometry.001"].inputs[0]
+    )
+    # group_input.Join Geometry -> join_geometry_001.Geometry
+    head_1.links.new(
+        head_1.nodes["Group Input"].outputs[1],
+        head_1.nodes["Join Geometry.001"].inputs[0]
+    )
+
+    return head_1
+
 if __name__ == "__main__":
     node_tree_names : dict[typing.Callable, str] = {}
 
@@ -2813,6 +3163,9 @@ if __name__ == "__main__":
 
     symmetry = symmetry_1_node_group(node_tree_names)
     node_tree_names[symmetry_1_node_group] = symmetry.name
+
+    head = head_1_node_group(node_tree_names)
+    node_tree_names[head_1_node_group] = head.name
 
     obj = bpy.context.active_object
 
