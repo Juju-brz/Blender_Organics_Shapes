@@ -38,7 +38,6 @@ class MESH_OT_hide_mesh(bpy.types.Operator):
         juju.toggle_mesh_visibility()
         return {'FINISHED'}
 
-
 class volume_to_Mesh(bpy.types.Operator):
     bl_idname = "object.volume_to_mesh"
     bl_label = "volume_to_mesh"
@@ -410,21 +409,21 @@ class NODE_PT_Plant_Generator(bpy.types.Panel):
         layout.operator("object.procedural_curve", text="Arc Curve")
 
         layout.label(text='modify curve')
-        layout.operator("object.create_trunk", text="create_trunk")
+        layout.operator("object.create_trunk", text="Create Trunk")
 
-        layout.operator("object.get_normalize", text="get normalize")
+        layout.operator("object.get_normalize", text="Get Normalize")
         layout.operator("object.delete_points_of_curve", text="delete points of curve")
-        layout.operator("object.thickness", text="thickness")
-        layout.operator("object.noise", text="noise")
+        layout.operator("object.thickness", text="Thickness")
+        layout.operator("object.noise", text="Noise")
 
         layout.label(text='modify mesh')
         layout.operator("object.sprinkle", text="Spinkle")
         layout.label(text = 'Tree')
-        layout.operator("object.seeds_of_plants", text="seeds of plants")
-        layout.operator("object.branches", text="create branches")
-        layout.operator("object.create_leafs", text="create leafs")
+        layout.operator("object.seeds_of_plants", text="Seeds of Plants")
+        layout.operator("object.branches", text="Create Branches")
+        layout.operator("object.create_leafs", text="Create Leafs")
         layout.label(text = 'Plant')
-        layout.operator("object.head", text="head")
+        layout.operator("object.head", text="Head")
 
 
 class NODE_PT_Volume(bpy.types.Panel):

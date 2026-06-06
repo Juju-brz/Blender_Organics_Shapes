@@ -12,18 +12,6 @@ import typing
 
 # Made with Node to Python
 
-### TEST ###
-# # Import node groups from Blender essentials library
-# datafiles_path = bpy.utils.system_resource('DATAFILES')
-# lib_relpath = "assets/nodes/geometry_nodes_essentials.blend"
-# lib_path = os.path.join(datafiles_path, lib_relpath)
-# with bpy.data.libraries.load(lib_path, link=True)  as (data_src, data_dst):
-# 	data_dst.node_groups = []
-# 	if "Curve to Tube" in data_src.node_groups:
-# 		data_dst.node_groups.append("Curve to Tube")
-
-
-### TEST ###
 
 
 def load_essential_node_groups():
@@ -57,9 +45,9 @@ def load_essential_node_groups():
     return True
 
 def create_trunk_1_node_group(node_tree_names: dict[typing.Callable, str]):
+    """Initialize Create Trunk node group"""
     load_essential_node_groups()
-    """Initialize create_trunk node group"""
-    create_trunk_1 = bpy.data.node_groups.new(type='GeometryNodeTree', name="create_trunk")
+    create_trunk_1 = bpy.data.node_groups.new(type='GeometryNodeTree', name="Create Trunk")
 
     create_trunk_1.color_tag = 'NONE'
     create_trunk_1.description = ""
@@ -74,6 +62,12 @@ def create_trunk_1_node_group(node_tree_names: dict[typing.Callable, str]):
     geometry_socket.attribute_domain = 'POINT'
     geometry_socket.default_input = 'VALUE'
     geometry_socket.structure_type = 'AUTO'
+
+    # Socket Curve
+    curve_socket = create_trunk_1.interface.new_socket(name="Curve", in_out='OUTPUT', socket_type='NodeSocketGeometry')
+    curve_socket.attribute_domain = 'POINT'
+    curve_socket.default_input = 'VALUE'
+    curve_socket.structure_type = 'AUTO'
 
     # Socket Geometry
     geometry_socket_1 = create_trunk_1.interface.new_socket(name="Geometry", in_out='INPUT', socket_type='NodeSocketGeometry')
@@ -161,15 +155,10 @@ def create_trunk_1_node_group(node_tree_names: dict[typing.Callable, str]):
     # Socket_29
     curve_to_tube.inputs[29].default_value = True
 
-    # Node Join Geometry
-    join_geometry = create_trunk_1.nodes.new("GeometryNodeJoinGeometry")
-    join_geometry.name = "Join Geometry"
-
     # Set locations
     create_trunk_1.nodes["Group Input"].location = (-340.0, 0.0)
-    create_trunk_1.nodes["Group Output"].location = (335.7822570800781, 139.33546447753906)
-    create_trunk_1.nodes["Curve to Tube"].location = (-102.19905853271484, 8.371559143066406)
-    create_trunk_1.nodes["Join Geometry"].location = (156.1344757080078, 84.99462890625)
+    create_trunk_1.nodes["Group Output"].location = (422.6451416015625, 60.08185577392578)
+    create_trunk_1.nodes["Curve to Tube"].location = (-79.89642333984375, -140.68746948242188)
 
     # Set dimensions
     create_trunk_1.nodes["Group Input"].width  = 140.0
@@ -181,17 +170,9 @@ def create_trunk_1_node_group(node_tree_names: dict[typing.Callable, str]):
     create_trunk_1.nodes["Curve to Tube"].width  = 200.0
     create_trunk_1.nodes["Curve to Tube"].height = 100.0
 
-    create_trunk_1.nodes["Join Geometry"].width  = 140.0
-    create_trunk_1.nodes["Join Geometry"].height = 100.0
-
 
     # Initialize create_trunk_1 links
 
-    # join_geometry.Geometry -> group_output.Geometry
-    create_trunk_1.links.new(
-        create_trunk_1.nodes["Join Geometry"].outputs[0],
-        create_trunk_1.nodes["Group Output"].inputs[0]
-    )
     # group_input.Geometry -> curve_to_tube.Curve
     create_trunk_1.links.new(
         create_trunk_1.nodes["Group Input"].outputs[0],
@@ -202,15 +183,15 @@ def create_trunk_1_node_group(node_tree_names: dict[typing.Callable, str]):
         create_trunk_1.nodes["Group Input"].outputs[1],
         create_trunk_1.nodes["Curve to Tube"].inputs[1]
     )
-    # curve_to_tube.Mesh -> join_geometry.Geometry
-    create_trunk_1.links.new(
-        create_trunk_1.nodes["Curve to Tube"].outputs[0],
-        create_trunk_1.nodes["Join Geometry"].inputs[0]
-    )
-    # group_input.Geometry -> join_geometry.Geometry
+    # group_input.Geometry -> group_output.Curve
     create_trunk_1.links.new(
         create_trunk_1.nodes["Group Input"].outputs[0],
-        create_trunk_1.nodes["Join Geometry"].inputs[0]
+        create_trunk_1.nodes["Group Output"].inputs[1]
+    )
+    # curve_to_tube.Mesh -> group_output.Geometry
+    create_trunk_1.links.new(
+        create_trunk_1.nodes["Curve to Tube"].outputs[0],
+        create_trunk_1.nodes["Group Output"].inputs[0]
     )
 
     return create_trunk_1
@@ -2840,12 +2821,12 @@ def head_1_node_group(node_tree_names: dict[typing.Callable, str]):
     geometry_socket_1.default_input = 'VALUE'
     geometry_socket_1.structure_type = 'AUTO'
 
-    # Socket Instance
-    instance_socket = head_1.interface.new_socket(name="Instance", in_out='INPUT', socket_type='NodeSocketGeometry')
-    instance_socket.attribute_domain = 'POINT'
-    instance_socket.description = "Geometry that is instanced on the points"
-    instance_socket.default_input = 'VALUE'
-    instance_socket.structure_type = 'AUTO'
+    # Socket Head Geometry
+    head_geometry_socket = head_1.interface.new_socket(name="Head Geometry", in_out='INPUT', socket_type='NodeSocketGeometry')
+    head_geometry_socket.attribute_domain = 'POINT'
+    head_geometry_socket.description = "Geometry that is instanced on the points"
+    head_geometry_socket.default_input = 'VALUE'
+    head_geometry_socket.structure_type = 'AUTO'
 
     # Socket Radius
     radius_socket = head_1.interface.new_socket(name="Radius", in_out='INPUT', socket_type='NodeSocketFloat')
@@ -3098,7 +3079,7 @@ def head_1_node_group(node_tree_names: dict[typing.Callable, str]):
         head_1.nodes["Group Input"].outputs[0],
         head_1.nodes["Delete Geometry"].inputs[0]
     )
-    # group_input.Instance -> instance_on_points.Instance
+    # group_input.Head Geometry -> instance_on_points.Instance
     head_1.links.new(
         head_1.nodes["Group Input"].outputs[1],
         head_1.nodes["Instance on Points"].inputs[2]
