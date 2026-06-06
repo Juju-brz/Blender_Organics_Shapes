@@ -12,6 +12,20 @@ import typing
 
 # Made with Node to Python
 
+### TEST ###
+# # Import node groups from Blender essentials library
+# datafiles_path = bpy.utils.system_resource('DATAFILES')
+# lib_relpath = "assets/nodes/geometry_nodes_essentials.blend"
+# lib_path = os.path.join(datafiles_path, lib_relpath)
+# with bpy.data.libraries.load(lib_path, link=True)  as (data_src, data_dst):
+# 	data_dst.node_groups = []
+# 	if "Curve to Tube" in data_src.node_groups:
+# 		data_dst.node_groups.append("Curve to Tube")
+
+
+### TEST ###
+
+
 def load_essential_node_groups():
 
     required_node_groups = ["Curve to Tube"]
@@ -2803,6 +2817,7 @@ def symmetry_1_node_group(node_tree_names: dict[typing.Callable, str]):
 
 def head_1_node_group(node_tree_names: dict[typing.Callable, str]):
     """Initialize head node group"""
+    load_essential_node_groups()
     head_1 = bpy.data.node_groups.new(type='GeometryNodeTree', name="head")
 
     head_1.color_tag = 'NONE'
@@ -2821,33 +2836,26 @@ def head_1_node_group(node_tree_names: dict[typing.Callable, str]):
     # Socket Geometry
     geometry_socket_1 = head_1.interface.new_socket(name="Geometry", in_out='INPUT', socket_type='NodeSocketGeometry')
     geometry_socket_1.attribute_domain = 'POINT'
-    geometry_socket_1.description = "Geometry to delete elements from"
+    geometry_socket_1.description = "Geometries to merge together by concatenating their elements"
     geometry_socket_1.default_input = 'VALUE'
     geometry_socket_1.structure_type = 'AUTO'
 
-    # Socket Join Geometry
-    join_geometry_socket = head_1.interface.new_socket(name="Join Geometry", in_out='INPUT', socket_type='NodeSocketGeometry')
-    join_geometry_socket.attribute_domain = 'POINT'
-    join_geometry_socket.description = "Geometries to merge together by concatenating their elements"
-    join_geometry_socket.default_input = 'VALUE'
-    join_geometry_socket.structure_type = 'AUTO'
+    # Socket Instance
+    instance_socket = head_1.interface.new_socket(name="Instance", in_out='INPUT', socket_type='NodeSocketGeometry')
+    instance_socket.attribute_domain = 'POINT'
+    instance_socket.description = "Geometry that is instanced on the points"
+    instance_socket.default_input = 'VALUE'
+    instance_socket.structure_type = 'AUTO'
 
-    # Socket head Geometry
-    head_geometry_socket = head_1.interface.new_socket(name="head Geometry", in_out='INPUT', socket_type='NodeSocketGeometry')
-    head_geometry_socket.attribute_domain = 'POINT'
-    head_geometry_socket.description = "Geometry that is instanced on the points"
-    head_geometry_socket.default_input = 'VALUE'
-    head_geometry_socket.structure_type = 'AUTO'
-
-    # Socket To Max
-    to_max_socket = head_1.interface.new_socket(name="To Max", in_out='INPUT', socket_type='NodeSocketFloat')
-    to_max_socket.default_value = 1.0
-    to_max_socket.min_value = -10000.0
-    to_max_socket.max_value = 10000.0
-    to_max_socket.subtype = 'NONE'
-    to_max_socket.attribute_domain = 'POINT'
-    to_max_socket.default_input = 'VALUE'
-    to_max_socket.structure_type = 'AUTO'
+    # Socket Radius
+    radius_socket = head_1.interface.new_socket(name="Radius", in_out='INPUT', socket_type='NodeSocketFloat')
+    radius_socket.default_value = 1.0
+    radius_socket.min_value = -10000.0
+    radius_socket.max_value = 10000.0
+    radius_socket.subtype = 'NONE'
+    radius_socket.attribute_domain = 'POINT'
+    radius_socket.default_input = 'VALUE'
+    radius_socket.structure_type = 'AUTO'
 
     # Initialize head_1 nodes
 
@@ -2935,19 +2943,6 @@ def head_1_node_group(node_tree_names: dict[typing.Callable, str]):
     # Socket_29
     curve_to_tube.inputs[29].default_value = True
 
-    # Node Join Geometry.001
-    join_geometry_001 = head_1.nodes.new("GeometryNodeJoinGeometry")
-    join_geometry_001.name = "Join Geometry.001"
-
-    # Node Group Output
-    group_output = head_1.nodes.new("NodeGroupOutput")
-    group_output.name = "Group Output"
-    group_output.is_active_output = True
-
-    # Node Group Input
-    group_input = head_1.nodes.new("NodeGroupInput")
-    group_input.name = "Group Input"
-
     # Node Spline Length
     spline_length = head_1.nodes.new("GeometryNodeSplineLength")
     spline_length.name = "Spline Length"
@@ -2991,19 +2986,32 @@ def head_1_node_group(node_tree_names: dict[typing.Callable, str]):
     # To Min
     map_range_001.inputs[3].default_value = 0.7999999523162842
 
+    # Node Group Output
+    group_output = head_1.nodes.new("NodeGroupOutput")
+    group_output.name = "Group Output"
+    group_output.is_active_output = True
+
+    # Node Group Input
+    group_input = head_1.nodes.new("NodeGroupInput")
+    group_input.name = "Group Input"
+
+    # Node Join Geometry
+    join_geometry = head_1.nodes.new("GeometryNodeJoinGeometry")
+    join_geometry.name = "Join Geometry"
+
     # Set locations
-    head_1.nodes["Instance on Points"].location = (499.4204406738281, 198.5785369873047)
-    head_1.nodes["Distribute Points on Faces"].location = (162.34622192382812, 34.15733337402344)
-    head_1.nodes["Curve to Tube"].location = (-122.14846801757812, -218.09219360351562)
-    head_1.nodes["Join Geometry.001"].location = (1039.9395751953125, 347.49359130859375)
-    head_1.nodes["Group Output"].location = (1380.8387451171875, 258.5392761230469)
-    head_1.nodes["Group Input"].location = (-1586.705322265625, 92.3110580444336)
-    head_1.nodes["Spline Length"].location = (-1136.888427734375, -601.8440551757812)
-    head_1.nodes["Spline Parameter"].location = (-1111.0247802734375, -455.48065185546875)
-    head_1.nodes["Math"].location = (-837.82666015625, -393.38140869140625)
-    head_1.nodes["Math.001"].location = (-608.452392578125, -544.4248046875)
-    head_1.nodes["Delete Geometry"].location = (-370.6131591796875, -379.986083984375)
-    head_1.nodes["Map Range.001"].location = (303.78594970703125, -148.07041931152344)
+    head_1.nodes["Instance on Points"].location = (586.026611328125, 223.49691772460938)
+    head_1.nodes["Distribute Points on Faces"].location = (210.8206787109375, 161.3325653076172)
+    head_1.nodes["Curve to Tube"].location = (-73.67401123046875, -90.91696166992188)
+    head_1.nodes["Spline Length"].location = (-1088.4140625, -474.6688232421875)
+    head_1.nodes["Spline Parameter"].location = (-1062.55029296875, -328.305419921875)
+    head_1.nodes["Math"].location = (-789.3521728515625, -266.2061767578125)
+    head_1.nodes["Math.001"].location = (-559.9779052734375, -417.24957275390625)
+    head_1.nodes["Delete Geometry"].location = (-322.1387023925781, -252.81085205078125)
+    head_1.nodes["Map Range.001"].location = (474.8985290527344, -215.79193115234375)
+    head_1.nodes["Group Output"].location = (1265.6165771484375, 412.0568542480469)
+    head_1.nodes["Group Input"].location = (-1178.5770263671875, 362.9207458496094)
+    head_1.nodes["Join Geometry"].location = (1032.7188720703125, 346.6789245605469)
 
     # Set dimensions
     head_1.nodes["Instance on Points"].width  = 140.0
@@ -3014,15 +3022,6 @@ def head_1_node_group(node_tree_names: dict[typing.Callable, str]):
 
     head_1.nodes["Curve to Tube"].width  = 200.0
     head_1.nodes["Curve to Tube"].height = 100.0
-
-    head_1.nodes["Join Geometry.001"].width  = 140.0
-    head_1.nodes["Join Geometry.001"].height = 100.0
-
-    head_1.nodes["Group Output"].width  = 140.0
-    head_1.nodes["Group Output"].height = 100.0
-
-    head_1.nodes["Group Input"].width  = 140.0
-    head_1.nodes["Group Input"].height = 100.0
 
     head_1.nodes["Spline Length"].width  = 140.0
     head_1.nodes["Spline Length"].height = 100.0
@@ -3042,6 +3041,15 @@ def head_1_node_group(node_tree_names: dict[typing.Callable, str]):
     head_1.nodes["Map Range.001"].width  = 140.0
     head_1.nodes["Map Range.001"].height = 100.0
 
+    head_1.nodes["Group Output"].width  = 140.0
+    head_1.nodes["Group Output"].height = 100.0
+
+    head_1.nodes["Group Input"].width  = 140.0
+    head_1.nodes["Group Input"].height = 100.0
+
+    head_1.nodes["Join Geometry"].width  = 140.0
+    head_1.nodes["Join Geometry"].height = 100.0
+
 
     # Initialize head_1 links
 
@@ -3054,16 +3062,6 @@ def head_1_node_group(node_tree_names: dict[typing.Callable, str]):
     head_1.links.new(
         head_1.nodes["Distribute Points on Faces"].outputs[0],
         head_1.nodes["Instance on Points"].inputs[0]
-    )
-    # join_geometry_001.Geometry -> group_output.Geometry
-    head_1.links.new(
-        head_1.nodes["Join Geometry.001"].outputs[0],
-        head_1.nodes["Group Output"].inputs[0]
-    )
-    # group_input.head Geometry -> instance_on_points.Instance
-    head_1.links.new(
-        head_1.nodes["Group Input"].outputs[2],
-        head_1.nodes["Instance on Points"].inputs[2]
     )
     # spline_parameter.Length -> math.Value
     head_1.links.new(
@@ -3090,30 +3088,40 @@ def head_1_node_group(node_tree_names: dict[typing.Callable, str]):
         head_1.nodes["Delete Geometry"].outputs[0],
         head_1.nodes["Curve to Tube"].inputs[0]
     )
-    # group_input.Geometry -> delete_geometry.Geometry
-    head_1.links.new(
-        head_1.nodes["Group Input"].outputs[0],
-        head_1.nodes["Delete Geometry"].inputs[0]
-    )
     # map_range_001.Result -> instance_on_points.Scale
     head_1.links.new(
         head_1.nodes["Map Range.001"].outputs[0],
         head_1.nodes["Instance on Points"].inputs[6]
     )
-    # group_input.To Max -> map_range_001.To Max
+    # group_input.Geometry -> delete_geometry.Geometry
     head_1.links.new(
-        head_1.nodes["Group Input"].outputs[3],
-        head_1.nodes["Map Range.001"].inputs[4]
+        head_1.nodes["Group Input"].outputs[0],
+        head_1.nodes["Delete Geometry"].inputs[0]
     )
-    # instance_on_points.Instances -> join_geometry_001.Geometry
-    head_1.links.new(
-        head_1.nodes["Instance on Points"].outputs[0],
-        head_1.nodes["Join Geometry.001"].inputs[0]
-    )
-    # group_input.Join Geometry -> join_geometry_001.Geometry
+    # group_input.Instance -> instance_on_points.Instance
     head_1.links.new(
         head_1.nodes["Group Input"].outputs[1],
-        head_1.nodes["Join Geometry.001"].inputs[0]
+        head_1.nodes["Instance on Points"].inputs[2]
+    )
+    # join_geometry.Geometry -> group_output.Geometry
+    head_1.links.new(
+        head_1.nodes["Join Geometry"].outputs[0],
+        head_1.nodes["Group Output"].inputs[0]
+    )
+    # instance_on_points.Instances -> join_geometry.Geometry
+    head_1.links.new(
+        head_1.nodes["Instance on Points"].outputs[0],
+        head_1.nodes["Join Geometry"].inputs[0]
+    )
+    # group_input.Radius -> map_range_001.To Max
+    head_1.links.new(
+        head_1.nodes["Group Input"].outputs[2],
+        head_1.nodes["Map Range.001"].inputs[4]
+    )
+    # group_input.Geometry -> join_geometry.Geometry
+    head_1.links.new(
+        head_1.nodes["Group Input"].outputs[0],
+        head_1.nodes["Join Geometry"].inputs[0]
     )
 
     return head_1
