@@ -460,9 +460,9 @@ class ORGANICS_MT_Menu(bpy.types.Menu):
         layout = self.layout
         layout.label(text="Organic Tools", icon='PARTICLES')
         layout.separator()
-        layout.operator("organics.scatter", text="Scatter", icon='STICKY_UVS_VERT')
-        layout.operator("organics.branch",  text="Branch Generator", icon='OUTLINER_OB_CURVE')
-        layout.operator("organics.leaf",    text="Leaf Distribution", icon='FORCE_WIND')
+        #layout.operator("organics.scatter", text="Scatter", icon='STICKY_UVS_VERT')
+        #layout.operator("organics.branch",  text="Branch Generator", icon='OUTLINER_OB_CURVE')
+        #layout.operator("organics.leaf",    text="Leaf Distribution", icon='FORCE_WIND')
         layout.label(text="truc")
         layout.operator("object.draw_curve", text="Draw Curve")
 
