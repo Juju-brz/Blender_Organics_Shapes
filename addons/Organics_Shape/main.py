@@ -290,7 +290,7 @@ class NODE_OT_head(bpy.types.Operator):
 
 ### CLASS END  ###
 
-### UI BEGIN ###
+####    UI BEGIN    ####
 
 
 ### 3D PANEL BEGIN ###
@@ -340,10 +340,11 @@ class VIEW3D_PT_PlantGeneration(bpy.types.Panel):
         layout.operator("object.create_leaf", text="Draw leaf")
         layout.operator("object.create_bezier_curve", text="create bezier curve")
 
-
+        layout.separator()
         layout.label(text='modify curve')
         layout.operator("object.create_spike_shape", text="create spike")
         layout.operator("object.subdivid_curve", text="subdivid curve")
+        layout.separator()
         layout.label(text="Select Vertice of Curve on Edit Mode")
         layout.operator("object.curve_test", text="curve test")
         layout.operator("object.fib_curve", text="fib curve")
@@ -450,7 +451,29 @@ class NODE_PT_Volume(bpy.types.Panel):
 
 ### NODE PANEL END ###
 
-### UI END ###
+### MT_Menu BEGIN ###
+class ORGANICS_MT_Menu(bpy.types.Menu):
+    bl_label = "Organics"
+    bl_idname = "ORGANICS_MT_menu"
+
+    def draw(self, context):
+        layout = self.layout
+        layout.label(text="Organic Tools", icon='PARTICLES')
+        layout.separator()
+        layout.operator("organics.scatter", text="Scatter", icon='STICKY_UVS_VERT')
+        layout.operator("organics.branch",  text="Branch Generator", icon='OUTLINER_OB_CURVE')
+        layout.operator("organics.leaf",    text="Leaf Distribution", icon='FORCE_WIND')
+        layout.label(text="truc")
+        layout.operator("object.draw_curve", text="Draw Curve")
+
+
+def draw_menu(self, context):
+    self.layout.separator()
+    self.layout.menu("ORGANICS_MT_menu", text="Organics", icon='OUTLINER_OB_POINTCLOUD')
+
+### MT_Menu END ###
+
+####    UI END      ####
 
 
 ### REGISTER BEGIN ###
@@ -467,6 +490,9 @@ def register():
     bpy.utils.register_class(NODE_PT_Organics_Generation)
     bpy.utils.register_class(NODE_PT_Volume)
     bpy.utils.register_class(NODE_PT_Plant_Generator)
+
+    bpy.utils.register_class(ORGANICS_MT_Menu)
+    bpy.types.VIEW3D_HT_header.append(draw_menu)
 
 
     bpy.utils.register_class(create_geometry_node)
@@ -515,6 +541,9 @@ def unregister():
     bpy.utils.unregister_class(NODE_PT_Organics_Generation)
     bpy.utils.unregister_class(NODE_PT_Volume)
     bpy.utils.unregister_class(NODE_PT_Plant_Generator)
+
+    bpy.types.VIEW3D_HT_header.remove(draw_menu)
+    bpy.utils.unregister_class(ORGANICS_MT_Menu)
 
     bpy.utils.unregister_class(create_geometry_node)
     bpy.utils.unregister_class(NODE_OT_symmetry)
