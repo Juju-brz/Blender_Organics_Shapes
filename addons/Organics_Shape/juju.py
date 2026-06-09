@@ -162,11 +162,6 @@ def curve_test():
         val1 = old_value
         print(val0)
 
-def create_bezier_curve():
-    bpy.ops.curve.primitive_bezier_curve_add(enter_editmode=False, align='WORLD', location=(0, 0, 0), scale=(1, 1, 1))
-    bpy.ops.object.editmode_toggle()
-    #bpy.ops.curve.delete(type='VERT')
-    bpy.ops.transform.translate(value=(-1, 0, 0))
 
 def fib_curve():
     val0 = 1.0
