@@ -472,9 +472,6 @@ class ORGANICS_MT_Menu(bpy.types.Menu):
         layout = self.layout
         layout.label(text="Organic Tools", icon='PARTICLES')
         layout.separator()
-        #layout.operator("organics.scatter", text="Scatter", icon='STICKY_UVS_VERT')
-        #layout.operator("organics.branch",  text="Branch Generator", icon='OUTLINER_OB_CURVE')
-        #layout.operator("organics.leaf",    text="Leaf Distribution", icon='FORCE_WIND')
         layout.label(text="truc")
         layout.operator("object.draw_curve", text="Draw Curve")
         layout.operator("object.curve_to_tube", text="Curve to Tube")
@@ -508,7 +505,7 @@ def register():
     bpy.utils.register_class(NODE_PT_Plant_Generator)
 
     bpy.utils.register_class(ORGANICS_MT_Menu)
-    bpy.types.VIEW3D_HT_header.append(draw_menu)
+    bpy.types.VIEW3D_HT_header.append(draw_menu) # ADD PANEL
 
 
     bpy.utils.register_class(create_geometry_node)
