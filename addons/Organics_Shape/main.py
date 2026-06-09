@@ -76,6 +76,18 @@ class MESH_OT_subdivision_mesh(bpy.types.Operator):
 
 ### VOLUME CLASS  END ###
 
+### CURVES CLASS BEGIN ###
+
+class CURVE_curve_to_tube(bpy.types.Operator):
+    bl_idname = "object.curve_to_tube"
+    bl_label = "curve to tube"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        juju.curve_to_tube()
+        return {'FINISHED'}
+
+### CURVES CLASS END ###
 
 ### PLANT GENERATOR  BEGIN ###
 class draw_curve(bpy.types.Operator):
@@ -465,6 +477,10 @@ class ORGANICS_MT_Menu(bpy.types.Menu):
         #layout.operator("organics.leaf",    text="Leaf Distribution", icon='FORCE_WIND')
         layout.label(text="truc")
         layout.operator("object.draw_curve", text="Draw Curve")
+        layout.operator("object.curve_to_tube", text="Curve to Tube")
+        layout.menu("VIEW3D_MT_transform")
+        layout.menu("VIEW3D_PT_PlantGeneration")
+
 
 
 def draw_menu(self, context):
@@ -526,6 +542,9 @@ def register():
     bpy.utils.register_class(NODE_OT_noise)
     bpy.utils.register_class(NODE_OT_head)
 
+    ## CURVE ##
+    bpy.utils.register_class(CURVE_curve_to_tube)
+
     for cls in classes:
         bpy.utils.register_class(cls)
 
@@ -575,6 +594,9 @@ def unregister():
     bpy.utils.unregister_class(NODE_OT_seeds_of_plants)
     bpy.utils.unregister_class(NODE_OT_noise)
     bpy.utils.unregister_class(NODE_OT_head)
+
+    ## CURVE ##
+    bpy.utils.unregister_class(CURVE_curve_to_tube)
 
 
 if __name__ == "__main__":

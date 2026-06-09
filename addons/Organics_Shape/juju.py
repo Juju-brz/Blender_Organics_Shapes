@@ -213,6 +213,10 @@ def procedural_arc_curve():
     node_tree_names : dict[typing.Callable, str] = {}
     GeoNode.arc_curve_1_node_group(node_tree_names)
 
+def curve_to_tube():
+    obj = bpy.context.object
+
+    obj = bpy.ops.object.modifier_add_node_group(asset_library_type='ESSENTIALS', asset_library_identifier="", relative_asset_identifier="nodes/geometry_nodes_essentials.blend/NodeTree/Curve to Tube")
 
 ### PLANT END ###
 
