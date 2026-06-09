@@ -136,7 +136,7 @@ class CURVE_subdivid_curve(bpy.types.Operator):
         juju.subdivid_curve()
         return {'FINISHED'}
 
-class procedural_curve(bpy.types.Operator):
+class CURVE_procedural_curve(bpy.types.Operator):
     bl_idname = "object.procedural_curve"
     bl_label = "procedural_curve"
     bl_options = {'REGISTER', 'UNDO'}
@@ -145,7 +145,7 @@ class procedural_curve(bpy.types.Operator):
         juju.procedural_arc_curve()
         return {'FINISHED'}
 
-class fib_curve(bpy.types.Operator):
+class CURVE_fib_curve(bpy.types.Operator):
     bl_idname = "object.fib_curve"
     bl_label = "fib_curve"
     bl_options = {'REGISTER', 'UNDO'}
@@ -347,10 +347,6 @@ class VIEW3D_PT_PlantGeneration(bpy.types.Panel):
         layout.label(text='modify curve')
         layout.operator("object.create_spike_shape", text="create spike")
         layout.operator("object.subdivid_curve", text="subdivid curve")
-        layout.separator()
-        layout.label(text="Select Vertice of Curve on Edit Mode")
-        layout.operator("object.curve_test", text="curve test")
-        layout.operator("object.fib_curve", text="fib curve")
 
 
 ### 3D PANEL END ###
@@ -468,7 +464,12 @@ class ORGANICS_MT_Menu(bpy.types.Menu):
         layout.operator("object.curve_to_tube", text="Curve to Tube")
         layout.menu("VIEW3D_MT_transform")
         layout.menu("VIEW3D_PT_PlantGeneration")
-
+        if context.mode == 'EDIT_CURVE':
+            layout.label(text="its works !!!")
+            layout.operator("object.curve_test", text="curve test")
+            layout.operator("object.fib_curve", text="fib curve")
+        if context.mode == 'EDIT_MESH':
+            layout.label(text="its works !!!")
 
 
 def draw_menu(self, context):
@@ -518,8 +519,8 @@ def register():
     bpy.utils.register_class(NODE_OT_sprinkle)
     bpy.utils.register_class(curve_test)
     bpy.utils.register_class(CURVE_subdivid_curve)
-    bpy.utils.register_class(fib_curve)
-    bpy.utils.register_class(procedural_curve)
+    bpy.utils.register_class(CURVE_fib_curve)
+    bpy.utils.register_class(CURVE_procedural_curve)
     bpy.utils.register_class(NODE_OT_Get_Normalize)
     bpy.utils.register_class(NODE_OT_delete_points_of_curve)
     bpy.utils.register_class(NODE_OT_create_leafs)
@@ -570,8 +571,8 @@ def unregister():
     bpy.utils.unregister_class(NODE_OT_sprinkle)
     bpy.utils.unregister_class(curve_test)
     bpy.utils.unregister_class(CURVE_subdivid_curve)
-    bpy.utils.unregister_class(fib_curve)
-    bpy.utils.unregister_class(procedural_curve)
+    bpy.utils.unregister_class(CURVE_fib_curve)
+    bpy.utils.unregister_class(CURVE_procedural_curve)
     bpy.utils.unregister_class(NODE_OT_Get_Normalize)
     bpy.utils.unregister_class(NODE_OT_delete_points_of_curve)
     bpy.utils.unregister_class(NODE_OT_create_leafs)
