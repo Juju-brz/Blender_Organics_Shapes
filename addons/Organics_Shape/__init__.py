@@ -5,7 +5,7 @@ bl_info = {
     "author": "Julien Brouzes",
     "blender": (4, 0, 0),
     "category": "Object",
-    "version": (0, 5, 0, 0)
+    "version": (0, 51, 0, 0)
 }
 
 import bpy
