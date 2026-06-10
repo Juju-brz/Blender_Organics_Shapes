@@ -137,6 +137,16 @@ class NODE_OT_head(bpy.types.Operator):
         GeoNode.head_1_node_group(node_tree_names)
         return {'FINISHED'}
 
+class NODE_OT_Vert_to_Sphere(bpy.types.Operator):
+    bl_idname = "object.vert_to_sphere"
+    bl_label = "Vert_to_Sphere"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        node_tree_names : dict[typing.Callable, str] = {}
+        GeoNode.vertices_to_sphere_1_node_group(node_tree_names)
+        return {'FINISHED'}
+
 ### NODES  CLASS END ###
 
 def register():
@@ -153,6 +163,7 @@ def register():
     bpy.utils.register_class(NODE_OT_seeds_of_plants)
     bpy.utils.register_class(NODE_OT_noise)
     bpy.utils.register_class(NODE_OT_head)
+    bpy.utils.register_class(NODE_OT_Vert_to_Sphere)
 
 def unregister():
     bpy.utils.unregister_class(NODE_OT_symmetry)
@@ -168,4 +179,5 @@ def unregister():
     bpy.utils.unregister_class(NODE_OT_seeds_of_plants)
     bpy.utils.unregister_class(NODE_OT_noise)
     bpy.utils.unregister_class(NODE_OT_head)
+    bpy.utils.unregister_class(NODE_OT_Vert_to_Sphere)
 

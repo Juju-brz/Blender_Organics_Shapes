@@ -233,6 +233,7 @@ class NODE_PT_Plant_Generator(bpy.types.Panel):
         layout.operator("object.create_leafs", text="Create Leafs")
         layout.label(text = 'Plant')
         layout.operator("object.head", text="Head")
+        layout.label(text = " test")
 
 
 class NODE_PT_Volume(bpy.types.Panel):
@@ -252,8 +253,9 @@ class NODE_PT_Volume(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
 
-        layout.operator("object.volume_simulation", text="volume_simulation")
+        layout.operator("object.volume_simulation", text="volume simulation")
         layout.operator("object.grid_volume" , text="grid volume")
+        layout.operator("object.vert_to_sphere", text="Vertice to Sphere")
 
 
 

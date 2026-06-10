@@ -198,7 +198,7 @@ def create_trunk_1_node_group(node_tree_names: dict[typing.Callable, str]):
 
 def volume_simulation(node_tree_names: dict[typing.Callable, str]):
     """Initialize volume_simulation node group"""
-    volume_simulation = bpy.data.node_groups.new(type='GeometryNodeTree', name="volume_simulation")
+    volume_simulation = bpy.data.node_groups.new(type='GeometryNodeTree', name="volume simulation")
 
     volume_simulation.color_tag = 'NONE'
     volume_simulation.description = ""
@@ -3107,6 +3107,101 @@ def head_1_node_group(node_tree_names: dict[typing.Callable, str]):
 
     return head_1
 
+def vertices_to_sphere_1_node_group(node_tree_names: dict[typing.Callable, str]):
+    """Initialize Vertices to Sphere node group"""
+    vertices_to_sphere_1 = bpy.data.node_groups.new(type='GeometryNodeTree', name="Vertices to Sphere")
+
+    vertices_to_sphere_1.color_tag = 'NONE'
+    vertices_to_sphere_1.description = ""
+    vertices_to_sphere_1.default_group_node_width = 140
+    vertices_to_sphere_1.show_modifier_manage_panel = True
+
+    # vertices_to_sphere_1 interface
+
+    # Socket Mesh
+    mesh_socket = vertices_to_sphere_1.interface.new_socket(name="Mesh", in_out='OUTPUT', socket_type='NodeSocketGeometry')
+    mesh_socket.attribute_domain = 'POINT'
+    mesh_socket.default_input = 'VALUE'
+    mesh_socket.structure_type = 'AUTO'
+
+    # Socket Points
+    points_socket = vertices_to_sphere_1.interface.new_socket(name="Points", in_out='INPUT', socket_type='NodeSocketGeometry')
+    points_socket.attribute_domain = 'POINT'
+    points_socket.description = "Points whose volume is converted to a signed distance field grid"
+    points_socket.default_input = 'VALUE'
+    points_socket.structure_type = 'AUTO'
+
+    # Initialize vertices_to_sphere_1 nodes
+
+    # Node Grid to Mesh
+    grid_to_mesh = vertices_to_sphere_1.nodes.new("GeometryNodeGridToMesh")
+    grid_to_mesh.name = "Grid to Mesh"
+    grid_to_mesh.show_options = True
+    # Threshold
+    grid_to_mesh.inputs[1].default_value = 0.10000000149011612
+    # Adaptivity
+    grid_to_mesh.inputs[2].default_value = 0.0
+
+    # Node Points to SDF Grid
+    points_to_sdf_grid = vertices_to_sphere_1.nodes.new("GeometryNodePointsToSDFGrid")
+    points_to_sdf_grid.name = "Points to SDF Grid"
+    points_to_sdf_grid.show_options = True
+    # Radius
+    points_to_sdf_grid.inputs[1].default_value = 0.10000002384185791
+    # Voxel Size
+    points_to_sdf_grid.inputs[2].default_value = 0.009999999776482582
+
+    # Node Group Output
+    group_output = vertices_to_sphere_1.nodes.new("NodeGroupOutput")
+    group_output.name = "Group Output"
+    group_output.show_options = True
+    group_output.is_active_output = True
+
+    # Node Group Input
+    group_input = vertices_to_sphere_1.nodes.new("NodeGroupInput")
+    group_input.name = "Group Input"
+    group_input.show_options = True
+
+    # Set locations
+    vertices_to_sphere_1.nodes["Grid to Mesh"].location = (180.02371215820312, -8.508987426757812)
+    vertices_to_sphere_1.nodes["Points to SDF Grid"].location = (-180.02371215820312, 8.50897216796875)
+    vertices_to_sphere_1.nodes["Group Output"].location = (370.0237121582031, -7.62939453125e-06)
+    vertices_to_sphere_1.nodes["Group Input"].location = (-380.0237121582031, -7.62939453125e-06)
+
+    # Set dimensions
+    vertices_to_sphere_1.nodes["Grid to Mesh"].width  = 140.0
+    vertices_to_sphere_1.nodes["Grid to Mesh"].height = 100.0
+
+    vertices_to_sphere_1.nodes["Points to SDF Grid"].width  = 140.0
+    vertices_to_sphere_1.nodes["Points to SDF Grid"].height = 100.0
+
+    vertices_to_sphere_1.nodes["Group Output"].width  = 140.0
+    vertices_to_sphere_1.nodes["Group Output"].height = 100.0
+
+    vertices_to_sphere_1.nodes["Group Input"].width  = 140.0
+    vertices_to_sphere_1.nodes["Group Input"].height = 100.0
+
+
+    # Initialize vertices_to_sphere_1 links
+
+    # points_to_sdf_grid.SDF Grid -> grid_to_mesh.Grid
+    vertices_to_sphere_1.links.new(
+        vertices_to_sphere_1.nodes["Points to SDF Grid"].outputs[0],
+        vertices_to_sphere_1.nodes["Grid to Mesh"].inputs[0]
+    )
+    # group_input.Points -> points_to_sdf_grid.Points
+    vertices_to_sphere_1.links.new(
+        vertices_to_sphere_1.nodes["Group Input"].outputs[0],
+        vertices_to_sphere_1.nodes["Points to SDF Grid"].inputs[0]
+    )
+    # grid_to_mesh.Mesh -> group_output.Mesh
+    vertices_to_sphere_1.links.new(
+        vertices_to_sphere_1.nodes["Grid to Mesh"].outputs[0],
+        vertices_to_sphere_1.nodes["Group Output"].inputs[0]
+    )
+
+    return vertices_to_sphere_1
+
 if __name__ == "__main__":
     node_tree_names : dict[typing.Callable, str] = {}
 
@@ -3149,12 +3244,14 @@ if __name__ == "__main__":
     noise = noise_1_node_group(node_tree_names)
     node_tree_names[noise_1_node_group] = noise.name
 
-
     symmetry = symmetry_1_node_group(node_tree_names)
     node_tree_names[symmetry_1_node_group] = symmetry.name
 
     head = head_1_node_group(node_tree_names)
     node_tree_names[head_1_node_group] = head.name
+
+    vertices_to_sphere = vertices_to_sphere_1_node_group(node_tree_names)
+    node_tree_names[vertices_to_sphere_1_node_group] = vertices_to_sphere.name
 
     obj = bpy.context.active_object
 
