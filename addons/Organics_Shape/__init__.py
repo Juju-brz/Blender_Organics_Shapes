@@ -10,15 +10,18 @@ bl_info = {
 
 import bpy
 from . import main
-
+from . import Cls_GeoNode
 
 def register():
     main.register()
     #panels.register()
+    Cls_GeoNode.register()
+
 
 def unregister():
     main.unregister()
     #panels.unregister()
+    Cls_GeoNode.unregister()
 
 
 ###

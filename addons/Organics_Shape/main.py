@@ -8,7 +8,7 @@ import sys
 import os
 from . import juju
 from . import GeoNode
-
+from . import Cls_GeoNode
 
 
 
@@ -158,15 +158,15 @@ class CURVE_fib_curve(bpy.types.Operator):
 
 ### NODES  CLASS BEGIN ###
 
-class NODE_OT_symmetry(bpy.types.Operator):
-    bl_idname = "object.symmetry"
-    bl_label = "symmetry"
-    bl_options = {'REGISTER', 'UNDO'}
-
-    def execute(self, context):
-        node_tree_names : dict[typing.Callable, str] = {}
-        GeoNode.symmetry_1_node_group(node_tree_names)
-        return {'FINISHED'}
+# class NODE_OT_symmetry(bpy.types.Operator):
+#     bl_idname = "object.symmetry"
+#     bl_label = "symmetry"
+#     bl_options = {'REGISTER', 'UNDO'}
+#
+#     def execute(self, context):
+#         node_tree_names : dict[typing.Callable, str] = {}
+#         GeoNode.symmetry_1_node_group(node_tree_names)
+#         return {'FINISHED'}
 
 class NODE_OT_create_trunk(bpy.types.Operator):
     bl_idname = "object.create_trunk"
@@ -509,7 +509,7 @@ def register():
 
 
     bpy.utils.register_class(create_geometry_node)
-    bpy.utils.register_class(NODE_OT_symmetry)
+    #bpy.utils.register_class(NODE_OT_symmetry)
 
     ## VOLUME ##
     bpy.utils.register_class(MESH_OT_mesh_to_Volume)
@@ -561,7 +561,7 @@ def unregister():
     bpy.utils.unregister_class(ORGANICS_MT_Menu)
 
     bpy.utils.unregister_class(create_geometry_node)
-    bpy.utils.unregister_class(NODE_OT_symmetry)
+    #bpy.utils.unregister_class(NODE_OT_symmetry)
 
     ## VOLUME ##
     bpy.utils.unregister_class(MESH_OT_mesh_to_Volume)
