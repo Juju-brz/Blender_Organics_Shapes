@@ -462,12 +462,20 @@ class ORGANICS_MT_Menu(bpy.types.Menu):
         layout.label(text="truc")
         layout.operator("object.draw_curve", text="Draw Curve")
         layout.operator("object.curve_to_tube", text="Curve to Tube")
+
+        # MENU
         layout.menu("VIEW3D_MT_transform")
         layout.menu("VIEW3D_PT_PlantGeneration")
+        layout.operator_menu_enum("object.hide_mesh", "type", text="SubMenu Test")
+
+        ## EDIT CURVE
         if context.mode == 'EDIT_CURVE':
             layout.label(text="its works !!!")
             layout.operator("object.curve_test", text="curve test")
             layout.operator("object.fib_curve", text="fib curve")
+            # Access this operator as a sub-menu.
+            layout.operator_menu_enum("object.select_by_type", "type", text="Select All by Type")
+
         if context.mode == 'EDIT_MESH':
             layout.label(text="its works !!!")
 
