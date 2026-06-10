@@ -1,0 +1,112 @@
+import bpy
+
+# ------------------------------------------------
+#  Opérateur avec EnumProperty → devient un sous-menu
+# ------------------------------------------------
+class ORGANICS_OT_generate(bpy.types.Operator):
+    bl_idname = "organics.generate"
+    bl_label = "Generate Organic"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    type: bpy.props.EnumProperty(
+        name="Type",
+        description="Choisir le type d'organique à générer",
+        items=[
+            ('BRANCH', "Branch", "Génère une branche",  'OUTLINER_OB_CURVE',  0),
+            ('LEAF',   "Leaf",   "Génère une feuille",  'FORCE_WIND',         1),
+            ('ROOT',   "Root",   "Génère une racine",   'OUTLINER_OB_CURVES', 2),
+            ('FLOWER', "Flower", "Génère une fleur",    'PARTICLES',          3),
+        ]
+    )
+
+    def execute(self, context):
+        # 👇 Ici tu brancheras tes vrais Geo Node Tools
+        if self.type == 'BRANCH':
+            print("🌿 Génération Branch")
+            # bpy.ops.ton_geo_node_branch_tool()
+
+        elif self.type == 'LEAF':
+            print("🍃 Génération Leaf")
+            # bpy.ops.ton_geo_node_leaf_tool()
+
+        elif self.type == 'ROOT':
+            print("🌱 Génération Root")
+            # bpy.ops.ton_geo_node_root_tool()
+
+        elif self.type == 'FLOWER':
+            print("🌸 Génération Flower")
+            # bpy.ops.ton_geo_node_flower_tool()
+
+        self.report({'INFO'}, f"Organic généré : {self.type}")
+        return {'FINISHED'}
+
+
+# ------------------------------------------------
+#  Sous-menu Edit Mode
+# ------------------------------------------------
+class ORGANICS_MT_EditSubMenu(bpy.types.Menu):
+    bl_label = "Edit Tools"
+    bl_idname = "ORGANICS_MT_edit_submenu"
+
+    def draw(self, context):
+        layout = self.layout
+        layout.operator("mesh.extrude_region_move", text="Extrude",   icon='NORMALS_FACE')
+        layout.operator("mesh.subdivide",           text="Subdivide", icon='MOD_SUBSURF')
+        layout.operator("mesh.loopcut",             text="Loop Cut",  icon='MOD_ARRAY')
+
+
+# ------------------------------------------------
+#  Menu principal
+# ------------------------------------------------
+class ORGANICS_MT_Menu(bpy.types.Menu):
+    bl_label = "Organics"
+    bl_idname = "ORGANICS_MT_menu"
+
+    def draw(self, context):
+        layout = self.layout
+        layout.label(text="Organic Tools", icon='PARTICLES')
+        layout.separator()
+
+        # 👇 Sous-menu via EnumProperty — visible dans tous les modes
+        layout.operator_menu_enum(
+            "organics.generate", "type",
+            text="Generate",
+            icon='OUTLINER_OB_POINTCLOUD'
+        )
+
+        # 👇 Sous-menu visible uniquement en Edit Mode
+        if context.mode == 'EDIT_MESH':
+            layout.separator()
+            layout.label(text="Edit Mode", icon='EDITMODE_HLT')
+            layout.menu("ORGANICS_MT_edit_submenu", text="Edit Tools", icon='TOOL_SETTINGS')
+
+
+# ------------------------------------------------
+#  Injection dans le header
+# ------------------------------------------------
+def draw_menu(self, context):
+    self.layout.separator()
+    self.layout.menu("ORGANICS_MT_menu", text="juju")
+
+
+# ------------------------------------------------
+#  Register / Unregister
+# ------------------------------------------------
+def register():
+    bpy.utils.register_class(ORGANICS_OT_generate)       # Opérateur en 1er
+    bpy.utils.register_class(ORGANICS_MT_EditSubMenu)    # Sous-menu
+    bpy.utils.register_class(ORGANICS_MT_Menu)           # Menu principal
+    bpy.types.VIEW3D_HT_header.append(draw_menu)         # Injection header
+
+def unregister():
+    bpy.types.VIEW3D_HT_header.remove(draw_menu)
+    bpy.utils.unregister_class(ORGANICS_MT_Menu)
+    bpy.utils.unregister_class(ORGANICS_MT_EditSubMenu)
+    bpy.utils.unregister_class(ORGANICS_OT_generate)
+
+if __name__ == "__main__":
+    try:
+        unregister()
+    except:
+        pass
+    register()

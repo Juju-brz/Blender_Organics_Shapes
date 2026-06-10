@@ -136,6 +136,42 @@ class CURVE_subdivid_curve(bpy.types.Operator):
         juju.subdivid_curve()
         return {'FINISHED'}
 
+
+class CURVE_Edit_Spline(bpy.types.Operator):
+    bl_idname = "organics.generate"
+    bl_label = "Generate Organic"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    type: bpy.props.EnumProperty(
+        name="Type",
+        items=[
+            ('BRANCH',0),
+            ('LEAF', 1),
+            ('ROOT', 2),
+            ('FLOWER', 3),
+        ]
+    )
+    def execute(self, context):
+        # 👇 Ici tu brancheras tes vrais Geo Node Tools
+        if self.type == 'BRANCH':
+            print("🌿 Génération Branch")
+            # bpy.ops.ton_geo_node_branch_tool()
+
+        elif self.type == 'LEAF':
+            print("🍃 Génération Leaf")
+            # bpy.ops.ton_geo_node_leaf_tool()
+
+        elif self.type == 'ROOT':
+            print("🌱 Génération Root")
+            # bpy.ops.ton_geo_node_root_tool()
+
+        elif self.type == 'FLOWER':
+            print("🌸 Génération Flower")
+            # bpy.ops.ton_geo_node_flower_tool()
+
+        self.report({'INFO'}, f"Organic généré : {self.type}")
+        return {'FINISHED'}
+
 class CURVE_procedural_curve(bpy.types.Operator):
     bl_idname = "object.procedural_curve"
     bl_label = "procedural_curve"
@@ -468,6 +504,12 @@ class ORGANICS_MT_Menu(bpy.types.Menu):
         layout.menu("VIEW3D_PT_PlantGeneration")
         layout.operator_menu_enum("object.hide_mesh", "type", text="SubMenu Test")
 
+        ## SUB MENU
+        layout.operator_menu_enum(
+            "organics.generate", "type",
+            text="Generate",
+            icon='OUTLINER_OB_POINTCLOUD'
+        )
         ## EDIT CURVE
         if context.mode == 'EDIT_CURVE':
             layout.label(text="its works !!!")
@@ -507,6 +549,7 @@ def register():
     bpy.utils.register_class(ORGANICS_MT_Menu)
     bpy.types.VIEW3D_HT_header.append(draw_menu) # ADD PANEL
 
+    bpy.utils.register_class(CURVE_Edit_Spline)
 
     bpy.utils.register_class(create_geometry_node)
     bpy.utils.register_class(NODE_OT_symmetry)
@@ -559,7 +602,9 @@ def unregister():
 
     bpy.types.VIEW3D_HT_header.remove(draw_menu)
     bpy.utils.unregister_class(ORGANICS_MT_Menu)
+    bpy.utils.unregister_class(ORGANICS_MT_Menu)
 
+    bpy.utils.unregister_class(CURVE_Edit_Spline)
     bpy.utils.unregister_class(create_geometry_node)
     bpy.utils.unregister_class(NODE_OT_symmetry)
 
