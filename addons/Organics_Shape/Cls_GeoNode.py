@@ -5,6 +5,8 @@ from . import juju
 from . import GeoNode
 
 
+### NODES  CLASS BEGIN ###
+
 class NODE_OT_symmetry(bpy.types.Operator):
     bl_idname = "object.symmetry"
     bl_label = "symmetry"
@@ -15,6 +17,7 @@ class NODE_OT_symmetry(bpy.types.Operator):
         GeoNode.symmetry_1_node_group(node_tree_names)
         return {'FINISHED'}
 
+### NODES  CLASS END ###
 
 def register():
     bpy.utils.register_class(NODE_OT_symmetry)

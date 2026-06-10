@@ -9,7 +9,7 @@ import os
 from . import juju
 from . import GeoNode
 from . import Cls_GeoNode
-
+from . import Cls_Curve
 
 
 ### CLASS BEGIN ###
@@ -76,18 +76,6 @@ class MESH_OT_subdivision_mesh(bpy.types.Operator):
 
 ### VOLUME CLASS  END ###
 
-### CURVES CLASS BEGIN ###
-
-class CURVE_curve_to_tube(bpy.types.Operator):
-    bl_idname = "object.curve_to_tube"
-    bl_label = "curve to tube"
-    bl_options = {'REGISTER', 'UNDO'}
-
-    def execute(self, context):
-        juju.curve_to_tube()
-        return {'FINISHED'}
-
-### CURVES CLASS END ###
 
 ### PLANT GENERATOR  BEGIN ###
 class CURVE_draw_curve(bpy.types.Operator):
@@ -118,7 +106,7 @@ class create_spike(bpy.types.Operator):
         return {'FINISHED'}
 
 
-class curve_test(bpy.types.Operator):
+class CURVE_curve_test(bpy.types.Operator):
     bl_idname = "object.curve_test"
     bl_label = "curve_test"
     bl_options = {'REGISTER', 'UNDO'}
@@ -157,16 +145,6 @@ class CURVE_fib_curve(bpy.types.Operator):
 ### PLANT GENERATOR  END ###
 
 ### NODES  CLASS BEGIN ###
-
-# class NODE_OT_symmetry(bpy.types.Operator):
-#     bl_idname = "object.symmetry"
-#     bl_label = "symmetry"
-#     bl_options = {'REGISTER', 'UNDO'}
-#
-#     def execute(self, context):
-#         node_tree_names : dict[typing.Callable, str] = {}
-#         GeoNode.symmetry_1_node_group(node_tree_names)
-#         return {'FINISHED'}
 
 class NODE_OT_create_trunk(bpy.types.Operator):
     bl_idname = "object.create_trunk"
@@ -509,7 +487,6 @@ def register():
 
 
     bpy.utils.register_class(create_geometry_node)
-    #bpy.utils.register_class(NODE_OT_symmetry)
 
     ## VOLUME ##
     bpy.utils.register_class(MESH_OT_mesh_to_Volume)
@@ -525,7 +502,7 @@ def register():
     bpy.utils.register_class(create_spike)
     bpy.utils.register_class(NODE_OT_volume_simulation)
     bpy.utils.register_class(NODE_OT_sprinkle)
-    bpy.utils.register_class(curve_test)
+    bpy.utils.register_class(CURVE_curve_test)
     bpy.utils.register_class(CURVE_subdivid_curve)
     bpy.utils.register_class(CURVE_fib_curve)
     bpy.utils.register_class(CURVE_procedural_curve)
@@ -538,8 +515,6 @@ def register():
     bpy.utils.register_class(NODE_OT_noise)
     bpy.utils.register_class(NODE_OT_head)
 
-    ## CURVE ##
-    bpy.utils.register_class(CURVE_curve_to_tube)
 
     for cls in classes:
         bpy.utils.register_class(cls)
@@ -561,7 +536,6 @@ def unregister():
     bpy.utils.unregister_class(ORGANICS_MT_Menu)
 
     bpy.utils.unregister_class(create_geometry_node)
-    #bpy.utils.unregister_class(NODE_OT_symmetry)
 
     ## VOLUME ##
     bpy.utils.unregister_class(MESH_OT_mesh_to_Volume)
@@ -577,7 +551,7 @@ def unregister():
     bpy.utils.unregister_class(create_spike)
     bpy.utils.unregister_class(NODE_OT_volume_simulation)
     bpy.utils.unregister_class(NODE_OT_sprinkle)
-    bpy.utils.unregister_class(curve_test)
+    bpy.utils.unregister_class(CURVE_curve_test)
     bpy.utils.unregister_class(CURVE_subdivid_curve)
     bpy.utils.unregister_class(CURVE_fib_curve)
     bpy.utils.unregister_class(CURVE_procedural_curve)
@@ -590,8 +564,6 @@ def unregister():
     bpy.utils.unregister_class(NODE_OT_noise)
     bpy.utils.unregister_class(NODE_OT_head)
 
-    ## CURVE ##
-    bpy.utils.unregister_class(CURVE_curve_to_tube)
 
 
 if __name__ == "__main__":
