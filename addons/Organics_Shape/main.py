@@ -10,23 +10,21 @@ from . import juju
 from . import GeoNode
 from . import Cls_GeoNode
 from . import Cls_Curve
-
+from . import Cls_Volume
 
 ### CLASS BEGIN ###
 
 
 ### VOLUME CLASS BEGIN ###
 
-class MESH_OT_mesh_to_Volume(bpy.types.Operator):
-    bl_idname = "object.mesh_to_volume"
-    bl_label = "mesh_to_volume"
-    bl_options = {'REGISTER', 'UNDO'}
-    
-    def execute(self, context):
-        
-        juju.mesh_to_volume()
-        return {'FINISHED'}
-
+# class MESH_OT_mesh_to_Volume(bpy.types.Operator):
+#     bl_idname = "object.mesh_to_volume"
+#     bl_label = "mesh_to_volume"
+#     bl_options = {'REGISTER', 'UNDO'}
+#
+#     def execute(self, context):
+#         juju.mesh_to_volume()
+#         return {'FINISHED'}
 
 class MESH_OT_hide_mesh(bpy.types.Operator):
     bl_idname = "object.hide_mesh"
@@ -38,23 +36,14 @@ class MESH_OT_hide_mesh(bpy.types.Operator):
         juju.toggle_mesh_visibility()
         return {'FINISHED'}
 
-class MESH_OT_volume_to_Mesh(bpy.types.Operator):
-    bl_idname = "object.volume_to_mesh"
-    bl_label = "volume_to_mesh"
-    bl_options = {'REGISTER', 'UNDO'}
-    
-    def execute(self, context):
-        juju.volume_to_mesh()
-        return {'FINISHED'}
-
-class clean_scene(bpy.types.Operator):
-    bl_idname = "object.clean_scene"
-    bl_label = "clean_scene"
-    bl_options = {'REGISTER', 'UNDO'}
-    
-    def execute(self, context):
-        juju.clean_scene()
-        return {'FINISHED'}
+# class MESH_OT_volume_to_Mesh(bpy.types.Operator):
+#     bl_idname = "object.volume_to_mesh"
+#     bl_label = "volume_to_mesh"
+#     bl_options = {'REGISTER', 'UNDO'}
+#
+#     def execute(self, context):
+#         juju.volume_to_mesh()
+#         return {'FINISHED'}
 
 class create_geometry_node(bpy.types.Operator):
     bl_idname = "object.create_geometry_node"
@@ -108,6 +97,7 @@ class create_spike(bpy.types.Operator):
 
 ### 3D PANEL BEGIN ###
 
+# N-Panel to 3D viewport
 class VIEW3D_PT_Organics_Generation(bpy.types.Panel):
     bl_label = "ORGANICS GENERATION"
     bl_idname = "VIEW3D_PT_Organics_Generation"
@@ -163,6 +153,7 @@ class VIEW3D_PT_PlantGeneration(bpy.types.Panel):
 
 ### NODE PANEL BEGIN ###
 
+# N-Panel to Geometry Nodes
 class NODE_OT_juju_operator(bpy.types.Operator):
     bl_idname = "node.juju_operator"
     bl_label = "juju_operator"
@@ -262,6 +253,8 @@ class NODE_PT_Volume(bpy.types.Panel):
 ### NODE PANEL END ###
 
 ### MT_Menu BEGIN ###
+
+# Menu Panel
 class ORGANICS_MT_Menu(bpy.types.Menu):
     bl_label = "Organics"
     bl_idname = "ORGANICS_MT_menu"
@@ -287,12 +280,14 @@ class ORGANICS_MT_Menu(bpy.types.Menu):
             # Access this operator as a sub-menu.
             layout.operator_menu_enum("object.select_by_type", "type", text="Select All by Type")
 
+        # EDIT MESH
         if context.mode == 'EDIT_MESH':
             layout.label(text="its works !!!")
 
 
 def draw_menu(self, context):
     self.layout.separator()
+    #Call class ORGANICS_MT_Menu
     self.layout.menu("ORGANICS_MT_menu", text="Organics", icon='OUTLINER_OB_POINTCLOUD')
 
 ### MT_Menu END ###
@@ -322,8 +317,8 @@ def register():
     bpy.utils.register_class(create_geometry_node)
 
     ## VOLUME ##
-    bpy.utils.register_class(MESH_OT_mesh_to_Volume)
-    bpy.utils.register_class(MESH_OT_volume_to_Mesh)
+    #bpy.utils.register_class(MESH_OT_mesh_to_Volume)
+    # bpy.utils.register_class(MESH_OT_volume_to_Mesh)
     bpy.utils.register_class(MESH_OT_hide_mesh)
     bpy.utils.register_class(MESH_OT_subdivision_mesh)
 
@@ -355,8 +350,8 @@ def unregister():
     bpy.utils.unregister_class(create_geometry_node)
 
     ## VOLUME ##
-    bpy.utils.unregister_class(MESH_OT_mesh_to_Volume)
-    bpy.utils.unregister_class(MESH_OT_volume_to_Mesh)
+    #bpy.utils.unregister_class(MESH_OT_mesh_to_Volume)
+    # bpy.utils.unregister_class(MESH_OT_volume_to_Mesh)
     bpy.utils.unregister_class(MESH_OT_hide_mesh)
     bpy.utils.unregister_class(MESH_OT_subdivision_mesh)
 

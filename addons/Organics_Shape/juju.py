@@ -8,17 +8,6 @@ import bpy
 import math
 from . import GeoNode
 
-#obj = bpy.context.active_object
-#blend_path = bpy.data.filepath
-
-#locator_position = [0, 0, 0]
-## CLEAN ##
-def clean_scene():
-    bpy.ops.object.select_all(action='SELECT')
-    bpy.ops.object.delete(use_global=False, confirm=False)
-
-#scene = bpy.context.scene
-#locator_position = [0, 0, 0]
 
 
 ### VOLUME BEGIN ###
@@ -67,7 +56,6 @@ def toggle_mesh_visibility():
     obj = bpy.data.objects["mesh_volume"]
     obj.hide_viewport = not obj.hide_viewport
 
-
 def volume_to_mesh():
     obj = bpy.context.active_object
     vol_to_convert = bpy.context.active_object
@@ -104,9 +92,6 @@ def draw_curve():
     #obj.name = "plant"
     curve = obj
     bpy.ops.wm.tool_set_by_id(name="builtin.draw")
-
-#def select_curve():
-    #curve = obj
 
 def create_leaf(shapefunc):
     obj = bpy.context.active_object
@@ -161,7 +146,6 @@ def curve_test():
         #val0 = val0 * -val0 # POS TO NEG
         val1 = old_value
         print(val0)
-
 
 def fib_curve():
     val0 = 1.0

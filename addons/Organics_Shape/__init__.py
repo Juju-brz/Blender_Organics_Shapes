@@ -12,12 +12,14 @@ import bpy
 from . import main
 from . import Cls_GeoNode
 from . import Cls_Curve
+from . import Cls_Volume
 
 def register():
     main.register()
     #panels.register()
     Cls_GeoNode.register()
     Cls_Curve.register()
+    Cls_Volume.register()
 
 
 def unregister():
@@ -25,6 +27,8 @@ def unregister():
     #panels.unregister()
     Cls_GeoNode.unregister()
     Cls_Curve.unregister()
+    Cls_Volume.register()
+
 
 
 ###
