@@ -14,6 +14,7 @@ import typing
 
 
 
+#use this Function if you use Curve to Tube
 def load_essential_node_groups():
 
     required_node_groups = ["Curve to Tube"]
@@ -44,6 +45,7 @@ def load_essential_node_groups():
 
     return True
 
+#For create geometry of curve
 def create_trunk_1_node_group(node_tree_names: dict[typing.Callable, str]):
     """Initialize Create Trunk node group"""
     load_essential_node_groups()
@@ -196,6 +198,7 @@ def create_trunk_1_node_group(node_tree_names: dict[typing.Callable, str]):
 
     return create_trunk_1
 
+#Still wip for making a simulation of volume
 def volume_simulation(node_tree_names: dict[typing.Callable, str]):
     """Initialize volume_simulation node group"""
     volume_simulation = bpy.data.node_groups.new(type='GeometryNodeTree', name="volume simulation")
@@ -326,6 +329,7 @@ def volume_simulation(node_tree_names: dict[typing.Callable, str]):
 
     return volume_simulation
 
+# Experimental
 def sprinkle_1_node_group(node_tree_names: dict[typing.Callable, str]):
     """Initialize Sprinkle node group"""
     sprinkle_1 = bpy.data.node_groups.new(type='GeometryNodeTree', name="Sprinkle")
@@ -685,6 +689,7 @@ def arc_curve_1_node_group(node_tree_names: dict[typing.Callable, str]):
 
     return arc_curve_1
 
+#to have begin curve value from 0 to 1 better for manipulation
 def getnormalize_1_node_group(node_tree_names: dict[typing.Callable, str]):
     """Initialize GetNormalize node group"""
     getnormalize_1 = bpy.data.node_groups.new(type='GeometryNodeTree', name="Get Normalize")
@@ -775,6 +780,7 @@ def getnormalize_1_node_group(node_tree_names: dict[typing.Callable, str]):
 
     return getnormalize_1
 
+#use normalization
 def delete_points_of_curve_1_node_group(node_tree_names: dict[typing.Callable, str]):
     """Initialize delete points of curve node group"""
     delete_points_of_curve_1 = bpy.data.node_groups.new(type='GeometryNodeTree', name="delete points of curve")
@@ -1034,6 +1040,7 @@ def delete_points_of_curve_1_node_group(node_tree_names: dict[typing.Callable, s
     )
 
     return delete_points_of_curve_1
+
 
 def create_branches_1_node_group(node_tree_names: dict[typing.Callable, str]):
     """Initialize Create Branches node group"""
@@ -1698,6 +1705,7 @@ def create_leafs_1_node_group(node_tree_names: dict[typing.Callable, str]):
 
     return create_leafs_1
 
+#Thickness of Curve to have no-uniform shape when transform to geometry
 def thickness_1_node_group(node_tree_names: dict[typing.Callable, str]):
     """Initialize Thickness node group"""
     thickness_1 = bpy.data.node_groups.new(type='GeometryNodeTree', name="Thickness")
@@ -2796,6 +2804,7 @@ def symmetry_1_node_group(node_tree_names: dict[typing.Callable, str]):
 
     return symmetry_1
 
+#For making head of plant or Mushroom
 def head_1_node_group(node_tree_names: dict[typing.Callable, str]):
     """Initialize head node group"""
     load_essential_node_groups()
@@ -3106,6 +3115,7 @@ def head_1_node_group(node_tree_names: dict[typing.Callable, str]):
     )
 
     return head_1
+
 
 def vertices_to_sphere_1_node_group(node_tree_names: dict[typing.Callable, str]):
     """Initialize Vertices to Sphere node group"""

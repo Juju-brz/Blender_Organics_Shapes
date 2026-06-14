@@ -17,15 +17,6 @@ from . import Cls_Volume
 
 ### VOLUME CLASS BEGIN ###
 
-# class MESH_OT_mesh_to_Volume(bpy.types.Operator):
-#     bl_idname = "object.mesh_to_volume"
-#     bl_label = "mesh_to_volume"
-#     bl_options = {'REGISTER', 'UNDO'}
-#
-#     def execute(self, context):
-#         juju.mesh_to_volume()
-#         return {'FINISHED'}
-
 class MESH_OT_hide_mesh(bpy.types.Operator):
     bl_idname = "object.hide_mesh"
     bl_label = "hide_mesh"
@@ -36,16 +27,8 @@ class MESH_OT_hide_mesh(bpy.types.Operator):
         juju.toggle_mesh_visibility()
         return {'FINISHED'}
 
-# class MESH_OT_volume_to_Mesh(bpy.types.Operator):
-#     bl_idname = "object.volume_to_mesh"
-#     bl_label = "volume_to_mesh"
-#     bl_options = {'REGISTER', 'UNDO'}
-#
-#     def execute(self, context):
-#         juju.volume_to_mesh()
-#         return {'FINISHED'}
 
-class create_geometry_node(bpy.types.Operator):
+class NODE_OT_create_geometry_node(bpy.types.Operator):
     bl_idname = "object.create_geometry_node"
     bl_label = "create_geometry_node"
     bl_options = {'REGISTER', 'UNDO'}
@@ -77,7 +60,7 @@ class MESH_OT_create_leaf(bpy.types.Operator):
         juju.create_leaf(juju.create_leaf_shape)
         return {'FINISHED'}
 
-class create_spike(bpy.types.Operator):
+class MESH_OT_create_spike(bpy.types.Operator):
     bl_idname = "object.create_spike_shape"
     bl_label = "create_spike_shape"
     bl_options = {'REGISTER', 'UNDO'}
@@ -154,7 +137,7 @@ class VIEW3D_PT_PlantGeneration(bpy.types.Panel):
 ### NODE PANEL BEGIN ###
 
 # N-Panel to Geometry Nodes
-class NODE_OT_juju_operator(bpy.types.Operator):
+class NODE_PT_juju_operator(bpy.types.Operator):
     bl_idname = "node.juju_operator"
     bl_label = "juju_operator"
 
@@ -249,7 +232,6 @@ class NODE_PT_Volume(bpy.types.Panel):
         layout.operator("object.vert_to_sphere", text="Vertice to Sphere")
 
 
-
 ### NODE PANEL END ###
 
 ### MT_Menu BEGIN ###
@@ -297,7 +279,7 @@ def draw_menu(self, context):
 
 ### REGISTER BEGIN ###
 classes = [
-    NODE_OT_juju_operator,
+    NODE_PT_juju_operator,
     #NODE_PT_juju_panel,
 ]
 
@@ -313,18 +295,15 @@ def register():
     bpy.utils.register_class(ORGANICS_MT_Menu)
     bpy.types.VIEW3D_HT_header.append(draw_menu) # ADD PANEL
 
-
-    bpy.utils.register_class(create_geometry_node)
+    bpy.utils.register_class(NODE_OT_create_geometry_node)
 
     ## VOLUME ##
-    #bpy.utils.register_class(MESH_OT_mesh_to_Volume)
-    # bpy.utils.register_class(MESH_OT_volume_to_Mesh)
     bpy.utils.register_class(MESH_OT_hide_mesh)
     bpy.utils.register_class(MESH_OT_subdivision_mesh)
 
     ## PLANT ##
     bpy.utils.register_class(MESH_OT_create_leaf)
-    bpy.utils.register_class(create_spike)
+    bpy.utils.register_class(MESH_OT_create_spike)
 
 
 
@@ -332,9 +311,6 @@ def register():
         bpy.utils.register_class(cls)
 
 def unregister():
-    #del bpy.types.Scene.voxel_terrain_props
-    #bpy.utils.unregister_class(VIEW3D_PT_VoxelTerrainGeneration)
-    #bpy.utils.unregister_class(VoxelTerrainProperties)
 
     ## UI ##
     bpy.utils.unregister_class(VIEW3D_PT_Organics_Generation)
@@ -347,17 +323,15 @@ def unregister():
     bpy.types.VIEW3D_HT_header.remove(draw_menu)
     bpy.utils.unregister_class(ORGANICS_MT_Menu)
 
-    bpy.utils.unregister_class(create_geometry_node)
+    bpy.utils.unregister_class(NODE_OT_create_geometry_node)
 
     ## VOLUME ##
-    #bpy.utils.unregister_class(MESH_OT_mesh_to_Volume)
-    # bpy.utils.unregister_class(MESH_OT_volume_to_Mesh)
     bpy.utils.unregister_class(MESH_OT_hide_mesh)
     bpy.utils.unregister_class(MESH_OT_subdivision_mesh)
 
     ## PLANT ##
     bpy.utils.unregister_class(MESH_OT_create_leaf)
-    bpy.utils.unregister_class(create_spike)
+    bpy.utils.unregister_class(MESH_OT_create_spike)
 
 
 
