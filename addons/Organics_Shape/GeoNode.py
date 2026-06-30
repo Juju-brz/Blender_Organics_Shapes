@@ -1041,7 +1041,6 @@ def delete_points_of_curve_1_node_group(node_tree_names: dict[typing.Callable, s
 
     return delete_points_of_curve_1
 
-
 def create_branches_1_node_group(node_tree_names: dict[typing.Callable, str]):
     """Initialize Create Branches node group"""
     create_branches_1 = bpy.data.node_groups.new(type='GeometryNodeTree', name="Create Branches")
@@ -3212,6 +3211,329 @@ def vertices_to_sphere_1_node_group(node_tree_names: dict[typing.Callable, str])
 
     return vertices_to_sphere_1
 
+def hairs_1_node_group(node_tree_names: dict[typing.Callable, str]):
+    """Initialize hairs node group"""
+    hairs_1 = bpy.data.node_groups.new(type='GeometryNodeTree', name="hairs")
+
+    hairs_1.color_tag = 'NONE'
+    hairs_1.description = ""
+    hairs_1.default_group_node_width = 140
+    hairs_1.is_modifier = True
+    hairs_1.show_modifier_manage_panel = True
+
+    # hairs_1 interface
+
+    # Socket Geometry
+    geometry_socket = hairs_1.interface.new_socket(name="Geometry", in_out='OUTPUT', socket_type='NodeSocketGeometry')
+    geometry_socket.attribute_domain = 'POINT'
+    geometry_socket.default_input = 'VALUE'
+    geometry_socket.structure_type = 'AUTO'
+
+    # Socket Geometry
+    geometry_socket_1 = hairs_1.interface.new_socket(name="Geometry", in_out='INPUT', socket_type='NodeSocketGeometry')
+    geometry_socket_1.attribute_domain = 'POINT'
+    geometry_socket_1.default_input = 'VALUE'
+    geometry_socket_1.structure_type = 'AUTO'
+
+    # Socket Density
+    density_socket = hairs_1.interface.new_socket(name="Density", in_out='INPUT', socket_type='NodeSocketFloat')
+    density_socket.default_value = 10.0
+    density_socket.min_value = 0.0
+    density_socket.max_value = 3.4028234663852886e+38
+    density_socket.subtype = 'NONE'
+    density_socket.attribute_domain = 'POINT'
+    density_socket.default_input = 'VALUE'
+    density_socket.structure_type = 'AUTO'
+
+    # Socket Seed
+    seed_socket = hairs_1.interface.new_socket(name="Seed", in_out='INPUT', socket_type='NodeSocketInt')
+    seed_socket.default_value = 0
+    seed_socket.min_value = -2147483648
+    seed_socket.max_value = 2147483647
+    seed_socket.subtype = 'NONE'
+    seed_socket.attribute_domain = 'POINT'
+    seed_socket.default_input = 'VALUE'
+    seed_socket.structure_type = 'AUTO'
+
+    # Initialize hairs_1 nodes
+
+    # Node Group Input
+    group_input = hairs_1.nodes.new("NodeGroupInput")
+    group_input.name = "Group Input"
+    group_input.show_options = True
+
+    # Node Group Output
+    group_output = hairs_1.nodes.new("NodeGroupOutput")
+    group_output.name = "Group Output"
+    group_output.show_options = True
+    group_output.is_active_output = True
+
+    # Node Distribute Points on Faces
+    distribute_points_on_faces = hairs_1.nodes.new("GeometryNodeDistributePointsOnFaces")
+    distribute_points_on_faces.name = "Distribute Points on Faces"
+    distribute_points_on_faces.show_options = True
+    distribute_points_on_faces.distribute_method = 'RANDOM'
+    distribute_points_on_faces.use_legacy_normal = False
+    # Selection
+    distribute_points_on_faces.inputs[1].default_value = True
+
+    # Node Join Geometry
+    join_geometry = hairs_1.nodes.new("GeometryNodeJoinGeometry")
+    join_geometry.name = "Join Geometry"
+    join_geometry.show_options = True
+
+    # Node Instance on Points
+    instance_on_points = hairs_1.nodes.new("GeometryNodeInstanceOnPoints")
+    instance_on_points.name = "Instance on Points"
+    instance_on_points.show_options = True
+    # Selection
+    instance_on_points.inputs[1].default_value = True
+    # Pick Instance
+    instance_on_points.inputs[3].default_value = False
+    # Instance Index
+    instance_on_points.inputs[4].default_value = 0
+    # Rotation
+    instance_on_points.inputs[5].default_value = (0.0, 0.0, 0.0)
+    # Scale
+    instance_on_points.inputs[6].default_value = (1.0, 1.0, 1.0)
+
+    # Node Curve Circle
+    curve_circle = hairs_1.nodes.new("GeometryNodeCurvePrimitiveCircle")
+    curve_circle.name = "Curve Circle"
+    curve_circle.show_options = True
+    curve_circle.mode = 'RADIUS'
+    # Resolution
+    curve_circle.inputs[0].default_value = 32
+    # Radius
+    curve_circle.inputs[4].default_value = 1.0
+
+    # Node Curve Line
+    curve_line = hairs_1.nodes.new("GeometryNodeCurvePrimitiveLine")
+    curve_line.name = "Curve Line"
+    curve_line.show_options = True
+    curve_line.mode = 'POINTS'
+    # Start
+    curve_line.inputs[0].default_value = (0.0, 0.0, 0.0)
+    # End
+    curve_line.inputs[1].default_value = (0.0, 0.0, 1.0)
+
+    # Node Realize Instances
+    realize_instances = hairs_1.nodes.new("GeometryNodeRealizeInstances")
+    realize_instances.name = "Realize Instances"
+    realize_instances.show_options = True
+    realize_instances.realize_to_point_domain = False
+    # Selection
+    realize_instances.inputs[1].default_value = True
+    # Realize All
+    realize_instances.inputs[2].default_value = True
+    # Depth
+    realize_instances.inputs[3].default_value = 1
+
+    # Node Subdivide Curve
+    subdivide_curve = hairs_1.nodes.new("GeometryNodeSubdivideCurve")
+    subdivide_curve.name = "Subdivide Curve"
+    subdivide_curve.show_options = True
+    # Cuts
+    subdivide_curve.inputs[1].default_value = 5
+
+    # Node Set Position
+    set_position = hairs_1.nodes.new("GeometryNodeSetPosition")
+    set_position.name = "Set Position"
+    set_position.show_options = True
+    # Selection
+    set_position.inputs[1].default_value = True
+    # Position
+    set_position.inputs[2].default_value = (0.0, 0.0, 0.0)
+
+    # Node Noise Texture
+    noise_texture = hairs_1.nodes.new("ShaderNodeTexNoise")
+    noise_texture.name = "Noise Texture"
+    noise_texture.show_options = True
+    noise_texture.noise_dimensions = '3D'
+    noise_texture.noise_type = 'FBM'
+    noise_texture.normalize = True
+    # Vector
+    noise_texture.inputs[0].default_value = (0.0, 0.0, 0.0)
+    # Scale
+    noise_texture.inputs[2].default_value = 1.500000238418579
+    # Detail
+    noise_texture.inputs[3].default_value = 4.199999809265137
+    # Roughness
+    noise_texture.inputs[4].default_value = 0.5
+    # Lacunarity
+    noise_texture.inputs[5].default_value = 2.0
+    # Distortion
+    noise_texture.inputs[8].default_value = 0.0
+
+    # Node Vector Math
+    vector_math = hairs_1.nodes.new("ShaderNodeVectorMath")
+    vector_math.name = "Vector Math"
+    vector_math.show_options = True
+    vector_math.operation = 'SUBTRACT'
+    # Vector_001
+    vector_math.inputs[1].default_value = (0.5, 0.5, 0.5)
+
+    # Node Vector Math.001
+    vector_math_001 = hairs_1.nodes.new("ShaderNodeVectorMath")
+    vector_math_001.name = "Vector Math.001"
+    vector_math_001.show_options = True
+    vector_math_001.operation = 'MULTIPLY'
+
+    # Node Random Value
+    random_value = hairs_1.nodes.new("FunctionNodeRandomValue")
+    random_value.name = "Random Value"
+    random_value.show_options = True
+    random_value.data_type = 'FLOAT'
+    # Min_001
+    random_value.inputs[2].default_value = 0.0
+    # Max_001
+    random_value.inputs[3].default_value = 2.5
+    # ID
+    random_value.inputs[7].default_value = 0
+    # Seed
+    random_value.inputs[8].default_value = 0
+
+    # Set locations
+    hairs_1.nodes["Group Input"].location = (-340.0, 0.0)
+    hairs_1.nodes["Group Output"].location = (1030.16064453125, 40.536319732666016)
+    hairs_1.nodes["Distribute Points on Faces"].location = (-141.48202514648438, -85.64603424072266)
+    hairs_1.nodes["Join Geometry"].location = (866.0591430664062, 26.456045150756836)
+    hairs_1.nodes["Instance on Points"].location = (161.904052734375, -104.89955139160156)
+    hairs_1.nodes["Curve Circle"].location = (19.211875915527344, -760.1834106445312)
+    hairs_1.nodes["Curve Line"].location = (-212.51980590820312, -598.6577758789062)
+    hairs_1.nodes["Realize Instances"].location = (359.0000305175781, -100.14096069335938)
+    hairs_1.nodes["Subdivide Curve"].location = (539.0000610351562, -110.3592529296875)
+    hairs_1.nodes["Set Position"].location = (918.0850219726562, -297.0724182128906)
+    hairs_1.nodes["Noise Texture"].location = (364.02001953125, -752.39208984375)
+    hairs_1.nodes["Vector Math"].location = (619.8259887695312, -714.9730834960938)
+    hairs_1.nodes["Vector Math.001"].location = (812.8399047851562, -577.0699462890625)
+    hairs_1.nodes["Random Value"].location = (562.724609375, -470.7908935546875)
+
+    # Set dimensions
+    hairs_1.nodes["Group Input"].width  = 140.0
+    hairs_1.nodes["Group Input"].height = 100.0
+
+    hairs_1.nodes["Group Output"].width  = 140.0
+    hairs_1.nodes["Group Output"].height = 100.0
+
+    hairs_1.nodes["Distribute Points on Faces"].width  = 170.0
+    hairs_1.nodes["Distribute Points on Faces"].height = 100.0
+
+    hairs_1.nodes["Join Geometry"].width  = 140.0
+    hairs_1.nodes["Join Geometry"].height = 100.0
+
+    hairs_1.nodes["Instance on Points"].width  = 140.0
+    hairs_1.nodes["Instance on Points"].height = 100.0
+
+    hairs_1.nodes["Curve Circle"].width  = 140.0
+    hairs_1.nodes["Curve Circle"].height = 100.0
+
+    hairs_1.nodes["Curve Line"].width  = 140.0
+    hairs_1.nodes["Curve Line"].height = 100.0
+
+    hairs_1.nodes["Realize Instances"].width  = 140.0
+    hairs_1.nodes["Realize Instances"].height = 100.0
+
+    hairs_1.nodes["Subdivide Curve"].width  = 140.0
+    hairs_1.nodes["Subdivide Curve"].height = 100.0
+
+    hairs_1.nodes["Set Position"].width  = 140.0
+    hairs_1.nodes["Set Position"].height = 100.0
+
+    hairs_1.nodes["Noise Texture"].width  = 145.0
+    hairs_1.nodes["Noise Texture"].height = 100.0
+
+    hairs_1.nodes["Vector Math"].width  = 140.0
+    hairs_1.nodes["Vector Math"].height = 100.0
+
+    hairs_1.nodes["Vector Math.001"].width  = 140.0
+    hairs_1.nodes["Vector Math.001"].height = 100.0
+
+    hairs_1.nodes["Random Value"].width  = 140.0
+    hairs_1.nodes["Random Value"].height = 100.0
+
+
+    # Initialize hairs_1 links
+
+    # join_geometry.Geometry -> group_output.Geometry
+    hairs_1.links.new(
+        hairs_1.nodes["Join Geometry"].outputs[0],
+        hairs_1.nodes["Group Output"].inputs[0]
+    )
+    # group_input.Geometry -> distribute_points_on_faces.Mesh
+    hairs_1.links.new(
+        hairs_1.nodes["Group Input"].outputs[0],
+        hairs_1.nodes["Distribute Points on Faces"].inputs[0]
+    )
+    # group_input.Density -> distribute_points_on_faces.Density
+    hairs_1.links.new(
+        hairs_1.nodes["Group Input"].outputs[1],
+        hairs_1.nodes["Distribute Points on Faces"].inputs[4]
+    )
+    # group_input.Seed -> distribute_points_on_faces.Seed
+    hairs_1.links.new(
+        hairs_1.nodes["Group Input"].outputs[2],
+        hairs_1.nodes["Distribute Points on Faces"].inputs[6]
+    )
+    # distribute_points_on_faces.Points -> instance_on_points.Points
+    hairs_1.links.new(
+        hairs_1.nodes["Distribute Points on Faces"].outputs[0],
+        hairs_1.nodes["Instance on Points"].inputs[0]
+    )
+    # curve_line.Curve -> instance_on_points.Instance
+    hairs_1.links.new(
+        hairs_1.nodes["Curve Line"].outputs[0],
+        hairs_1.nodes["Instance on Points"].inputs[2]
+    )
+    # instance_on_points.Instances -> realize_instances.Geometry
+    hairs_1.links.new(
+        hairs_1.nodes["Instance on Points"].outputs[0],
+        hairs_1.nodes["Realize Instances"].inputs[0]
+    )
+    # realize_instances.Geometry -> subdivide_curve.Curve
+    hairs_1.links.new(
+        hairs_1.nodes["Realize Instances"].outputs[0],
+        hairs_1.nodes["Subdivide Curve"].inputs[0]
+    )
+    # noise_texture.Color -> vector_math.Vector
+    hairs_1.links.new(
+        hairs_1.nodes["Noise Texture"].outputs[1],
+        hairs_1.nodes["Vector Math"].inputs[0]
+    )
+    # vector_math.Vector -> vector_math_001.Vector
+    hairs_1.links.new(
+        hairs_1.nodes["Vector Math"].outputs[0],
+        hairs_1.nodes["Vector Math.001"].inputs[0]
+    )
+    # vector_math_001.Vector -> set_position.Offset
+    hairs_1.links.new(
+        hairs_1.nodes["Vector Math.001"].outputs[0],
+        hairs_1.nodes["Set Position"].inputs[3]
+    )
+    # random_value.Value -> vector_math_001.Vector
+    hairs_1.links.new(
+        hairs_1.nodes["Random Value"].outputs[1],
+        hairs_1.nodes["Vector Math.001"].inputs[1]
+    )
+    # subdivide_curve.Curve -> set_position.Geometry
+    hairs_1.links.new(
+        hairs_1.nodes["Subdivide Curve"].outputs[0],
+        hairs_1.nodes["Set Position"].inputs[0]
+    )
+    # set_position.Geometry -> join_geometry.Geometry
+    hairs_1.links.new(
+        hairs_1.nodes["Set Position"].outputs[0],
+        hairs_1.nodes["Join Geometry"].inputs[0]
+    )
+    # group_input.Geometry -> join_geometry.Geometry
+    hairs_1.links.new(
+        hairs_1.nodes["Group Input"].outputs[0],
+        hairs_1.nodes["Join Geometry"].inputs[0]
+    )
+
+    return hairs_1
+
+
 if __name__ == "__main__":
     node_tree_names : dict[typing.Callable, str] = {}
 
@@ -3262,6 +3584,9 @@ if __name__ == "__main__":
 
     vertices_to_sphere = vertices_to_sphere_1_node_group(node_tree_names)
     node_tree_names[vertices_to_sphere_1_node_group] = vertices_to_sphere.name
+
+    hairs = hairs_1_node_group(node_tree_names)
+    node_tree_names[hairs_1_node_group] = hairs.name
 
     obj = bpy.context.active_object
 

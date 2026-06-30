@@ -22,7 +22,9 @@ def curve_rig():
 
         try:
             bpy.ops.object.hook_add_newob()
-            bpy.ops.object.transforms_to_deltas(mode='ALL')
+            obj = bpy.context.active_object
+            obj = bpy.ops.object.transforms_to_deltas(mode='ALL')
+            #obj.name = f"RIG_curve_points{i}"
         except RuntimeError as e:
             print(f"Erreur au point {i} :", e)
             break

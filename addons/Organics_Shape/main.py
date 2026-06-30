@@ -222,6 +222,7 @@ class NODE_PT_Plant_Generator(bpy.types.Panel):
         layout.label(text = 'Plant')
         layout.operator("object.head", text="Head")
         layout.label(text = " test")
+        layout.operator("object.hairs", text="Hairs")
 
 
 class NODE_PT_Volume(bpy.types.Panel):
@@ -268,6 +269,7 @@ class ORGANICS_MT_Menu(bpy.types.Menu):
         layout.menu("VIEW3D_PT_PlantGeneration")
         layout.operator_menu_enum("object.hide_mesh", "type", text="SubMenu Test")
         layout.separator()
+        layout.label(text="RIG")
         layout.operator("object.curve_rig", text="rig to points")
 
         ## EDIT CURVE
