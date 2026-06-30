@@ -11,6 +11,7 @@ from . import GeoNode
 from . import Cls_GeoNode
 from . import Cls_Curve
 from . import Cls_Volume
+from . import jujurig
 
 ### CLASS BEGIN ###
 
@@ -72,6 +73,19 @@ class MESH_OT_create_spike(bpy.types.Operator):
 
 ### PLANT GENERATOR  END ###
 
+
+### RIG CLASS BEGIN ###
+class RIG_OT_curve_rig(bpy.types.Operator):
+    bl_idname = "object.curve_rig"
+    bl_label = "curve_rig"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        jujurig.curve_rig()
+        return {'FINISHED'}
+
+
+### RIG CLASS END ###
 
 ### CLASS END  ###
 
@@ -253,6 +267,8 @@ class ORGANICS_MT_Menu(bpy.types.Menu):
         layout.menu("VIEW3D_MT_transform")
         layout.menu("VIEW3D_PT_PlantGeneration")
         layout.operator_menu_enum("object.hide_mesh", "type", text="SubMenu Test")
+        layout.separator()
+        layout.operator("object.curve_rig", text="rig to points")
 
         ## EDIT CURVE
         if context.mode == 'EDIT_CURVE':
@@ -305,7 +321,8 @@ def register():
     bpy.utils.register_class(MESH_OT_create_leaf)
     bpy.utils.register_class(MESH_OT_create_spike)
 
-
+    ## RIG ##
+    bpy.utils.register_class(RIG_OT_curve_rig)
 
     for cls in classes:
         bpy.utils.register_class(cls)
@@ -333,6 +350,8 @@ def unregister():
     bpy.utils.unregister_class(MESH_OT_create_leaf)
     bpy.utils.unregister_class(MESH_OT_create_spike)
 
+    ## RIG ##
+    bpy.utils.unregister_class(RIG_OT_curve_rig)
 
 
 if __name__ == "__main__":
