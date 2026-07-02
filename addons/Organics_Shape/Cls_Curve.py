@@ -2,7 +2,7 @@ import bpy
 import sys
 import os
 from . import juju
-from . import GeoNode
+from . import jujuNodes
 
 
 ### CURVES CLASS BEGIN ###

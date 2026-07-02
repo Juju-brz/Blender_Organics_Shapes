@@ -6,7 +6,7 @@ https://github.com/Juju-brz
 
 import bpy
 import math
-from . import GeoNode
+from . import jujuNodes
 
 
 

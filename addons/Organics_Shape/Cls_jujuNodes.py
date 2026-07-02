@@ -2,7 +2,7 @@ import bpy
 import sys
 import os
 from . import juju
-from . import GeoNode
+from . import jujuNodes
 
 
 ### NODES  CLASS BEGIN ###
@@ -14,7 +14,7 @@ class NODE_OT_symmetry(bpy.types.Operator):
 
     def execute(self, context):
         node_tree_names : dict[typing.Callable, str] = {}
-        GeoNode.symmetry_1_node_group(node_tree_names)
+        jujuNodes.symmetry_1_node_group(node_tree_names)
         return {'FINISHED'}
 
 class NODE_OT_create_trunk(bpy.types.Operator):
@@ -24,7 +24,7 @@ class NODE_OT_create_trunk(bpy.types.Operator):
 
     def execute(self, context):
         node_tree_names : dict[typing.Callable, str] = {}
-        GeoNode.create_trunk_1_node_group(node_tree_names)
+        jujuNodes.create_trunk_1_node_group(node_tree_names)
         return {'FINISHED'}
 
 class NODE_OT_volume_simulation(bpy.types.Operator):
@@ -34,7 +34,7 @@ class NODE_OT_volume_simulation(bpy.types.Operator):
 
     def execute(self, context):
         node_tree_names : dict[typing.Callable, str] = {}
-        GeoNode.volume_simulation(node_tree_names)
+        jujuNodes.volume_simulation(node_tree_names)
         return {'FINISHED'}
 
 class NODE_OT_sprinkle(bpy.types.Operator):
@@ -44,7 +44,7 @@ class NODE_OT_sprinkle(bpy.types.Operator):
 
     def execute(self, context):
         node_tree_names : dict[typing.Callable, str] = {}
-        GeoNode.sprinkle_1_node_group(node_tree_names)
+        jujuNodes.sprinkle_1_node_group(node_tree_names)
         return {'FINISHED'}
 
 class NODE_OT_Grid_Volume(bpy.types.Operator):
@@ -54,7 +54,7 @@ class NODE_OT_Grid_Volume(bpy.types.Operator):
 
     def execute(self, context):
         node_tree_names : dict[typing.Callable, str] = {}
-        GeoNode.grid_volume_1_node_group(node_tree_names)
+        jujuNodes.grid_volume_1_node_group(node_tree_names)
         return {'FINISHED'}
 
 class NODE_OT_Get_Normalize(bpy.types.Operator):
@@ -64,7 +64,7 @@ class NODE_OT_Get_Normalize(bpy.types.Operator):
 
     def execute(self, context):
         node_tree_names : dict[typing.Callable, str] = {}
-        GeoNode.getnormalize_1_node_group(node_tree_names)
+        jujuNodes.getnormalize_1_node_group(node_tree_names)
         return {'FINISHED'}
 
 class NODE_OT_delete_points_of_curve(bpy.types.Operator):
@@ -74,7 +74,7 @@ class NODE_OT_delete_points_of_curve(bpy.types.Operator):
 
     def execute(self, context):
         node_tree_names : dict[typing.Callable, str] = {}
-        GeoNode.delete_points_of_curve_1_node_group(node_tree_names)
+        jujuNodes.delete_points_of_curve_1_node_group(node_tree_names)
         return {'FINISHED'}
 
 class NODE_OT_create_leafs(bpy.types.Operator):
@@ -84,7 +84,7 @@ class NODE_OT_create_leafs(bpy.types.Operator):
 
     def execute(self, context):
         node_tree_names : dict[typing.Callable, str] = {}
-        GeoNode.create_leafs_1_node_group(node_tree_names)
+        jujuNodes.create_leafs_1_node_group(node_tree_names)
         return {'FINISHED'}
 
 class NODE_OT_branches(bpy.types.Operator):
@@ -94,7 +94,7 @@ class NODE_OT_branches(bpy.types.Operator):
 
     def execute(self, context):
         node_tree_names : dict[typing.Callable, str] = {}
-        GeoNode.create_branches_1_node_group(node_tree_names)
+        jujuNodes.create_branches_1_node_group(node_tree_names)
         return {'FINISHED'}
 
 class NODE_OT_thickness(bpy.types.Operator):
@@ -104,7 +104,7 @@ class NODE_OT_thickness(bpy.types.Operator):
 
     def execute(self, context):
         node_tree_names : dict[typing.Callable, str] = {}
-        GeoNode.thickness_1_node_group(node_tree_names)
+        jujuNodes.thickness_1_node_group(node_tree_names)
         return {'FINISHED'}
 
 class NODE_OT_seeds_of_plants(bpy.types.Operator):
@@ -114,7 +114,7 @@ class NODE_OT_seeds_of_plants(bpy.types.Operator):
 
     def execute(self, context):
         node_tree_names : dict[typing.Callable, str] = {}
-        GeoNode.seeds_of_plants_1_node_group(node_tree_names)
+        jujuNodes.seeds_of_plants_1_node_group(node_tree_names)
         return {'FINISHED'}
 
 class NODE_OT_noise(bpy.types.Operator):
@@ -124,7 +124,7 @@ class NODE_OT_noise(bpy.types.Operator):
 
     def execute(self, context):
         node_tree_names : dict[typing.Callable, str] = {}
-        GeoNode.noise_1_node_group(node_tree_names)
+        jujuNodes.noise_1_node_group(node_tree_names)
         return {'FINISHED'}
 
 class NODE_OT_head(bpy.types.Operator):
@@ -134,7 +134,7 @@ class NODE_OT_head(bpy.types.Operator):
 
     def execute(self, context):
         node_tree_names : dict[typing.Callable, str] = {}
-        GeoNode.head_1_node_group(node_tree_names)
+        jujuNodes.head_1_node_group(node_tree_names)
         return {'FINISHED'}
 
 class NODE_OT_Vert_to_Sphere(bpy.types.Operator):
@@ -144,7 +144,7 @@ class NODE_OT_Vert_to_Sphere(bpy.types.Operator):
 
     def execute(self, context):
         node_tree_names : dict[typing.Callable, str] = {}
-        GeoNode.vertices_to_sphere_1_node_group(node_tree_names)
+        jujuNodes.vertices_to_sphere_1_node_group(node_tree_names)
         return {'FINISHED'}
 
 
@@ -155,7 +155,7 @@ class NODE_OT_hairs(bpy.types.Operator):
 
     def execute(self, context):
         node_tree_names : dict[typing.Callable, str] = {}
-        GeoNode.hairs_1_node_group(node_tree_names)
+        jujuNodes.hairs_1_node_group(node_tree_names)
         return {'FINISHED'}
 
 ### NODES  CLASS END ###

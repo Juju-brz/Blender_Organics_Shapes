@@ -2,7 +2,7 @@ import bpy
 import sys
 import os
 from . import juju
-from . import GeoNode
+from . import jujuNodes
 
 
 class MESH_OT_mesh_to_Volume(bpy.types.Operator):

@@ -7,8 +7,8 @@ import bpy
 import sys
 import os
 from . import juju
-from . import GeoNode
-from . import Cls_GeoNode
+from . import jujuNodes
+from . import Cls_jujuNodes
 from . import Cls_Curve
 from . import Cls_Volume
 from . import jujurig
@@ -221,7 +221,7 @@ class NODE_PT_Plant_Generator(bpy.types.Panel):
         layout.operator("object.create_leafs", text="Create Leafs")
         layout.label(text = 'Plant')
         layout.operator("object.head", text="Head")
-        layout.label(text = " test")
+        layout.label(text = "test")
         layout.operator("object.hairs", text="Hairs")
 
 
