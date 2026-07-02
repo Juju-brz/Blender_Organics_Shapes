@@ -2,13 +2,16 @@ import bpy
 
 
 #Still wip
-def curve_rig():
+def controller_to_points():
+    rig_collection = bpy.data.collections.new("Rig")
+    bpy.context.scene.collection.children.link(rig_collection)
     curve = bpy.context.active_object
+    #rig_collection.objects.link(bpy.context.active_object)
 
     bpy.ops.object.mode_set(mode='EDIT')
 
     spline = curve.data.splines[0]
-
+    #rig_collection.objects.link(bpy.context.active_object)
     for i in range(len(spline.bezier_points)):
 
         bpy.ops.curve.select_all(action='DESELECT')

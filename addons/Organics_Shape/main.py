@@ -75,13 +75,13 @@ class MESH_OT_create_spike(bpy.types.Operator):
 
 
 ### RIG CLASS BEGIN ###
-class RIG_OT_curve_rig(bpy.types.Operator):
-    bl_idname = "object.curve_rig"
-    bl_label = "curve_rig"
+class RIG_OT_controller_to_points(bpy.types.Operator):
+    bl_idname = "object.controller_to_points"
+    bl_label = "controller_to_points"
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        jujurig.curve_rig()
+        jujurig.controller_to_points()
         return {'FINISHED'}
 
 
@@ -270,7 +270,8 @@ class ORGANICS_MT_Menu(bpy.types.Menu):
         layout.operator_menu_enum("object.hide_mesh", "type", text="SubMenu Test")
         layout.separator()
         layout.label(text="RIG")
-        layout.operator("object.curve_rig", text="rig to points")
+        layout.label(text="Curve_rig")
+        layout.operator("object.controller_to_points", text="controller to points")
 
         ## EDIT CURVE
         if context.mode == 'EDIT_CURVE':
@@ -324,7 +325,7 @@ def register():
     bpy.utils.register_class(MESH_OT_create_spike)
 
     ## RIG ##
-    bpy.utils.register_class(RIG_OT_curve_rig)
+    bpy.utils.register_class(RIG_OT_controller_to_points)
 
     for cls in classes:
         bpy.utils.register_class(cls)
@@ -353,7 +354,7 @@ def unregister():
     bpy.utils.unregister_class(MESH_OT_create_spike)
 
     ## RIG ##
-    bpy.utils.unregister_class(RIG_OT_curve_rig)
+    bpy.utils.unregister_class(RIG_OT_controller_to_points)
 
 
 if __name__ == "__main__":
