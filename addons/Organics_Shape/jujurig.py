@@ -35,5 +35,61 @@ def controller_to_points():
     bpy.ops.object.mode_set(mode='OBJECT')
 
 
+def curve_to_bones():
+    curve = bpy.context.active_object
+    if curve.type != 'CURVE':
+        print("Select a curve")
+        return
+
+    spline = curve.data.splines[0]
+    points = spline.bezier_points
+
+
+    curve_matrix = curve.matrix_world
+    positions = [curve_matrix @ p.co for p in points]
+
+
+    rig_collection = bpy.data.collections.new("Rig")
+    bpy.context.scene.collection.children.link(rig_collection)
+
+
+    armature_data = bpy.data.armatures.new("RigArmature")
+    armature_data.display_type = 'BBONE'
+    armature_obj = bpy.data.objects.new("Rig", armature_data)
+    rig_collection.objects.link(armature_obj)
+
+    bpy.context.view_layer.objects.active = armature_obj
+    bpy.ops.object.mode_set(mode='EDIT')
+
+    edit_bones = armature_data.edit_bones
+    bone_names = []
+
+
+    for i in range(len(positions) - 1):
+        bone = edit_bones.new(f"Bone_{i:02d}")
+        bone.head = positions[i]
+        bone.tail = positions[i + 1]
+
+        if i > 0:
+            bone.parent = edit_bones[bone_names[i - 1]]
+            bone.use_connect = True
+
+        bone_names.append(bone.name)
+
+    bpy.ops.object.mode_set(mode='OBJECT')
+
+
+    bpy.ops.object.mode_set(mode='POSE')
+
+    last_bone = armature_obj.pose.bones[bone_names[-1]]
+    constraint = last_bone.constraints.new('SPLINE_IK')
+    constraint.target = curve
+    constraint.chain_count = len(bone_names)
+
+    bpy.ops.object.mode_set(mode='OBJECT')
+
+    return armature_obj
+
+
 
 
