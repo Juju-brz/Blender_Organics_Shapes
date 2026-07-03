@@ -3,6 +3,7 @@ import bpy
 
 #Still wip
 def controller_to_points():
+
     rig_collection = bpy.data.collections.new("Rig")
     bpy.context.scene.collection.children.link(rig_collection)
     curve = bpy.context.active_object
@@ -36,10 +37,13 @@ def controller_to_points():
 
 
 def curve_to_bones():
+
+    # VARIABLES
     curve = bpy.context.active_object
     if curve.type != 'CURVE':
         print("Select a curve")
         return
+
 
     spline = curve.data.splines[0]
     points = spline.bezier_points
@@ -48,7 +52,7 @@ def curve_to_bones():
     curve_matrix = curve.matrix_world
     positions = [curve_matrix @ p.co for p in points]
 
-
+    # Create Collection
     rig_collection = bpy.data.collections.new("Rig")
     bpy.context.scene.collection.children.link(rig_collection)
 
