@@ -84,7 +84,14 @@ class RIG_OT_controller_to_points(bpy.types.Operator):
         jujurig.controller_to_points()
         return {'FINISHED'}
 
+class RIG_OT_curve_to_bones(bpy.types.Operator):
+    bl_idname = "object.curve_to_bones"
+    bl_label = "curve to bones"
+    bl_options = {'REGISTER', 'UNDO'}
 
+    def execute(self, context):
+        jujurig.curve_to_bones()
+        return {'FINISHED'}
 ### RIG CLASS END ###
 
 ### CLASS END  ###
@@ -272,6 +279,7 @@ class ORGANICS_MT_Menu(bpy.types.Menu):
         layout.label(text="RIG")
         layout.label(text="Curve_rig")
         layout.operator("object.controller_to_points", text="controller to points")
+        layout.operator("object.curve_to_bones", text="curve to bones")
 
         ## EDIT CURVE
         if context.mode == 'EDIT_CURVE':
@@ -326,6 +334,8 @@ def register():
 
     ## RIG ##
     bpy.utils.register_class(RIG_OT_controller_to_points)
+    bpy.utils.register_class(RIG_OT_curve_to_bones)
+
 
     for cls in classes:
         bpy.utils.register_class(cls)
@@ -355,6 +365,7 @@ def unregister():
 
     ## RIG ##
     bpy.utils.unregister_class(RIG_OT_controller_to_points)
+    bpy.utils.unregister_class(RIG_OT_curve_to_bones)
 
 
 if __name__ == "__main__":

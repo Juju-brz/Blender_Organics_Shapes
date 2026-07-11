@@ -6,12 +6,13 @@ def controller_to_points():
 
     rig_collection = bpy.data.collections.new("Rig")
     bpy.context.scene.collection.children.link(rig_collection)
+
+
     curve = bpy.context.active_object
-    #rig_collection.objects.link(bpy.context.active_object)
 
     bpy.ops.object.mode_set(mode='EDIT')
-
     spline = curve.data.splines[0]
+
     #rig_collection.objects.link(bpy.context.active_object)
     for i in range(len(spline.bezier_points)):
 
@@ -25,8 +26,12 @@ def controller_to_points():
         bpy.context.view_layer.update()
 
         try:
+            #bone = edit_bones.new(f"Bone_{i:02d}")
             bpy.ops.object.hook_add_newob()
-            obj = bpy.context.active_object
+            hook_mod = curve.modifiers[-1]
+            empty = hook_mod.object
+            empty.name = f"CTRL_point_{i:02d}" #RENAME
+
             obj = bpy.ops.object.transforms_to_deltas(mode='ALL')
             #obj.name = f"RIG_curve_points{i}"
         except RuntimeError as e:
@@ -59,7 +64,9 @@ def curve_to_bones():
 
     armature_data = bpy.data.armatures.new("RigArmature")
     armature_data.display_type = 'BBONE'
-    armature_obj = bpy.data.objects.new("Rig", armature_data)
+
+    # Rename
+    armature_obj = bpy.data.objects.new("RigArmature", armature_data)
     rig_collection.objects.link(armature_obj)
 
     bpy.context.view_layer.objects.active = armature_obj
@@ -67,6 +74,8 @@ def curve_to_bones():
 
     edit_bones = armature_data.edit_bones
     bone_names = []
+    #bone.bbone_segments = 6
+
 
 
     for i in range(len(positions) - 1):
