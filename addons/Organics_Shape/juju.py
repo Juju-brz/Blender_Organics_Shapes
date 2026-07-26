@@ -190,7 +190,7 @@ def procedural_arc_curve():
 
 
     node_tree_names : dict[typing.Callable, str] = {}
-    GeoNode.arc_curve_1_node_group(node_tree_names)
+    jujuNodes.arc_curve_1_node_group(node_tree_names)
 
 def curve_to_tube():
     obj = bpy.context.object
