@@ -2846,11 +2846,19 @@ def head_1_node_group(node_tree_names: dict[typing.Callable, str]):
     radius_socket.default_input = 'VALUE'
     radius_socket.structure_type = 'AUTO'
 
+    # Socket Begin Curve
+    begin_curve_socket = head_1.interface.new_socket(name="Begin Curve", in_out='INPUT', socket_type='NodeSocketBool')
+    begin_curve_socket.default_value = False
+    begin_curve_socket.attribute_domain = 'POINT'
+    begin_curve_socket.default_input = 'VALUE'
+    begin_curve_socket.structure_type = 'AUTO'
+
     # Initialize head_1 nodes
 
     # Node Instance on Points
     instance_on_points = head_1.nodes.new("GeometryNodeInstanceOnPoints")
     instance_on_points.name = "Instance on Points"
+    instance_on_points.show_options = True
     # Selection
     instance_on_points.inputs[1].default_value = True
     # Pick Instance
@@ -2863,6 +2871,7 @@ def head_1_node_group(node_tree_names: dict[typing.Callable, str]):
     # Node Distribute Points on Faces
     distribute_points_on_faces = head_1.nodes.new("GeometryNodeDistributePointsOnFaces")
     distribute_points_on_faces.name = "Distribute Points on Faces"
+    distribute_points_on_faces.show_options = True
     distribute_points_on_faces.distribute_method = 'RANDOM'
     distribute_points_on_faces.use_legacy_normal = False
     # Selection
@@ -2875,6 +2884,7 @@ def head_1_node_group(node_tree_names: dict[typing.Callable, str]):
     # Node Curve to Tube
     curve_to_tube = head_1.nodes.new("GeometryNodeGroup")
     curve_to_tube.name = "Curve to Tube"
+    curve_to_tube.show_options = True
     # Finding linked library node group
     for node_group in bpy.data.node_groups:
         if (
@@ -2935,20 +2945,24 @@ def head_1_node_group(node_tree_names: dict[typing.Callable, str]):
     # Node Spline Length
     spline_length = head_1.nodes.new("GeometryNodeSplineLength")
     spline_length.name = "Spline Length"
+    spline_length.show_options = True
 
     # Node Spline Parameter
     spline_parameter = head_1.nodes.new("GeometryNodeSplineParameter")
     spline_parameter.name = "Spline Parameter"
+    spline_parameter.show_options = True
 
     # Node Math
     math = head_1.nodes.new("ShaderNodeMath")
     math.name = "Math"
+    math.show_options = True
     math.operation = 'DIVIDE'
     math.use_clamp = False
 
     # Node Math.001
     math_001 = head_1.nodes.new("ShaderNodeMath")
     math_001.name = "Math.001"
+    math_001.show_options = True
     math_001.operation = 'LESS_THAN'
     math_001.use_clamp = True
     # Value_001
@@ -2957,12 +2971,14 @@ def head_1_node_group(node_tree_names: dict[typing.Callable, str]):
     # Node Delete Geometry
     delete_geometry = head_1.nodes.new("GeometryNodeDeleteGeometry")
     delete_geometry.name = "Delete Geometry"
+    delete_geometry.show_options = True
     delete_geometry.domain = 'POINT'
     delete_geometry.mode = 'ALL'
 
     # Node Map Range.001
     map_range_001 = head_1.nodes.new("ShaderNodeMapRange")
     map_range_001.name = "Map Range.001"
+    map_range_001.show_options = True
     map_range_001.clamp = True
     map_range_001.data_type = 'FLOAT'
     map_range_001.interpolation_type = 'LINEAR'
@@ -2978,29 +2994,49 @@ def head_1_node_group(node_tree_names: dict[typing.Callable, str]):
     # Node Group Output
     group_output = head_1.nodes.new("NodeGroupOutput")
     group_output.name = "Group Output"
+    group_output.show_options = True
     group_output.is_active_output = True
 
     # Node Group Input
     group_input = head_1.nodes.new("NodeGroupInput")
     group_input.name = "Group Input"
+    group_input.show_options = True
 
     # Node Join Geometry
     join_geometry = head_1.nodes.new("GeometryNodeJoinGeometry")
     join_geometry.name = "Join Geometry"
+    join_geometry.show_options = True
+
+    # Node Math.002
+    math_002 = head_1.nodes.new("ShaderNodeMath")
+    math_002.name = "Math.002"
+    math_002.show_options = True
+    math_002.operation = 'GREATER_THAN'
+    math_002.use_clamp = True
+    # Value_001
+    math_002.inputs[1].default_value = 0.0
+
+    # Node Switch
+    switch = head_1.nodes.new("GeometryNodeSwitch")
+    switch.name = "Switch"
+    switch.show_options = True
+    switch.input_type = 'FLOAT'
 
     # Set locations
-    head_1.nodes["Instance on Points"].location = (586.026611328125, 223.49691772460938)
-    head_1.nodes["Distribute Points on Faces"].location = (210.8206787109375, 161.3325653076172)
-    head_1.nodes["Curve to Tube"].location = (-73.67401123046875, -90.91696166992188)
+    head_1.nodes["Instance on Points"].location = (708.0264892578125, 223.49691772460938)
+    head_1.nodes["Distribute Points on Faces"].location = (332.8207092285156, 161.3325653076172)
+    head_1.nodes["Curve to Tube"].location = (48.325992584228516, -90.91696166992188)
     head_1.nodes["Spline Length"].location = (-1088.4140625, -474.6688232421875)
     head_1.nodes["Spline Parameter"].location = (-1062.55029296875, -328.305419921875)
     head_1.nodes["Math"].location = (-789.3521728515625, -266.2061767578125)
     head_1.nodes["Math.001"].location = (-559.9779052734375, -417.24957275390625)
-    head_1.nodes["Delete Geometry"].location = (-322.1387023925781, -252.81085205078125)
+    head_1.nodes["Delete Geometry"].location = (-200.138671875, -252.81085205078125)
     head_1.nodes["Map Range.001"].location = (474.8985290527344, -215.79193115234375)
-    head_1.nodes["Group Output"].location = (1265.6165771484375, 412.0568542480469)
+    head_1.nodes["Group Output"].location = (1387.61669921875, 412.0568542480469)
     head_1.nodes["Group Input"].location = (-1178.5770263671875, 362.9207458496094)
-    head_1.nodes["Join Geometry"].location = (1032.7188720703125, 346.6789245605469)
+    head_1.nodes["Join Geometry"].location = (1154.718994140625, 346.6789245605469)
+    head_1.nodes["Math.002"].location = (-558.9771118164062, -676.4375610351562)
+    head_1.nodes["Switch"].location = (-380.0000305175781, -390.1047668457031)
 
     # Set dimensions
     head_1.nodes["Instance on Points"].width  = 140.0
@@ -3039,6 +3075,12 @@ def head_1_node_group(node_tree_names: dict[typing.Callable, str]):
     head_1.nodes["Join Geometry"].width  = 140.0
     head_1.nodes["Join Geometry"].height = 100.0
 
+    head_1.nodes["Math.002"].width  = 140.0
+    head_1.nodes["Math.002"].height = 100.0
+
+    head_1.nodes["Switch"].width  = 140.0
+    head_1.nodes["Switch"].height = 100.0
+
 
     # Initialize head_1 links
 
@@ -3067,9 +3109,9 @@ def head_1_node_group(node_tree_names: dict[typing.Callable, str]):
         head_1.nodes["Math"].outputs[0],
         head_1.nodes["Math.001"].inputs[0]
     )
-    # math_001.Value -> delete_geometry.Selection
+    # switch.Output -> delete_geometry.Selection
     head_1.links.new(
-        head_1.nodes["Math.001"].outputs[0],
+        head_1.nodes["Switch"].outputs[0],
         head_1.nodes["Delete Geometry"].inputs[1]
     )
     # delete_geometry.Geometry -> curve_to_tube.Curve
@@ -3107,6 +3149,26 @@ def head_1_node_group(node_tree_names: dict[typing.Callable, str]):
         head_1.nodes["Group Input"].outputs[2],
         head_1.nodes["Map Range.001"].inputs[4]
     )
+    # math.Value -> math_002.Value
+    head_1.links.new(
+        head_1.nodes["Math"].outputs[0],
+        head_1.nodes["Math.002"].inputs[0]
+    )
+    # math_001.Value -> switch.False
+    head_1.links.new(
+        head_1.nodes["Math.001"].outputs[0],
+        head_1.nodes["Switch"].inputs[1]
+    )
+    # math_002.Value -> switch.True
+    head_1.links.new(
+        head_1.nodes["Math.002"].outputs[0],
+        head_1.nodes["Switch"].inputs[2]
+    )
+    # group_input.Begin Curve -> switch.Switch
+    head_1.links.new(
+        head_1.nodes["Group Input"].outputs[3],
+        head_1.nodes["Switch"].inputs[0]
+    )
     # group_input.Geometry -> join_geometry.Geometry
     head_1.links.new(
         head_1.nodes["Group Input"].outputs[0],
@@ -3114,6 +3176,7 @@ def head_1_node_group(node_tree_names: dict[typing.Callable, str]):
     )
 
     return head_1
+
 
 
 def vertices_to_sphere_1_node_group(node_tree_names: dict[typing.Callable, str]):
